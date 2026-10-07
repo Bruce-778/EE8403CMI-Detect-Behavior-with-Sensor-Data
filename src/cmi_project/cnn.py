@@ -34,8 +34,8 @@ class CNNConfig:
             raise ValueError("kernel_size must be a positive odd integer.")
         if self.hidden_features < 2 or not 0 <= self.dropout < 1:
             raise ValueError("Invalid hidden_features/dropout.")
-        if self.pooling not in ("mean_max", "attention_max"):
-            raise ValueError("pooling must be mean_max or attention_max.")
+        if self.pooling not in ("mean_max", "attention_max", "gru_mean"):
+            raise ValueError("pooling must be mean_max, attention_max or gru_mean.")
         if self.encoder_style not in ("joint", "grouped"):
             raise ValueError("encoder_style must be joint or grouped.")
         if self.normalization not in ("token_layer", "masked_batch"):
@@ -159,6 +159,10 @@ class TemporalCNNEncoder(nn.Module):
             inputs = output
         self.blocks = nn.ModuleList(blocks)
         self.output_features = 2 * channels[-1]
+        self.gru = None
+        if pooling == "gru_mean":
+            self.gru = nn.GRU(channels[-1], channels[-1] // 2, batch_first=True, bidirectional=True)
+            self.output_features = 4 * (channels[-1] // 2)
         self.attention = (nn.Sequential(nn.Conv1d(channels[-1], max(4, channels[-1] // 4), 1),
             nn.Tanh(), nn.Conv1d(max(4, channels[-1] // 4), 1, 1)) if pooling == "attention_max" else None)
 
@@ -173,6 +177,24 @@ class TemporalCNNEncoder(nn.Module):
         return out, mask
 
     def pool_sequence(self, out: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        if self.gru is not None:
+            # Pack real CNN tokens in their original order. Left padding and
+            # wholly unavailable modalities must never enter the recurrence.
+            values = out.transpose(1, 2)
+            length = mask.sum(1)
+            position = torch.arange(mask.shape[1], device=mask.device)[None].expand_as(mask)
+            order = torch.where(mask, position, position + mask.shape[1]).argsort(1)
+            compact = values.gather(1, order[..., None].expand(-1, -1, values.shape[-1]))
+            compact_mask = position < length[:, None]
+            compact = torch.where(compact_mask[..., None], compact, 0)
+            packed = nn.utils.rnn.pack_padded_sequence(compact, length.clamp_min(1).cpu(),
+                batch_first=True, enforce_sorted=False)
+            encoded, hidden = self.gru(packed)
+            encoded, _ = nn.utils.rnn.pad_packed_sequence(encoded, batch_first=True, total_length=values.shape[1])
+            mean = masked_mean_time(encoded, compact_mask)
+            last = torch.cat([hidden[-2], hidden[-1]], dim=1)
+            combined = torch.cat([mean, last], dim=1)
+            return torch.where(length[:, None] > 0, combined, 0)
         if self.attention is None:
             mean = masked_mean_time(out.transpose(1, 2), mask)
         else:
@@ -259,6 +281,8 @@ class CMI1DCNN(nn.Module):
                         or self.config.stage_kernel_sizes else "masked_residual_1d_cnn_v1")
         if self.config.encoder_style == "grouped" or self.config.normalization != "token_layer" or self.config.squeeze_excitation:
             architecture = "grouped_masked_se_cnn_v3"
+        if self.config.pooling == "gru_mean":
+            architecture = "masked_cnn_gru_v4"
         return {"model": self.model_name, "architecture": architecture,
                 "config": asdict(self.config), "tof_regions": self.tof_regions,
                 "normalization": f"train-fold standardization + {self.config.normalization}",
