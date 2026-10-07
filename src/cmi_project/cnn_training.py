@@ -188,7 +188,7 @@ def plot_history(history: pd.DataFrame, path: Path, best_epoch: int) -> None:
     figure, axes = plt.subplots(1, 2, figsize=(10, 3.8))
     axes[0].plot(history["epoch"], history["train_loss"], label="train")
     axes[0].plot(history["epoch"], history["validation_loss"], label="validation")
-    axes[0].set(xlabel="Epoch", ylabel="Cross entropy")
+    axes[0].set(xlabel="Epoch", ylabel="Loss (configured objective)")
     axes[0].legend()
     axes[1].plot(history["epoch"], history["score"], label="CMI score")
     axes[1].plot(history["epoch"], history["macro_f1_9class"], label="Macro F1 (9 classes)")
@@ -246,15 +246,20 @@ def write_comparison_report(output_dir: Path, summaries: list[dict], manifest: F
         "th:first-child,td:first-child{text-align:left}img{max-width:100%}code{background:#eef2f6;padding:2px 5px}</style>",
         "<h1>CMI 主实验 v1：1D CNN</h1>", f"<p>{html.escape(scope)}</p>",
         "<p>固定 subject folds，标准化和长度分位数仅由训练 subjects 拟合。CNN 的验证分数同时用于选择 checkpoint 和 early stopping；这是开发阶段验证结果。</p>",
-        "<p>Model A：IMU encoder → masked mean/max pooling → FC。Model B：IMU / THM / ToF 独立 encoder → concatenate → FC。ToF 使用有效像素区域均值和有效像素比例后沿时间做 1D CNN。</p>",
+        "<p>Model A：IMU encoder → masked pooling → FC。Model B：IMU / THM / ToF 独立 encoder → concatenate → FC。ToF 使用有效像素区域均值和有效像素比例后沿时间做 1D CNN。不同损失函数的 loss 数值不能直接横向比较。</p>",
         "<img src='comparison.png' alt='Matching-fold model comparison'>",
         table.to_html(index=False, float_format=lambda value: f"{value:.5f}", na_rep="—", border=0)]
     for summary in summaries:
         name, fold = summary["model"], summary["fold"]
         relative = f"{name}/fold_{fold}"
+        config, training = summary["model_metadata"]["config"], summary["training"]
         parts.extend([f"<h2>{html.escape(name)} · fold {fold}</h2>",
             f"<p>sequence length={summary['max_length']}；最佳 epoch={summary['best_epoch']} / {summary['epochs_run']}；"
             f"参数={summary['model_metadata']['parameters']:,}；训练时间={summary['elapsed_seconds'] / 60:.1f} 分钟。</p>",
+            f"<p>pooling={html.escape(config.get('pooling', 'mean_max'))}；"
+            f"kernels={config.get('stage_kernel_sizes') or [config['kernel_size']] * len(config['imu_channels'])}；"
+            f"lr={training['learning_rate']}；batch={training['batch_size']}；dropout={config['dropout']}；"
+            f"macro / binary loss weights={training.get('macro_loss_weight', 0)} / {training.get('binary_loss_weight', 0)}。</p>",
             f"<img src='{relative}/learning_curve.png' alt='Training and validation curves'>",
             f"<p><a href='{relative}/class_scores.csv'>逐类 precision / recall / F1</a> · "
             f"<a href='{relative}/confusion_matrix.csv'>混淆矩阵</a> · "

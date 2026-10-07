@@ -9,8 +9,8 @@
 | cnn_v1 | 0.722778 | 0.811524 |
 | cnn_tuned | 0.726348 | 0.809248 |
 | cnn_hierarchical | 0.742987 | 0.817910 |
-| cnn_attention | 0.730267 | 未完成 |
-| cnn_large_kernel | 未完成 | 未完成 |
+| cnn_attention | 0.730267 | 0.809325 |
+| cnn_large_kernel | 0.731901 | 未完成 |
 
 ## 完整五折
 
