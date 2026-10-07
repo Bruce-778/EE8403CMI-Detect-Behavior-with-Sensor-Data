@@ -232,7 +232,7 @@ def write_comparison_report(output_dir: Path, summaries: list[dict], manifest: F
         axis.bar_label(bars, fmt="%.3f", fontsize=8, padding=2)
     axis.set_xticks(positions, grouped.index, fontsize=8)
     axis.set(ylim=(0, 1.09), ylabel="Held-out subject score",
-             title=f"CMI v1: matching folds {', '.join(map(str, folds))}")
+             title=f"CMI 1D CNN: matching folds {', '.join(map(str, folds))}")
     axis.legend(loc="lower right", fontsize=8)
     figure.tight_layout()
     figure.savefig(output_dir / "comparison.png", dpi=160)
@@ -241,7 +241,7 @@ def write_comparison_report(output_dir: Path, summaries: list[dict], manifest: F
     scope = "完整五折 OOF；表格逐折列出，图表为折均值。" if complete else f"第一版预览：仅 folds {folds}，不是完整五折结果。"
     parts = ["<!doctype html><html lang='zh-CN'><meta charset='utf-8'>",
         "<meta name='viewport' content='width=device-width,initial-scale=1'>",
-        "<title>CMI 1D CNN v1</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1100px;margin:32px auto;padding:0 20px;color:#17212b}"
+        "<title>CMI 1D CNN results</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1100px;margin:32px auto;padding:0 20px;color:#17212b}"
         "table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid #dce2e8;padding:8px;text-align:right}"
         "th:first-child,td:first-child{text-align:left}img{max-width:100%}code{background:#eef2f6;padding:2px 5px}</style>",
         "<h1>CMI 主实验 v1：1D CNN</h1>", f"<p>{html.escape(scope)}</p>",
@@ -495,7 +495,7 @@ def main() -> int:
         if complete:
             for name in names:
                 evaluate_oof_frames(manifest, predictions[name], output_dir / name / "evaluation",
-                    experiment_name=f"cnn_v1_{name}", experiment_config={"training": asdict(training),
+                    experiment_name=f"{output_dir.name}_{name}", experiment_config={"training": asdict(training),
                         "model_config": asdict(model_config), "checkpoint_selection": "held-out fold CMI score"})
         (output_dir / "summary.json").write_text(json.dumps({"version": "v1", "folds": folds,
             "complete_oof": complete, "evaluation_scope": "5-fold OOF" if complete else "held-out fold preview",

@@ -649,7 +649,7 @@
   ],
   "five_fold_evaluation": {
     "imu": {
-      "experiment_name": "cnn_v1_imu",
+      "experiment_name": "cnn_hierarchical_imu",
       "metric": "cmi_binary_f1_macro_f1_9class_v1",
       "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
       "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
