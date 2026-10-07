@@ -1,0 +1,9 @@
+{
+  "data_dir": "data",
+  "folds_path": "configs/folds.csv",
+  "output_dir": "outputs/validation",
+  "chunksize": 25000,
+  "n_splits": 5,
+  "shuffle": true,
+  "random_state": 42
+}

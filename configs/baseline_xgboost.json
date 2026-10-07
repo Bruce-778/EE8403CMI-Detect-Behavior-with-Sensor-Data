@@ -1,0 +1,20 @@
+{
+  "model": "xgboost",
+  "data_dir": "data",
+  "folds_path": "configs/folds.csv",
+  "preprocessing_config": "configs/preprocessing.json",
+  "output_dir": "outputs/baseline/xgboost_imu",
+  "experiment_name": "xgboost_imu",
+  "chunksize": 25000,
+  "model_parameters": {
+    "n_estimators": 300,
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "min_child_weight": 1.0,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.1,
+    "reg_lambda": 1.0,
+    "n_jobs": 4
+  }
+}

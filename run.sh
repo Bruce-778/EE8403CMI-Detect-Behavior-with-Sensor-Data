@@ -1,0 +1,1 @@
+python scripts/preprocess_data.py --fold 0

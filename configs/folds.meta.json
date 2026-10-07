@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "splitter": "StratifiedGroupKFold",
+  "implementation": "StratifiedGroupKFold_consistent_group_shuffle_v1",
+  "n_splits": 5,
+  "shuffle": true,
+  "random_state": 42,
+  "group": "subject",
+  "stratify": "gesture",
+  "sample_unit": "sequence",
+  "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "sequences": 8151,
+  "subjects": 81,
+  "labels": [
+    "Above ear - pull hair",
+    "Cheek - pinch skin",
+    "Drink from bottle/cup",
+    "Eyebrow - pull hair",
+    "Eyelash - pull hair",
+    "Feel around in tray and pull out an object",
+    "Forehead - pull hairline",
+    "Forehead - scratch",
+    "Glasses on/off",
+    "Neck - pinch skin",
+    "Neck - scratch",
+    "Pinch knee/leg skin",
+    "Pull air toward your face",
+    "Scratch knee/leg skin",
+    "Text on phone",
+    "Wave hello",
+    "Write name in air",
+    "Write name on leg"
+  ],
+  "created_utc": "2026-10-07T04:59:22.969306+00:00",
+  "versions": {
+    "python": "3.10.18",
+    "numpy": "2.2.6",
+    "pandas": "2.3.0",
+    "scikit_learn": "1.6.1"
+  }
+}

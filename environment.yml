@@ -1,0 +1,15 @@
+name: cmi
+variables:
+  PYTHONNOUSERSITE: "1"
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - numpy==2.2.6
+      - pandas==2.3.0
+      - matplotlib==3.10.3
+      - scikit-learn==1.6.1
+      - scipy==1.15.3
+      - torch==2.8.0
+      - lightgbm==4.6.0
+      - xgboost==3.0.5
