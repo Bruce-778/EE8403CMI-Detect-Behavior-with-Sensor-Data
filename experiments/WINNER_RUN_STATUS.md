@@ -23,9 +23,9 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 1. [原训练版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-inspired-cnn-training?scriptVersionId=356144886) 已完成三个 pilot，进入五折时因原生 tuple 与 JSON list 的表示差异被误拒绝。已修复为精确 JSON 值比较，统计值变化仍拒绝。原始产物已下载到 `outputs/kaggle_training/recovered_v2/cmi_worktree`，不能再把这个版本当作运行中任务。
 2. [续跑版本 1](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356157899) 在新 Notebook 挂载处复制缓存，被来源身份检查拒绝，未训练新 fold。失败记录为 `experiments/results/cnn_gpu_continuation_v1_failure.json`。已改为保留筛选结果，重建缓存及选定配置的全部模型；没有放宽缓存检查。
 
-## 当前运行
+## 训练完成与结果回收
 
-只监控 [CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432)。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。
+[CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432) 已成功完成，不要重新训练。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。当前仅等待下述 CPU 结果导出任务以回收最终 ZIP。
 
 云端已经通过 `train.csv` 和 `train_demographics.csv` 的字节 SHA256 校验，与 `configs/data_source_hashes.json` 固定的本地输入一致；固定 folds 文件 SHA256 也一致。已恢复原三项筛选结果，开始仅在 fold 0 的 6,524 条训练 sequence 上拟合新缓存。需要重新训练选定配置的 IMU-only 和多传感器各五折，包括重新训练 fold 0。旧筛选阶段 fold 0 产物独立保存于 `outputs/pilot_artifacts/`，不能替代新运行的 fold 0。
 
@@ -37,9 +37,11 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 | 1 | 0.785888 | 0.849067 |
 | 2 | 0.785455 | 0.841385 |
 | 3 | 0.811088 | 0.863590 |
-| 4 | 0.777887 | 训练中 |
+| 4 | 0.777887 | 0.858618 |
 
-IMU fold 0 重训与原筛选结果在日志显示精度下一致，最佳 epoch 38，43 epochs 后 early stop。IMU-only 五折 checkpoint 已全部训练完毕；当前训练多传感器 fold 4，至少已进入第 10 个 epoch，十个模型中完成九个。完整五折预测核验和缺失场景比较仍未完成，不以训练日志或少量折的结果替代最终比较。页面截图保存在 `outputs/kaggle_training/training_status.png`。自动化 `cmi` 已更新为只监控此版本，旧监控链接不再使用。
+十个模型及缺失场景评估已成功完成，训练版本 2 总用时 7,400.8 秒。日志显示 `COMPLETED FIVE FOLD EXPERIMENTS`，并生成 23,952,382 字节的 `winner_experiments.zip`。IMU fold 0 重训与原筛选结果在日志显示精度下一致。模型训练已结束；完整五折预测核验和新旧比较仍未完成，不能用训练日志替代最终检查。
+
+单文件 Download 按钮打开了二进制文件的新标签页，下载事件没有返回。为避免下载原 working directory 的训练缓存，启动了 [仅导出结果 ZIP 的 CPU 任务](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356184726)：只复制原版本的 `winner_experiments.zip`，不重新训练、不预测测试集、不提交比赛。其输出只有结果 ZIP 及 Notebook 自身文件；可通过 Output actions 的 Download output 回收，再提取内层 ZIP。原训练版本的结果来源 URL 保持 356161432。导出任务完成后还需核对复制的文件大小与 SHA256。
 
 ## 完成后的操作
 
