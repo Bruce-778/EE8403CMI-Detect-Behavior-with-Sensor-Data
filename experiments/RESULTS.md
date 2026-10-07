@@ -12,7 +12,7 @@
 | cnn_attention | 0.730267 | 0.809325 |
 | cnn_large_kernel | 0.731901 | 0.811549 |
 | cnn_hierarchical_b5 | 未完成 | 0.817910 |
-| cnn_multisensor_hier_v1train | 未完成 | 未完成 |
+| cnn_multisensor_hier_v1train | 未完成 | 0.807612 |
 
 ## 完整五折
 

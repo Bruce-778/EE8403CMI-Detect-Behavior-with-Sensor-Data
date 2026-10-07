@@ -83,3 +83,9 @@ Attention pooling 单独增加在该配置上，A 暂为 0.730267，低于 0.742
 ```powershell
 & 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --config configs/cnn_multisensor_hier_v1train.json --model multisensor
 ```
+
+该候选 fold 0 最终为 **0.807612**，低于 v1 0.811524 与分层损失 + 强正则化 0.817910；本轮不进入五折，保留结果。没有再搜索随机种子或验证阈值。
+
+## A 的完整五折
+
+分层损失 A：fold 0–4 为 **0.742987 / 0.727996 / 0.763863 / 0.759007 / 0.718408**，均值 **0.742452 ± 0.019493**，pooled OOF **0.742757**。全部 8,151 条 sequence 各验证一次，完整 OOF 概率保存于 `outputs/experiments/cnn_hierarchical/imu/evaluation/oof_predictions.csv`。原始 A 及固定等权融合在源模型全部五折完成后比较，不能拿这张表与单折筛选分数直接比较。
