@@ -82,7 +82,11 @@ import sys
 import zipfile
 from pathlib import Path
 
-competition = Path("/kaggle/input/cmi-detect-behavior-with-sensor-data")
+competition_roots = [path.parent.parent for path in Path("/kaggle/input").rglob("cmi_inference_server.py")
+                     if path.parent.name == "kaggle_evaluation"]
+if len(competition_roots) != 1:
+    raise RuntimeError("Attach exactly one copy of the CMI competition data.")
+competition = competition_roots[0]
 archives = list(Path("/kaggle/input").rglob("cmi-cnn-selected.zip"))
 manifests = list(Path("/kaggle/input").rglob("bundle.json"))
 if archives:
