@@ -4,6 +4,39 @@
 
 所有实验复用 `configs/folds.csv`，subject 不跨 training / validation。先在固定 fold 0 筛选少量方案，再锁定配置补齐五折；fold 0 筛选和 checkpoint 选择都使用 validation，因此分数是开发 CV，不能当作独立测试集表现。单折结果只与相同折比较。每项完成后本地 Git 提交，不 push。
 
+## 本轮结论
+
+已完成六项尝试，并为原始 CNN、分层损失 CNN 及两者的固定融合补齐 A/B 五折。下方历史记录保留当时的观察和决策；完整比较见 [实验汇总](RESULTS.md)。
+
+| 配置 | A：IMU-only，五折均值 ± 标准差 | B：多传感器，五折均值 ± 标准差 |
+| --- | ---: | ---: |
+| 原始 CNN | 0.730773 ± 0.010601 | 0.816032 ± 0.010804 |
+| 分层损失 CNN | 0.742452 ± 0.019493 | 0.817443 ± 0.021038 |
+| 固定 50% / 50% 概率融合 | **0.748366 ± 0.016025** | **0.822268 ± 0.017113** |
+
+相对原始配置，融合 A 提升 0.017593，B 提升 0.006237。B 的单模型分层损失收益较小，且部分折下降；没有把各折最高配置拼成结果，也没有搜索融合权重。当前 A/B 各由两个 CNN 组成，不是单个网络的成绩。全部 8,151 条 sequence 各有一次 held-out 预测，标准差采用 ddof=1。
+
+当前使用固定可用性路由：THM 或 ToF 至少一种可用时使用融合 B，两者都不可用时使用融合 A。原始验证输入的路由分数为 **0.823642 ± 0.016330**，pooled OOF **0.823679**；完全遮掉 THM、ToF 时为 **0.748366 ± 0.016025**。约半数序列额外失去辅助模态时，单独融合 B 为 **0.767681 ± 0.015817**，路由为 **0.788400 ± 0.013442**。这些遮挡是标签无关、可重现的压力测试，不是隐藏测试集分布或真实测试成绩。
+
+验证：54 项现有自动检查通过；额外核对最终 9 份场景 OOF，各覆盖同一批 8,151 条 sequence，ID 不重复，subject、fold、标签与固定索引一致，概率有限且和为 1，重新计算的官方分数与记录一致。实际加载模型的概率融合与已保存的融合 OOF 一致；遮挡辅助模态不改变 A 的预测。五折 training / validation subject 无交集。
+
+Attention pooling、5/9/13 时间 kernel、B 恢复原始训练参数均未通过同一 fold 0 的筛选，没有继续投入五折。通过已有论文启发进行适配和验证，但本轮结果不足以宣称新的方法创新。归一化保持训练 fold 拟合，长度继续使用训练 fold 的 95% 分位数（五折分别 127/128/124/125/130），batch=64；没有做完整的长度和 batch size 网格搜索。ToF 当前采用 2×2 区域聚合输入 1D CNN，8×8 的 3D CNN 不在本轮实现中。
+
+## 最终方案复现
+
+```powershell
+# 已完成的对应 fold 会进行配置、数据、预测一致性检查后复用。
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --config configs/cnn_v1.json --fold 0 1 2 3 4 --resume
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --config configs/cnn_hierarchical.json --fold 0 1 2 3 4 --resume
+& 'D:\anaconda\envs\cmi\python.exe' -s scripts/ensemble_cnn_oof.py --runs outputs/experiments/cnn_v1 outputs/experiments/cnn_hierarchical --model imu --name cnn_equal_blend
+& 'D:\anaconda\envs\cmi\python.exe' -s scripts/ensemble_cnn_oof.py --runs outputs/experiments/cnn_v1 outputs/experiments/cnn_hierarchical --model multisensor --name cnn_equal_blend
+# 实际加载两个成员模型进行推理，核对融合和缺失模态路由。
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/evaluate_cnn_scenarios.py outputs/experiments/cnn_hierarchical --blend-imu-with outputs/experiments/cnn_v1 --blend-multisensor-with outputs/experiments/cnn_v1 --name cnn_final_selected
+& 'D:\anaconda\envs\cmi\python.exe' -s scripts/compare_main_experiments.py --runs cnn_v1 cnn_tuned cnn_hierarchical cnn_attention cnn_large_kernel cnn_multisensor_hier_v1train
+```
+
+原始及分层损失的 checkpoint 与各折输入预处理参数位于 `outputs/experiments/<配置>/<模型>/fold_<N>/`。融合完整 OOF 位于 `outputs/experiments/cnn_equal_blend/<模型>/evaluation/`；最终路由及三种输入场景的完整 OOF 位于 `outputs/experiments/cnn_hierarchical/scenarios/cnn_final_selected/<模型或routed>/<场景>/`。`experiments/results/cnn_final_selected_scenarios.json` 是对应的小型结果摘要。
+
 ## 初始观察
 
 v1 fold 0：A = 0.722778，B = 0.811524。A 最佳 epoch 28，之后训练 loss 从约 0.91 下降到 0.72，validation loss 反而上升到 1.60，提示过拟合。B 的 binary F1 已达 0.97935，9 类 macro F1 只有 0.64370；目标手势中眉毛、睫毛、颈部类别最难。应优先改善目标手势区分，而不是继续优化已经很高的 binary F1。

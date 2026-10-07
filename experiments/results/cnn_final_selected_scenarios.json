@@ -1,0 +1,710 @@
+{
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "results": [
+    {
+      "model": "imu",
+      "fold": 0,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.924454243841095,
+      "accuracy_18class": 0.5900430239704979,
+      "score": 0.7463748066010997,
+      "binary_f1": 0.9695181907571289,
+      "macro_f1_9class": 0.5232314224450705
+    },
+    {
+      "model": "imu",
+      "fold": 0,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1627,
+      "loss": 1.924454243841095,
+      "accuracy_18class": 0.5900430239704979,
+      "score": 0.7463748066010997,
+      "binary_f1": 0.9695181907571289,
+      "macro_f1_9class": 0.5232314224450705
+    },
+    {
+      "model": "imu",
+      "fold": 0,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 843,
+      "loss": 1.924454243841095,
+      "accuracy_18class": 0.5900430239704979,
+      "score": 0.7463748066010997,
+      "binary_f1": 0.9695181907571289,
+      "macro_f1_9class": 0.5232314224450705
+    },
+    {
+      "model": "imu",
+      "fold": 1,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.9900149013481887,
+      "accuracy_18class": 0.5968137254901961,
+      "score": 0.7417872701795729,
+      "binary_f1": 0.967551622418879,
+      "macro_f1_9class": 0.5160229179402669
+    },
+    {
+      "model": "imu",
+      "fold": 1,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1632,
+      "loss": 1.9900149013481887,
+      "accuracy_18class": 0.5968137254901961,
+      "score": 0.7417872701795729,
+      "binary_f1": 0.967551622418879,
+      "macro_f1_9class": 0.5160229179402669
+    },
+    {
+      "model": "imu",
+      "fold": 1,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 800,
+      "loss": 1.9900149013481887,
+      "accuracy_18class": 0.5968137254901961,
+      "score": 0.7417872701795729,
+      "binary_f1": 0.967551622418879,
+      "macro_f1_9class": 0.5160229179402669
+    },
+    {
+      "model": "imu",
+      "fold": 2,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.7649451054947862,
+      "accuracy_18class": 0.6204782342121398,
+      "score": 0.766828671808284,
+      "binary_f1": 0.9803921568627451,
+      "macro_f1_9class": 0.5532651867538229
+    },
+    {
+      "model": "imu",
+      "fold": 2,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1631,
+      "loss": 1.7649451054947862,
+      "accuracy_18class": 0.6204782342121398,
+      "score": 0.766828671808284,
+      "binary_f1": 0.9803921568627451,
+      "macro_f1_9class": 0.5532651867538229
+    },
+    {
+      "model": "imu",
+      "fold": 2,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 805,
+      "loss": 1.7649451054947862,
+      "accuracy_18class": 0.6204782342121398,
+      "score": 0.766828671808284,
+      "binary_f1": 0.9803921568627451,
+      "macro_f1_9class": 0.5532651867538229
+    },
+    {
+      "model": "imu",
+      "fold": 3,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.709222029349314,
+      "accuracy_18class": 0.6199261992619927,
+      "score": 0.7605972233540046,
+      "binary_f1": 0.9787444389520514,
+      "macro_f1_9class": 0.5424500077559576
+    },
+    {
+      "model": "imu",
+      "fold": 3,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1626,
+      "loss": 1.709222029349314,
+      "accuracy_18class": 0.6199261992619927,
+      "score": 0.7605972233540046,
+      "binary_f1": 0.9787444389520514,
+      "macro_f1_9class": 0.5424500077559576
+    },
+    {
+      "model": "imu",
+      "fold": 3,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 771,
+      "loss": 1.709222029349314,
+      "accuracy_18class": 0.6199261992619927,
+      "score": 0.7605972233540046,
+      "binary_f1": 0.9787444389520514,
+      "macro_f1_9class": 0.5424500077559576
+    },
+    {
+      "model": "imu",
+      "fold": 4,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 2.058261861276189,
+      "accuracy_18class": 0.5681957186544343,
+      "score": 0.7262421585119462,
+      "binary_f1": 0.9774730656219393,
+      "macro_f1_9class": 0.47501125140195316
+    },
+    {
+      "model": "imu",
+      "fold": 4,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1635,
+      "loss": 2.058261861276189,
+      "accuracy_18class": 0.5681957186544343,
+      "score": 0.7262421585119462,
+      "binary_f1": 0.9774730656219393,
+      "macro_f1_9class": 0.47501125140195316
+    },
+    {
+      "model": "imu",
+      "fold": 4,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 809,
+      "loss": 2.058261861276189,
+      "accuracy_18class": 0.5681957186544343,
+      "score": 0.7262421585119462,
+      "binary_f1": 0.9774730656219393,
+      "macro_f1_9class": 0.47501125140195316
+    },
+    {
+      "model": "multisensor",
+      "fold": 0,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.521491580457869,
+      "accuracy_18class": 0.6994468346650277,
+      "score": 0.8178255258496994,
+      "binary_f1": 0.9818716315531603,
+      "macro_f1_9class": 0.6537794201462385
+    },
+    {
+      "model": "multisensor",
+      "fold": 0,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1627,
+      "loss": 2.070101842971103,
+      "accuracy_18class": 0.5623847572218807,
+      "score": 0.7259100909597659,
+      "binary_f1": 0.9693728731161886,
+      "macro_f1_9class": 0.4824473088033432
+    },
+    {
+      "model": "multisensor",
+      "fold": 0,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 843,
+      "loss": 1.8287780602138028,
+      "accuracy_18class": 0.6287645974185617,
+      "score": 0.7719761867075806,
+      "binary_f1": 0.9755859375,
+      "macro_f1_9class": 0.5683664359151612
+    },
+    {
+      "model": "multisensor",
+      "fold": 1,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.548464115928201,
+      "accuracy_18class": 0.6850490196078431,
+      "score": 0.8037991976358636,
+      "binary_f1": 0.9739557739557739,
+      "macro_f1_9class": 0.6336426213159534
+    },
+    {
+      "model": "multisensor",
+      "fold": 1,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1632,
+      "loss": 2.107885327993655,
+      "accuracy_18class": 0.5453431372549019,
+      "score": 0.7080199669768052,
+      "binary_f1": 0.9645669291338582,
+      "macro_f1_9class": 0.4514730048197524
+    },
+    {
+      "model": "multisensor",
+      "fold": 1,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 800,
+      "loss": 1.8359564963509054,
+      "accuracy_18class": 0.6115196078431373,
+      "score": 0.7560799706549033,
+      "binary_f1": 0.9676153091265947,
+      "macro_f1_9class": 0.5445446321832118
+    },
+    {
+      "model": "multisensor",
+      "fold": 2,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.3925798298901828,
+      "accuracy_18class": 0.6922133660331086,
+      "score": 0.8118956280652255,
+      "binary_f1": 0.9792490118577075,
+      "macro_f1_9class": 0.6445422442727435
+    },
+    {
+      "model": "multisensor",
+      "fold": 2,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1631,
+      "loss": 1.9806996353706066,
+      "accuracy_18class": 0.5389331698344574,
+      "score": 0.6959660324025201,
+      "binary_f1": 0.9588497768963807,
+      "macro_f1_9class": 0.4330822879086593
+    },
+    {
+      "model": "multisensor",
+      "fold": 2,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 805,
+      "loss": 1.661093497992585,
+      "accuracy_18class": 0.6204782342121398,
+      "score": 0.7579083947394114,
+      "binary_f1": 0.9703264094955489,
+      "macro_f1_9class": 0.545490379983274
+    },
+    {
+      "model": "multisensor",
+      "fold": 3,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.2878587277466373,
+      "accuracy_18class": 0.7484624846248462,
+      "score": 0.8475426802945092,
+      "binary_f1": 0.9920948616600791,
+      "macro_f1_9class": 0.7029904989289393
+    },
+    {
+      "model": "multisensor",
+      "fold": 3,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1626,
+      "loss": 1.9354663865885904,
+      "accuracy_18class": 0.584870848708487,
+      "score": 0.7258680927185313,
+      "binary_f1": 0.9625935162094763,
+      "macro_f1_9class": 0.4891426692275862
+    },
+    {
+      "model": "multisensor",
+      "fold": 3,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 771,
+      "loss": 1.6026780530535427,
+      "accuracy_18class": 0.6771217712177122,
+      "score": 0.7936321162669502,
+      "binary_f1": 0.9791044776119403,
+      "macro_f1_9class": 0.6081597549219601
+    },
+    {
+      "model": "multisensor",
+      "fold": 4,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.3649094999383349,
+      "accuracy_18class": 0.7137614678899082,
+      "score": 0.8302776542766741,
+      "binary_f1": 0.9896907216494846,
+      "macro_f1_9class": 0.6708645869038636
+    },
+    {
+      "model": "multisensor",
+      "fold": 4,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1635,
+      "loss": 2.2435167296581677,
+      "accuracy_18class": 0.5125382262996941,
+      "score": 0.6836680773544515,
+      "binary_f1": 0.9632172633643943,
+      "macro_f1_9class": 0.4041188913445085
+    },
+    {
+      "model": "multisensor",
+      "fold": 4,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 809,
+      "loss": 1.7848020490156402,
+      "accuracy_18class": 0.6134556574923548,
+      "score": 0.7588079387313416,
+      "binary_f1": 0.9730524252817246,
+      "macro_f1_9class": 0.5445634521809584
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "observed",
+      "used_model_a": 0,
+      "used_model_b": 1627,
+      "score": 0.8178255258496994,
+      "binary_f1": 0.9818716315531603,
+      "macro_f1_9class": 0.6537794201462385
+    },
+    {
+      "model": "routed",
+      "fold": 1,
+      "scenario": "observed",
+      "used_model_a": 0,
+      "used_model_b": 1632,
+      "score": 0.8037991976358636,
+      "binary_f1": 0.9739557739557739,
+      "macro_f1_9class": 0.6336426213159534
+    },
+    {
+      "model": "routed",
+      "fold": 2,
+      "scenario": "observed",
+      "used_model_a": 96,
+      "used_model_b": 1535,
+      "score": 0.8187643074197287,
+      "binary_f1": 0.989247311827957,
+      "macro_f1_9class": 0.6482813030115004
+    },
+    {
+      "model": "routed",
+      "fold": 3,
+      "scenario": "observed",
+      "used_model_a": 0,
+      "used_model_b": 1626,
+      "score": 0.8475426802945092,
+      "binary_f1": 0.9920948616600791,
+      "macro_f1_9class": 0.7029904989289393
+    },
+    {
+      "model": "routed",
+      "fold": 4,
+      "scenario": "observed",
+      "used_model_a": 0,
+      "used_model_b": 1635,
+      "score": 0.8302776542766741,
+      "binary_f1": 0.9896907216494846,
+      "macro_f1_9class": 0.6708645869038636
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "imu_only",
+      "used_model_a": 1627,
+      "used_model_b": 0,
+      "score": 0.7463748066010997,
+      "binary_f1": 0.9695181907571289,
+      "macro_f1_9class": 0.5232314224450705
+    },
+    {
+      "model": "routed",
+      "fold": 1,
+      "scenario": "imu_only",
+      "used_model_a": 1632,
+      "used_model_b": 0,
+      "score": 0.7417872701795729,
+      "binary_f1": 0.967551622418879,
+      "macro_f1_9class": 0.5160229179402669
+    },
+    {
+      "model": "routed",
+      "fold": 2,
+      "scenario": "imu_only",
+      "used_model_a": 1631,
+      "used_model_b": 0,
+      "score": 0.766828671808284,
+      "binary_f1": 0.9803921568627451,
+      "macro_f1_9class": 0.5532651867538229
+    },
+    {
+      "model": "routed",
+      "fold": 3,
+      "scenario": "imu_only",
+      "used_model_a": 1626,
+      "used_model_b": 0,
+      "score": 0.7605972233540046,
+      "binary_f1": 0.9787444389520514,
+      "macro_f1_9class": 0.5424500077559576
+    },
+    {
+      "model": "routed",
+      "fold": 4,
+      "scenario": "imu_only",
+      "used_model_a": 1635,
+      "used_model_b": 0,
+      "score": 0.7262421585119462,
+      "binary_f1": 0.9774730656219393,
+      "macro_f1_9class": 0.47501125140195316
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "aux_dropout50",
+      "used_model_a": 843,
+      "used_model_b": 784,
+      "score": 0.7838657455115532,
+      "binary_f1": 0.975921375921376,
+      "macro_f1_9class": 0.5918101151017304
+    },
+    {
+      "model": "routed",
+      "fold": 1,
+      "scenario": "aux_dropout50",
+      "used_model_a": 800,
+      "used_model_b": 832,
+      "score": 0.7729142421014709,
+      "binary_f1": 0.9705014749262537,
+      "macro_f1_9class": 0.575327009276688
+    },
+    {
+      "model": "routed",
+      "fold": 2,
+      "scenario": "aux_dropout50",
+      "used_model_a": 850,
+      "used_model_b": 781,
+      "score": 0.7931441584327741,
+      "binary_f1": 0.9853085210577864,
+      "macro_f1_9class": 0.6009797958077617
+    },
+    {
+      "model": "routed",
+      "fold": 3,
+      "scenario": "aux_dropout50",
+      "used_model_a": 771,
+      "used_model_b": 855,
+      "score": 0.8087507573219141,
+      "binary_f1": 0.9856506679861454,
+      "macro_f1_9class": 0.631850846657683
+    },
+    {
+      "model": "routed",
+      "fold": 4,
+      "scenario": "aux_dropout50",
+      "used_model_a": 809,
+      "used_model_b": 826,
+      "score": 0.7833266148139146,
+      "binary_f1": 0.9833659491193738,
+      "macro_f1_9class": 0.5832872805084554
+    }
+  ],
+  "five_fold_evaluation": {
+    "imu/observed": {
+      "experiment_name": "cnn_final_selected_imu_observed",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7483660260909815,
+        "binary_f1": 0.9747358949225488,
+        "macro_f1_9class": 0.5219961572594143
+      },
+      "fold_std": {
+        "score": 0.016024839893295964,
+        "binary_f1": 0.005796378955326365,
+        "macro_f1_9class": 0.030169931438993724
+      },
+      "oof": {
+        "score": 0.748485191578084,
+        "binary_f1": 0.9747370490514106,
+        "macro_f1_9class": 0.5222333341047575
+      }
+    },
+    "imu/imu_only": {
+      "experiment_name": "cnn_final_selected_imu_imu_only",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7483660260909815,
+        "binary_f1": 0.9747358949225488,
+        "macro_f1_9class": 0.5219961572594143
+      },
+      "fold_std": {
+        "score": 0.016024839893295964,
+        "binary_f1": 0.005796378955326365,
+        "macro_f1_9class": 0.030169931438993724
+      },
+      "oof": {
+        "score": 0.748485191578084,
+        "binary_f1": 0.9747370490514106,
+        "macro_f1_9class": 0.5222333341047575
+      }
+    },
+    "imu/aux_dropout50": {
+      "experiment_name": "cnn_final_selected_imu_aux_dropout50",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7483660260909815,
+        "binary_f1": 0.9747358949225488,
+        "macro_f1_9class": 0.5219961572594143
+      },
+      "fold_std": {
+        "score": 0.016024839893295964,
+        "binary_f1": 0.005796378955326365,
+        "macro_f1_9class": 0.030169931438993724
+      },
+      "oof": {
+        "score": 0.748485191578084,
+        "binary_f1": 0.9747370490514106,
+        "macro_f1_9class": 0.5222333341047575
+      }
+    },
+    "multisensor/observed": {
+      "experiment_name": "cnn_final_selected_multisensor_observed",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.8222681372243944,
+        "binary_f1": 0.9833724001352412,
+        "macro_f1_9class": 0.6611638743135477
+      },
+      "fold_std": {
+        "score": 0.017112731827664592,
+        "binary_f1": 0.007482145541850276,
+        "macro_f1_9class": 0.027073042249610785
+      },
+      "oof": {
+        "score": 0.8223437046906352,
+        "binary_f1": 0.9833677787619329,
+        "macro_f1_9class": 0.6613196306193374
+      }
+    },
+    "multisensor/imu_only": {
+      "experiment_name": "cnn_final_selected_multisensor_imu_only",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7078864520824147,
+        "binary_f1": 0.9637200717440597,
+        "macro_f1_9class": 0.45205283242076993
+      },
+      "fold_std": {
+        "score": 0.0185528627466457,
+        "binary_f1": 0.003805031088371324,
+        "macro_f1_9class": 0.0352042634320136
+      },
+      "oof": {
+        "score": 0.7082950714706157,
+        "binary_f1": 0.963743842364532,
+        "macro_f1_9class": 0.4528463005766992
+      }
+    },
+    "multisensor/aux_dropout50": {
+      "experiment_name": "cnn_final_selected_multisensor_aux_dropout50",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7676809214200373,
+        "binary_f1": 0.9731369118031618,
+        "macro_f1_9class": 0.5622249310369132
+      },
+      "fold_std": {
+        "score": 0.015817142409782138,
+        "binary_f1": 0.004472240094660373,
+        "macro_f1_9class": 0.027623776576629632
+      },
+      "oof": {
+        "score": 0.7674780220367309,
+        "binary_f1": 0.9731272763067231,
+        "macro_f1_9class": 0.5618287677667386
+      }
+    },
+    "routed/observed": {
+      "experiment_name": "cnn_final_selected_routed_observed",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.823641873095295,
+        "binary_f1": 0.985372060129291,
+        "macro_f1_9class": 0.661911686061299
+      },
+      "fold_std": {
+        "score": 0.016329685302006625,
+        "binary_f1": 0.007440582364449218,
+        "macro_f1_9class": 0.02654564188659523
+      },
+      "oof": {
+        "score": 0.8236790174509764,
+        "binary_f1": 0.9853677698124325,
+        "macro_f1_9class": 0.6619902650895203
+      }
+    },
+    "routed/imu_only": {
+      "experiment_name": "cnn_final_selected_routed_imu_only",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7483660260909815,
+        "binary_f1": 0.9747358949225488,
+        "macro_f1_9class": 0.5219961572594143
+      },
+      "fold_std": {
+        "score": 0.016024839893295964,
+        "binary_f1": 0.005796378955326365,
+        "macro_f1_9class": 0.030169931438993724
+      },
+      "oof": {
+        "score": 0.748485191578084,
+        "binary_f1": 0.9747370490514106,
+        "macro_f1_9class": 0.5222333341047575
+      }
+    },
+    "routed/aux_dropout50": {
+      "experiment_name": "cnn_final_selected_routed_aux_dropout50",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7884003036363254,
+        "binary_f1": 0.9801495978021872,
+        "macro_f1_9class": 0.5966510094704638
+      },
+      "fold_std": {
+        "score": 0.013442170221489318,
+        "binary_f1": 0.006674303585844121,
+        "macro_f1_9class": 0.0218775194176815
+      },
+      "oof": {
+        "score": 0.7882908550909116,
+        "binary_f1": 0.9801493710691824,
+        "macro_f1_9class": 0.5964323391126408
+      }
+    }
+  },
+  "source_runs": {
+    "primary": "outputs\\experiments\\cnn_hierarchical",
+    "imu_override": null,
+    "imu_equal_blend": "outputs\\experiments\\cnn_v1",
+    "multisensor_equal_blend": "outputs\\experiments\\cnn_v1"
+  },
+  "scenario_note": "aux_dropout50 deterministically removes THM+ToF for roughly half the same validation sequences; natural missingness is retained; this is a stress test, not the hidden test distribution"
+}

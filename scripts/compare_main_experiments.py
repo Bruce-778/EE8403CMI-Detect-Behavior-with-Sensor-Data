@@ -83,10 +83,29 @@ def main():
             "这是验证压力测试，不是隐藏测试集成绩。", "", "| 输入 | 模型 | 五折均值 ± 标准差 | Pooled OOF |",
             "| --- | --- | ---: | ---: |"])
         for key, evaluation in scenario["five_fold_evaluation"].items():
-            if evaluation["folds_sha256"] != manifest.fingerprint:
-                raise ValueError("Scenario OOF fingerprint mismatch.")
+            if evaluation["folds_sha256"] != manifest.fingerprint or evaluation["oof_sequences"] != len(manifest.table):
+                raise ValueError("Scenario OOF coverage/fingerprint mismatch.")
             model, condition = key.split("/")
             lines.append(f"| {condition} | {model} | {evaluation['fold_mean']['score']:.5f} ± {evaluation['fold_std']['score']:.5f} | {evaluation['oof']['score']:.5f} |")
+        selection = ["## 当前采用的方案", "",
+            "A 与 B 各自融合原始 CNN 和分层损失 CNN 的预测概率，权重固定为 50% / 50%。"
+            "THM、ToF 至少一种可用时使用 B，两者都不可用时使用 A。路由只看输入可用性。", "",
+            "| 模型 | 原始五折均值 | 当前五折均值 ± 标准差 | 均值提升 |",
+            "| --- | ---: | ---: | ---: |"]
+        for model, label in (("imu", "A：IMU-only"), ("multisensor", "B：多传感器")):
+            original = json.loads((ROOT / "outputs/experiments/cnn_v1" / model / "evaluation/metrics.json").read_text(encoding="utf-8"))
+            if original["folds_sha256"] != manifest.fingerprint or original["oof_sequences"] != len(manifest.table):
+                raise ValueError("Reference OOF coverage/fingerprint mismatch.")
+            selected = scenario["five_fold_evaluation"][f"{model}/observed"]
+            before, after = original["fold_mean"]["score"], selected["fold_mean"]["score"]
+            selection.append(f"| {label} | {before:.5f} | {after:.5f} ± {selected['fold_std']['score']:.5f} | +{after-before:.5f} |")
+        routed = scenario["five_fold_evaluation"]["routed/observed"]
+        stress = scenario["five_fold_evaluation"]["routed/aux_dropout50"]
+        selection.extend(["", f"固定路由在原始验证输入上为 **{routed['fold_mean']['score']:.5f} ± {routed['fold_std']['score']:.5f}**；"
+            f"约半数序列额外失去 THM、ToF 时为 **{stress['fold_mean']['score']:.5f} ± {stress['fold_std']['score']:.5f}**。", "",
+            "本轮完成六项尝试。Attention pooling、较大时间 kernel、B 的独立训练参数没有通过固定 fold 0 筛选，保留结果。"
+            "分层损失 B 的单模型五折收益较小，当前提升主要来自固定概率融合。", ""])
+        lines[4:4] = selection
     lines.extend(["", "## 参数", ""])
     for name, run in configurations.items():
         training, model = run["training"], run["model_parameters"]
