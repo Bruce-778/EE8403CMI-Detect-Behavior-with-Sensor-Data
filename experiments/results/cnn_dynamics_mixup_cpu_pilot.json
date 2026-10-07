@@ -1,0 +1,126 @@
+{
+  "output_dir": "outputs/experiments/cnn_dynamics_mixup",
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "results": [
+    {
+      "model": "imu",
+      "fold": 0,
+      "validation": {
+        "loss": 1.7322083336484895,
+        "accuracy_18class": 0.6459741856177013,
+        "score": 0.7751157173565513,
+        "binary_f1": 0.9828515433610975,
+        "macro_f1_9class": 0.567379891352005
+      },
+      "best_epoch": 39,
+      "epochs_run": 55,
+      "max_length": 127,
+      "training": {
+        "seed": 42,
+        "epochs": 80,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0003,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.5,
+        "binary_loss_weight": 0.1,
+        "early_stopping_patience": 16,
+        "min_delta": 0.0001,
+        "lr_patience": 4,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto",
+        "mixup_alpha": 0.4,
+        "mixup_probability": 0.5
+      },
+      "model_metadata": {
+        "model": "imu",
+        "architecture": "grouped_masked_se_cnn_v3",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": [],
+          "encoder_style": "grouped",
+          "normalization": "masked_batch",
+          "squeeze_excitation": true,
+          "stem_channels": [
+            16,
+            32
+          ],
+          "imu_feature_count": 34
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + masked_batch",
+        "parameters": 185418
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 1.4226724775490915,
+      "best_epoch_validation_loss": 1.7322083336484897,
+      "last_epoch_train_loss": 1.2655714846402863,
+      "last_epoch_validation_loss": 1.7713813080550267,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.4753363228699551,
+        "Cheek - pinch skin": 0.4210526315789473,
+        "Eyebrow - pull hair": 0.4291497975708502,
+        "Eyelash - pull hair": 0.5313653136531366,
+        "Forehead - pull hairline": 0.6254545454545455,
+        "Forehead - scratch": 0.7171314741035857,
+        "Neck - pinch skin": 0.4014869888475836,
+        "Neck - scratch": 0.5342960288808665
+      },
+      "largest_target_confusions": [
+        {
+          "count": 36,
+          "truth": "Above ear - pull hair",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 26,
+          "truth": "Neck - pinch skin",
+          "prediction": "Neck - scratch"
+        },
+        {
+          "count": 25,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 23,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 20,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        }
+      ]
+    }
+  ],
+  "five_fold_evaluation": {},
+  "scope": "development CV; held-out folds select checkpoints; fold 0 also used for configuration selection"
+}
