@@ -42,3 +42,9 @@
 第二项本地尝试为 0.775116，比第一项高 0.001530，比旧融合高 0.028741。新增运动特征和 Mixup 的联合收益较小，尚不能分别归因；单独 Mixup 的 GPU pilot 用于进一步区分。55 epochs 后 early stop，最佳第 39 轮，完整证据见 `experiments/results/cnn_dynamics_mixup_cpu_pilot.json`。
 
 补充 CPU 对照 `cnn_grouped_gru`：保持第一项的输入、损失和训练参数，仅将 CNN 的 mean/max pooling 换成双向 GRU 的有效时间均值与末状态。先将有效 CNN token 按原时间顺序打包，排除 padding，整段不可用分支输出零。结果为 0.775714，比第一项高 0.002128；最佳 epoch 25，41 epochs 后 early stop。已核对同一 1,627 条验证 sequence、训练 subject 与保存的 OOF 分数，证据为 `experiments/results/cnn_grouped_gru_cpu_pilot.json`。仅为 CPU 单折对照，不参与已启动的三项 GPU 配置筛选；与运动特征 + Mixup 的差距不足 0.001，不能据此认定 GRU 更优。
+
+## GPU 配置筛选
+
+GPU 三项均在同一 fold 0、同一环境运行：分组 CNN 0.770843（60 / 76 epochs）、仅增加 Mixup 0.772690（56 / 60）、运动特征 + Mixup **0.775652**（38 / 43）。因此统一五折配置为 `cnn_dynamics_mixup`；CPU GRU 不混入该硬件条件下的筛选。已将三项预测、训练 subject 和 checkpoint / 缓存参数逐项核对，紧凑证据为 `experiments/results/*_gpu_pilot.json`。
+
+首轮五折续跑因 Python tuple 与 JSON list 的表示差异被一致性检查误拒绝，未开始新的五折训练。修复为比较精确 JSON 保存值，不放宽参数、标准化统计或训练 ID 的检查；实测三项原始 GPU checkpoint 均能复用，回归检查也确认统计值改变仍会拒绝。已完成 pilot 作为下一轮 Notebook 输入保留，避免重复训练筛选阶段。
