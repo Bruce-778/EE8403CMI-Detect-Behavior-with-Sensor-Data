@@ -140,3 +140,49 @@ python scripts/train_baseline.py --config configs/baseline_xgboost.json
 XGBoost 使用 CPU `hist` 和 `multi:softprob` 输出类别概率，参数见 [官方文档](https://xgboost.readthedocs.io/en/release_3.0.0/parameter.html)。
 
 当前固定配置的五折官方分数：LightGBM **0.70368 ± 0.00752**，XGBoost **0.69480 ± 0.00725**；标准差使用 `ddof=1`。两次实验使用完全相同的 IMU 特征与 folds。
+
+## 5. 主实验 v1：1D CNN
+
+入口是 `scripts/train_cnn.py`，参数在 `configs/cnn_v1.json`。两个模型共用固定 subject folds 和每个训练折专属的数据缓存：
+
+- **Model A (`imu`)**：15 个 IMU 物理特征及其有效性 mask → residual 1D CNN → masked mean/max pooling → 全连接分类。
+- **Model B (`multisensor`)**：IMU、THM、ToF 分别经过独立的 residual 1D CNN encoder；池化后的特征 concatenate，再通过全连接层预测 18 个 gesture。
+- ToF 默认将每个传感器的 8×8 图划为 2×2 区域，只对有效像素求均值，同时输入区域有效像素比例和硬件存在 mask。1D 卷积沿时间轴计算。`tof_regions` 可选 1、2、4、8；8 表示保留全部像素。
+- IMU / THM / ToF 逐通道标准化只在训练 subjects 上拟合；标准化后默认截断到 ±8。每个卷积层使用按时间 token 的 channel LayerNorm，padding 不参与其他 token 的 normalization；每层传播 mask，池化忽略不可用位置。缺失模态的 encoder 输出保持为零。
+
+v1 默认以训练序列长度的 95% 分位数确定长度，左侧 padding、保留序列末尾；可以通过 `sequence_length` 或 `--sequence-length` 指定固定长度。默认 AdamW、learning rate `1e-3`、batch size `64`、dropout `0.2`、weight decay `1e-3` 和 label smoothing `0.03`。训练读取时应用传感器 dropout；验证时关闭 augmentation 和 dropout。连续 10 个 epoch 的官方 CMI 分数没有超过 `min_delta=1e-4` 的提升时 early stop，分数停滞时自动降低 learning rate；最终评估恢复最高验证分数的 checkpoint。
+
+在项目根目录运行，默认先在 fold 0 比较两个模型：
+
+```powershell
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py
+```
+
+默认输出在 `outputs/experiments/cnn_v1/`：`report.html`、模型对照表和图，每个模型的 `best.pt`、`history.csv`、训练曲线、逐类指标、混淆矩阵和验证预测概率。checkpoint 包含权重、全局 class order、preprocessor、输入配置和训练配置；可以用 `cmi_project.cnn_training.load_cnn_checkpoint()` 恢复。共享缓存位于 `outputs/cnn_cache/v1/`，参数或原始数据变化后需指定新的 `--cache-dir`；再次训练需使用新的 `--output-dir`，避免覆盖已有实验。
+
+```powershell
+# 完整五折；两模型全部训练后才汇总完整 OOF、折均值和标准差。
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --fold 0 1 2 3 4 --output-dir outputs/experiments/cnn_v1_5fold
+
+# 示例：单模型的新实验，修改 learning rate、batch size 和 dropout。
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --model imu --learning-rate 0.0005 --batch-size 32 --dropout 0.3 --output-dir outputs/experiments/cnn_v1_imu_lr0005
+```
+
+单折预览只与相同 fold 的 baseline 比较，不与 baseline 五折均值直接比较。验证数据用于 early stopping / checkpoint 选择，所以这些是开发阶段结果；调参后应锁定配置再运行五折。
+
+v1 首次 CPU 训练的 **fold 0 预览**（6,524 条训练序列 / 1,627 条验证序列，长度 127，seed 42）：
+
+| 模型 | 官方 CMI 分数 | Binary F1 | 9 类 Macro F1 | 最佳 epoch |
+| --- | ---: | ---: | ---: | ---: |
+| LightGBM IMU baseline | 0.71012 | 0.96303 | 0.45720 | — |
+| XGBoost IMU baseline | 0.69535 | 0.95985 | 0.43086 | — |
+| Model A：IMU-only 1D CNN | 0.72278 | 0.96711 | 0.47845 | 28 |
+| Model B：多传感器 1D CNN | **0.81152** | **0.97935** | **0.64370** | 38 |
+
+Model A 在第 38 轮 early stop；Model B 运行到 45 轮上限，最终都恢复最佳 checkpoint。Model B 相比 Model A 的 CMI 分数提高 0.08875，主要来自目标手势细分类改善。结果和曲线见 `outputs/experiments/cnn_v1/report.html`。上述配置是 v1 首轮配置，并非搜索得到的全局最优超参数。
+
+运行全部检查：
+
+```powershell
+& 'D:\anaconda\envs\cmi\python.exe' -s -m unittest discover -s tests -v
+```
