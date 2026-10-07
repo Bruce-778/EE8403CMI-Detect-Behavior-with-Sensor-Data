@@ -107,6 +107,438 @@
       ]
     },
     {
+      "model": "imu",
+      "fold": 1,
+      "validation": {
+        "loss": 1.6387683270024318,
+        "accuracy_18class": 0.5741421568627451,
+        "score": 0.7284067236966572,
+        "binary_f1": 0.9647058823529412,
+        "macro_f1_9class": 0.4921075650403732
+      },
+      "best_epoch": 45,
+      "epochs_run": 45,
+      "max_length": 128,
+      "training": {
+        "seed": 42,
+        "epochs": 45,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.0,
+        "binary_loss_weight": 0.0,
+        "early_stopping_patience": 10,
+        "min_delta": 0.0001,
+        "lr_patience": 3,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "imu",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 126098
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 0.6376388716284419,
+      "best_epoch_validation_loss": 1.6387683270024318,
+      "last_epoch_train_loss": 0.6376388716284419,
+      "last_epoch_validation_loss": 1.6387683270024318,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.5403508771929825,
+        "Cheek - pinch skin": 0.3649122807017544,
+        "Eyebrow - pull hair": 0.2583732057416268,
+        "Eyelash - pull hair": 0.4844290657439446,
+        "Forehead - pull hairline": 0.5185185185185185,
+        "Forehead - scratch": 0.6016260162601627,
+        "Neck - pinch skin": 0.3141762452107279,
+        "Neck - scratch": 0.4054054054054054
+      },
+      "largest_target_confusions": [
+        {
+          "count": 38,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 34,
+          "truth": "Neck - pinch skin",
+          "prediction": "Above ear - pull hair"
+        },
+        {
+          "count": 32,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 25,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 18,
+          "truth": "Neck - pinch skin",
+          "prediction": "Cheek - pinch skin"
+        }
+      ]
+    },
+    {
+      "model": "imu",
+      "fold": 2,
+      "validation": {
+        "loss": 1.3584839558762176,
+        "accuracy_18class": 0.5793991416309013,
+        "score": 0.7390673100209058,
+        "binary_f1": 0.9784313725490196,
+        "macro_f1_9class": 0.49970324749279194
+      },
+      "best_epoch": 29,
+      "epochs_run": 39,
+      "max_length": 124,
+      "training": {
+        "seed": 42,
+        "epochs": 45,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.0,
+        "binary_loss_weight": 0.0,
+        "early_stopping_patience": 10,
+        "min_delta": 0.0001,
+        "lr_patience": 3,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "imu",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 126098
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 0.958996554752069,
+      "best_epoch_validation_loss": 1.3584839558762176,
+      "last_epoch_train_loss": 0.8918726298706663,
+      "last_epoch_validation_loss": 1.377728355362107,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.5019607843137255,
+        "Cheek - pinch skin": 0.4268774703557312,
+        "Eyebrow - pull hair": 0.270042194092827,
+        "Eyelash - pull hair": 0.4518518518518518,
+        "Forehead - pull hairline": 0.4398340248962655,
+        "Forehead - scratch": 0.5676567656765676,
+        "Neck - pinch skin": 0.4189723320158103,
+        "Neck - scratch": 0.4561403508771929
+      },
+      "largest_target_confusions": [
+        {
+          "count": 37,
+          "truth": "Forehead - pull hairline",
+          "prediction": "Forehead - scratch"
+        },
+        {
+          "count": 37,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 30,
+          "truth": "Above ear - pull hair",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 26,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 23,
+          "truth": "Neck - pinch skin",
+          "prediction": "Above ear - pull hair"
+        }
+      ]
+    },
+    {
+      "model": "imu",
+      "fold": 3,
+      "validation": {
+        "loss": 1.3100471854356528,
+        "accuracy_18class": 0.5922509225092251,
+        "score": 0.7442382047375686,
+        "binary_f1": 0.9781962338949455,
+        "macro_f1_9class": 0.5102801755801918
+      },
+      "best_epoch": 25,
+      "epochs_run": 35,
+      "max_length": 125,
+      "training": {
+        "seed": 42,
+        "epochs": 45,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.0,
+        "binary_loss_weight": 0.0,
+        "early_stopping_patience": 10,
+        "min_delta": 0.0001,
+        "lr_patience": 3,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "imu",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 126098
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 0.8868750861778113,
+      "best_epoch_validation_loss": 1.3100471854356528,
+      "last_epoch_train_loss": 0.6980009090854747,
+      "last_epoch_validation_loss": 1.4260357157917187,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.5412844036697247,
+        "Cheek - pinch skin": 0.3700787401574803,
+        "Eyebrow - pull hair": 0.3488372093023256,
+        "Eyelash - pull hair": 0.4714828897338403,
+        "Forehead - pull hairline": 0.5276595744680851,
+        "Forehead - scratch": 0.6571428571428571,
+        "Neck - pinch skin": 0.304,
+        "Neck - scratch": 0.4076923076923077
+      },
+      "largest_target_confusions": [
+        {
+          "count": 30,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 29,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 29,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 28,
+          "truth": "Above ear - pull hair",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 27,
+          "truth": "Neck - pinch skin",
+          "prediction": "Neck - scratch"
+        }
+      ]
+    },
+    {
+      "model": "imu",
+      "fold": 4,
+      "validation": {
+        "loss": 1.620008402497761,
+        "accuracy_18class": 0.5565749235474006,
+        "score": 0.7193760394720452,
+        "binary_f1": 0.9700833742030407,
+        "macro_f1_9class": 0.4686687047410497
+      },
+      "best_epoch": 35,
+      "epochs_run": 45,
+      "max_length": 130,
+      "training": {
+        "seed": 42,
+        "epochs": 45,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.0,
+        "binary_loss_weight": 0.0,
+        "early_stopping_patience": 10,
+        "min_delta": 0.0001,
+        "lr_patience": 3,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "imu",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 126098
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 0.7104529252880698,
+      "best_epoch_validation_loss": 1.620008402497761,
+      "last_epoch_train_loss": 0.5390909505153888,
+      "last_epoch_validation_loss": 1.7681570283498969,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.4862385321100917,
+        "Cheek - pinch skin": 0.3655913978494624,
+        "Eyebrow - pull hair": 0.3015873015873015,
+        "Eyelash - pull hair": 0.3884297520661157,
+        "Forehead - pull hairline": 0.4682539682539682,
+        "Forehead - scratch": 0.5,
+        "Neck - pinch skin": 0.3984962406015037,
+        "Neck - scratch": 0.358974358974359
+      },
+      "largest_target_confusions": [
+        {
+          "count": 28,
+          "truth": "Above ear - pull hair",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 26,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 23,
+          "truth": "Neck - scratch",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 21,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 20,
+          "truth": "Forehead - pull hairline",
+          "prediction": "Forehead - scratch"
+        }
+      ]
+    },
+    {
       "model": "multisensor",
       "fold": 0,
       "validation": {
@@ -209,8 +641,565 @@
           "prediction": "Eyelash - pull hair"
         }
       ]
+    },
+    {
+      "model": "multisensor",
+      "fold": 1,
+      "validation": {
+        "loss": 1.1967145555159624,
+        "accuracy_18class": 0.6868872549019608,
+        "score": 0.8074822105033079,
+        "binary_f1": 0.9731314118221788,
+        "macro_f1_9class": 0.6418330091844371
+      },
+      "best_epoch": 34,
+      "epochs_run": 44,
+      "max_length": 128,
+      "training": {
+        "seed": 42,
+        "epochs": 45,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.0,
+        "binary_loss_weight": 0.0,
+        "early_stopping_patience": 10,
+        "min_delta": 0.0001,
+        "lr_patience": 3,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "multisensor",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 203538
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 0.5662372419303464,
+      "best_epoch_validation_loss": 1.1967145555159624,
+      "last_epoch_train_loss": 0.4576513083512513,
+      "last_epoch_validation_loss": 1.2729301382513607,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.7025089605734767,
+        "Cheek - pinch skin": 0.5925925925925926,
+        "Eyebrow - pull hair": 0.4564315352697095,
+        "Eyelash - pull hair": 0.5486725663716814,
+        "Forehead - pull hairline": 0.6556016597510373,
+        "Forehead - scratch": 0.7094017094017094,
+        "Neck - pinch skin": 0.5387205387205387,
+        "Neck - scratch": 0.6177606177606177
+      },
+      "largest_target_confusions": [
+        {
+          "count": 40,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 23,
+          "truth": "Neck - pinch skin",
+          "prediction": "Neck - scratch"
+        },
+        {
+          "count": 20,
+          "truth": "Forehead - pull hairline",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 18,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 17,
+          "truth": "Forehead - scratch",
+          "prediction": "Eyebrow - pull hair"
+        }
+      ]
+    },
+    {
+      "model": "multisensor",
+      "fold": 2,
+      "validation": {
+        "loss": 1.0799879288103302,
+        "accuracy_18class": 0.6873083997547517,
+        "score": 0.8080290856872792,
+        "binary_f1": 0.9813542688910697,
+        "macro_f1_9class": 0.6347039024834887
+      },
+      "best_epoch": 30,
+      "epochs_run": 40,
+      "max_length": 124,
+      "training": {
+        "seed": 42,
+        "epochs": 45,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.0,
+        "binary_loss_weight": 0.0,
+        "early_stopping_patience": 10,
+        "min_delta": 0.0001,
+        "lr_patience": 3,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "multisensor",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 203538
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 0.620194634191829,
+      "best_epoch_validation_loss": 1.0799879288103302,
+      "last_epoch_train_loss": 0.5429133799178468,
+      "last_epoch_validation_loss": 1.1319288766727649,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.7786259541984732,
+        "Cheek - pinch skin": 0.5842696629213483,
+        "Eyebrow - pull hair": 0.3592233009708738,
+        "Eyelash - pull hair": 0.5333333333333333,
+        "Forehead - pull hairline": 0.6692015209125475,
+        "Forehead - scratch": 0.6861313868613139,
+        "Neck - pinch skin": 0.5684931506849316,
+        "Neck - scratch": 0.5641025641025641
+      },
+      "largest_target_confusions": [
+        {
+          "count": 49,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 31,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 24,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 21,
+          "truth": "Neck - pinch skin",
+          "prediction": "Neck - scratch"
+        },
+        {
+          "count": 21,
+          "truth": "Forehead - pull hairline",
+          "prediction": "Forehead - scratch"
+        }
+      ]
+    },
+    {
+      "model": "multisensor",
+      "fold": 3,
+      "validation": {
+        "loss": 1.0690724119489043,
+        "accuracy_18class": 0.7250922509225092,
+        "score": 0.8331843175014026,
+        "binary_f1": 0.9891089108910891,
+        "macro_f1_9class": 0.6772597241117162
+      },
+      "best_epoch": 43,
+      "epochs_run": 45,
+      "max_length": 125,
+      "training": {
+        "seed": 42,
+        "epochs": 45,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.0,
+        "binary_loss_weight": 0.0,
+        "early_stopping_patience": 10,
+        "min_delta": 0.0001,
+        "lr_patience": 3,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "multisensor",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 203538
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 0.4647370350863285,
+      "best_epoch_validation_loss": 1.0690724119489043,
+      "last_epoch_train_loss": 0.4520358302995163,
+      "last_epoch_validation_loss": 1.119317835474073,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.7868852459016393,
+        "Cheek - pinch skin": 0.5390625,
+        "Eyebrow - pull hair": 0.53125,
+        "Eyelash - pull hair": 0.5962264150943396,
+        "Forehead - pull hairline": 0.7340823970037453,
+        "Forehead - scratch": 0.7764705882352941,
+        "Neck - pinch skin": 0.5619834710743802,
+        "Neck - scratch": 0.5872340425531914
+      },
+      "largest_target_confusions": [
+        {
+          "count": 33,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 26,
+          "truth": "Neck - pinch skin",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 26,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 25,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 22,
+          "truth": "Cheek - pinch skin",
+          "prediction": "Eyelash - pull hair"
+        }
+      ]
+    },
+    {
+      "model": "multisensor",
+      "fold": 4,
+      "validation": {
+        "loss": 1.0453894446749206,
+        "accuracy_18class": 0.6886850152905198,
+        "score": 0.8199386467890175,
+        "binary_f1": 0.9897310513447433,
+        "macro_f1_9class": 0.6501462422332918
+      },
+      "best_epoch": 29,
+      "epochs_run": 39,
+      "max_length": 130,
+      "training": {
+        "seed": 42,
+        "epochs": 45,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.0,
+        "binary_loss_weight": 0.0,
+        "early_stopping_patience": 10,
+        "min_delta": 0.0001,
+        "lr_patience": 3,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "multisensor",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 203538
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 0.6391343760153793,
+      "best_epoch_validation_loss": 1.0453894446749206,
+      "last_epoch_train_loss": 0.5022053228996516,
+      "last_epoch_validation_loss": 1.1062316851513831,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.7964601769911505,
+        "Cheek - pinch skin": 0.5307692307692308,
+        "Eyebrow - pull hair": 0.4915824915824915,
+        "Eyelash - pull hair": 0.4960629921259842,
+        "Forehead - pull hairline": 0.7033898305084746,
+        "Forehead - scratch": 0.6984126984126984,
+        "Neck - pinch skin": 0.5375494071146245,
+        "Neck - scratch": 0.6142322097378277
+      },
+      "largest_target_confusions": [
+        {
+          "count": 39,
+          "truth": "Neck - pinch skin",
+          "prediction": "Neck - scratch"
+        },
+        {
+          "count": 33,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 28,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 23,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 23,
+          "truth": "Forehead - pull hairline",
+          "prediction": "Eyebrow - pull hair"
+        }
+      ]
     }
   ],
-  "five_fold_evaluation": {},
+  "five_fold_evaluation": {
+    "imu": {
+      "experiment_name": "cnn_v1_imu",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7307731890145438,
+        "binary_f1": 0.9717050711763271,
+        "macro_f1_9class": 0.4898413068527604
+      },
+      "fold_std": {
+        "score": 0.010600974453346308,
+        "binary_f1": 0.00632703328727577,
+        "macro_f1_9class": 0.016569958336840055
+      },
+      "oof": {
+        "score": 0.7309870216986373,
+        "binary_f1": 0.9716925496363279,
+        "macro_f1_9class": 0.4902814937609467
+      },
+      "experiment_config": {
+        "training": {
+          "seed": 42,
+          "epochs": 45,
+          "batch_size": 64,
+          "learning_rate": 0.001,
+          "weight_decay": 0.001,
+          "label_smoothing": 0.03,
+          "macro_loss_weight": 0.0,
+          "binary_loss_weight": 0.0,
+          "early_stopping_patience": 10,
+          "min_delta": 0.0001,
+          "lr_patience": 3,
+          "lr_factor": 0.5,
+          "min_lr": 1e-05,
+          "gradient_clip": 1.0,
+          "cpu_threads": 4,
+          "device": "auto"
+        },
+        "model_config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "checkpoint_selection": "held-out fold CMI score"
+      }
+    },
+    "multisensor": {
+      "experiment_name": "cnn_v1_multisensor",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.8160315568053342,
+        "binary_f1": 0.9825353350794916,
+        "macro_f1_9class": 0.6495277785311767
+      },
+      "fold_std": {
+        "score": 0.010804348449753481,
+        "binary_f1": 0.006981380678959733,
+        "macro_f1_9class": 0.016449996576425253
+      },
+      "oof": {
+        "score": 0.8162928012666386,
+        "binary_f1": 0.9825216025137471,
+        "macro_f1_9class": 0.6500640000195302
+      },
+      "experiment_config": {
+        "training": {
+          "seed": 42,
+          "epochs": 45,
+          "batch_size": 64,
+          "learning_rate": 0.001,
+          "weight_decay": 0.001,
+          "label_smoothing": 0.03,
+          "macro_loss_weight": 0.0,
+          "binary_loss_weight": 0.0,
+          "early_stopping_patience": 10,
+          "min_delta": 0.0001,
+          "lr_patience": 3,
+          "lr_factor": 0.5,
+          "min_lr": 1e-05,
+          "gradient_clip": 1.0,
+          "cpu_threads": 4,
+          "device": "auto"
+        },
+        "model_config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": []
+        },
+        "checkpoint_selection": "held-out fold CMI score"
+      }
+    }
+  },
   "scope": "development CV; held-out folds select checkpoints; fold 0 also used for configuration selection"
 }
