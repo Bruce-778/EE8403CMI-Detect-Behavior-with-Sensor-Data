@@ -29,6 +29,8 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 
 云端已经通过 `train.csv` 和 `train_demographics.csv` 的字节 SHA256 校验，与 `configs/data_source_hashes.json` 固定的本地输入一致；固定 folds 文件 SHA256 也一致。已恢复原三项筛选结果，开始仅在 fold 0 的 6,524 条训练 sequence 上拟合新缓存。需要重新训练选定配置的 IMU-only 和多传感器各五折，包括重新训练 fold 0。旧筛选阶段 fold 0 产物独立保存于 `outputs/pilot_artifacts/`，不能替代新运行的 fold 0。
 
+已确认新运行越过两次失败点，进入 IMU fold 0 第 13 个 epoch；完整五折结果仍未生成。页面截图保存在 `outputs/kaggle_training/training_status.png`。自动化 `cmi` 已更新为只监控此版本，旧监控链接不再使用。
+
 ## 完成后的操作
 
 1. 成功后从 Notebook 的 Output 下载 `winner_experiments.zip`。不要下载包含缓存的整个 working directory。部分失败也会保存紧凑 ZIP；失败 ZIP 不可当作完整结果。
