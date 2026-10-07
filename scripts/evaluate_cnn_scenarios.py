@@ -22,6 +22,19 @@ from cmi_project.validation import assert_preprocessor_matches, load_fold_manife
 AUXILIARY_KEYS = ("thm", "thm_valid", "thm_observed", "tof", "tof_valid", "tof_fraction", "tof_sensor_present")
 
 
+class FixedProbabilityEnsemble(torch.nn.Module):
+    """Equal probabilities, returned as log-probabilities for evaluate_model."""
+
+    def __init__(self, first, second):
+        super().__init__()
+        self.members = torch.nn.ModuleList([first, second])
+        self.model_name, self.tof_regions = first.model_name, first.tof_regions
+
+    def forward(self, batch):
+        probability = torch.stack([model(batch).softmax(1) for model in self.members]).mean(0)
+        return probability.clamp_min(torch.finfo(probability.dtype).tiny).log()
+
+
 class ScenarioDataset(Dataset):
     def __init__(self, arrays, indices, scenario):
         if scenario not in ("observed", "imu_only", "aux_dropout50"):
@@ -47,6 +60,9 @@ def main():
     parser.add_argument("directory", type=Path)
     parser.add_argument("--name", required=True)
     parser.add_argument("--imu-run", type=Path, help="Optional separately selected Model A run for fixed availability routing.")
+    parser.add_argument("--blend-imu-with", type=Path, help="Optional second IMU run, fixed equal probability weights.")
+    parser.add_argument("--blend-multisensor-with", type=Path, help="Optional second multisensor run, fixed equal probability weights.")
+    parser.add_argument("--fold", nargs="+", type=int, help="Optional subset for a labelled pilot; default uses completed folds.")
     args = parser.parse_args()
     directory = (ROOT / args.directory).resolve()
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
@@ -58,6 +74,10 @@ def main():
         imu_directory = (ROOT / args.imu_run).resolve()
         candidates.update({("imu", path.parent.name): path
                            for path in imu_directory.glob("imu/fold_*/metrics.json")})
+    if args.fold is not None:
+        if not args.fold or len(set(args.fold)) != len(args.fold) or not set(args.fold).issubset(range(manifest.n_splits)):
+            raise ValueError("Invalid scenario fold selection.")
+        candidates = {key: path for key, path in candidates.items() if int(key[1].split("_")[-1]) in args.fold}
     identities = {}
     for _, metrics_path in sorted(candidates.items()):
         path = metrics_path.parent / "best.pt"
@@ -65,6 +85,20 @@ def main():
         fold, name = checkpoint["fold"], model.model_name
         assert_preprocessor_matches(processor.state, manifest, fold)
         identity = checkpoint["data_metadata"]["identity"]
+        blend_source = args.blend_imu_with if name == "imu" else args.blend_multisensor_with
+        if blend_source is not None:
+            extra_path = (ROOT / blend_source).resolve() / name / f"fold_{fold}/best.pt"
+            if extra_path.resolve() == path.resolve():
+                raise ValueError("Cannot ensemble a checkpoint with itself.")
+            if not extra_path.with_name("metrics.json").is_file():
+                raise ValueError("Ensemble source fold is not completed.")
+            extra_model, extra_processor, extra_checkpoint = load_cnn_checkpoint(extra_path)
+            if (extra_checkpoint["fold"] != fold or extra_model.model_name != name
+                    or extra_checkpoint["folds_sha256"] != manifest.fingerprint
+                    or extra_checkpoint["data_metadata"]["identity"] != identity
+                    or extra_processor.state != processor.state):
+                raise ValueError("Ensemble members must use identical fold-fitted inputs.")
+            model = FixedProbabilityEnsemble(model, extra_model)
         if fold in identities and identity != identities[fold]:
             raise ValueError("Routed Model A/B must use the same fold-fitted inputs/cache identity.")
         identities[fold] = identity
@@ -119,6 +153,9 @@ def main():
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps({"folds_sha256": manifest.fingerprint, "results": results,
         "five_fold_evaluation": evaluations,
+        "source_runs": {"primary": str(args.directory), "imu_override": str(args.imu_run) if args.imu_run else None,
+            "imu_equal_blend": str(args.blend_imu_with) if args.blend_imu_with else None,
+            "multisensor_equal_blend": str(args.blend_multisensor_with) if args.blend_multisensor_with else None},
         "scenario_note": "aux_dropout50 deterministically removes THM+ToF for roughly half the same validation sequences; natural missingness is retained; this is a stress test, not the hidden test distribution"},
         ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
 

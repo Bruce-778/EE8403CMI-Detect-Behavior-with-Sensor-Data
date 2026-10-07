@@ -9,7 +9,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from cmi_project.cnn_training import CMIHierarchicalLoss, TrainingConfig
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from evaluate_cnn_scenarios import AUXILIARY_KEYS, ScenarioDataset
+from evaluate_cnn_scenarios import AUXILIARY_KEYS, ScenarioDataset, FixedProbabilityEnsemble
 from test_cnn import toy_batch
 from cmi_project.cnn import CMI1DCNN, CNNConfig, TemporalCNNEncoder
 import numpy as np
@@ -49,6 +49,17 @@ class HierarchicalLossTests(unittest.TestCase):
 
 
 class ScenarioTests(unittest.TestCase):
+    def test_equal_probability_ensemble_preserves_imu_only_invariance(self):
+        config = CNNConfig(imu_channels=(4, 8), auxiliary_channels=(4, 8), hidden_features=8)
+        a, b = (CMI1DCNN("imu", config=config).eval() for _ in range(2))
+        ensemble = FixedProbabilityEnsemble(a, b).eval()
+        batch = toy_batch()
+        expected = (a(batch).softmax(1) + b(batch).softmax(1)) / 2
+        torch.testing.assert_close(ensemble(batch).softmax(1), expected)
+        for key in AUXILIARY_KEYS:
+            batch[key].zero_()
+        torch.testing.assert_close(ensemble(batch).softmax(1), expected)
+
     def test_masking_is_label_independent_and_does_not_mutate_arrays(self):
         arrays = {key: value.numpy() for key, value in toy_batch().items()}
         arrays.update(sequence_id=np.array(["Q0", "Q1", "Q2"]), label=np.array([0, 8, 17]))
