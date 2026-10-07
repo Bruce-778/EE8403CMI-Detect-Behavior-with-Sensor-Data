@@ -11,4 +11,4 @@ outputs/
 data/*
 docs/*
 run.sh/*
-AGENTS.md/*
+AGENTS.md
