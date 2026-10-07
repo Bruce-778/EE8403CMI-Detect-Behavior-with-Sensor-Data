@@ -10,7 +10,8 @@
 | cnn_tuned | 0.726348 | 0.809248 |
 | cnn_hierarchical | 0.742987 | 0.817910 |
 | cnn_attention | 0.730267 | 0.809325 |
-| cnn_large_kernel | 0.731901 | 未完成 |
+| cnn_large_kernel | 0.731901 | 0.811549 |
+| cnn_hierarchical_b5 | 未完成 | 0.817910 |
 
 ## 完整五折
 
@@ -26,6 +27,7 @@
 - **cnn_hierarchical**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 5, 5]。
 - **cnn_attention**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=attention_max，stage kernels=[5, 5, 5]。
 - **cnn_large_kernel**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 9, 13]。
+- **cnn_hierarchical_b5**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 5, 5]。
 
 ## 输出与复现
 

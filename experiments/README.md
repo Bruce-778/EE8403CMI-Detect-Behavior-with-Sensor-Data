@@ -63,3 +63,13 @@ Attention pooling 单独增加在该配置上，A 暂为 0.730267，低于 0.742
 ## 尝试 5：固定等权概率融合
 
 参考冠军的多模型组合，但不搜索权重。v1 与分层损失 CNN 的 18 类概率固定各 50%，按 sequence_id 对齐。fold 0：A **0.746375**（单独分层 A 0.742987），B **0.817826**（单独分层 B 0.817910），因此暂只有 A 显示融合收益。该权重在运行其他折之前固定；待源模型五折都齐全后再计算完整 OOF，不因某一折结果改权重。
+
+## 尝试 4：较大时间感受野
+
+在尝试 2 上仅将逐层 kernel 改为 5/9/13。fold 0 A **0.731901**，B **0.811549**，均低于尝试 2；参数量增加到 A 183,442 / B 289,554，暂没有带来相应收益。B 也锁定 `cnn_hierarchical`，其余四折不再改参数。
+
+为并行训练 A/B 且避免共享报告文件的写入冲突，B 续跑放在 `outputs/experiments/cnn_hierarchical_b5`，复用检查通过的原始 B fold 0。所有输入、folds、参数相同；完成后将完整结果汇总到主记录。续跑命令为：
+
+```powershell
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --config configs/cnn_hierarchical.json --model multisensor --fold 0 1 2 3 4 --output-dir outputs/experiments/cnn_hierarchical_b5 --resume
+```
