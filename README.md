@@ -186,3 +186,18 @@ Model A 在第 38 轮 early stop；Model B 运行到 45 轮上限，最终都恢
 ```powershell
 & 'D:\anaconda\envs\cmi\python.exe' -s -m unittest discover -s tests -v
 ```
+
+## 6. Kaggle 线上提交
+
+CMI 要求通过官方 `CMIInferenceServer` 对单个 sequence 推理；本地 OOF 文件不能用作隐藏测试集提交。比赛结束后的评分通过 Late Submission 入口进行。
+
+```powershell
+& 'D:\anaconda\envs\cmi\python.exe' -s scripts/export_kaggle_submission.py
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/check_kaggle_submission.py
+```
+
+导出需要已完成的 `cnn_v1` 和 `cnn_hierarchical` 全部 A/B 五折。输出 `outputs/kaggle_submission/cmi-cnn-selected.zip` 和 `cmi-cnn-selected.ipynb`；已有非空导出目录不会覆盖，可用 `--output-dir` 指定新位置。检查脚本用每折的 held-out 原始序列核对路由 OOF，并检查公开 test 样例和辅助模态全缺失输入；公开样例没有标签，因此这个检查不产生测试分数。
+
+Notebook 关联比赛数据及上传的模型权重，关闭 Internet 后 Save & Run All，再选择成功版本提交。每种模态分支内两种 CNN 的概率各 50%，五个 fold 的概率各 20%；THM、ToF 都不可用时使用 A，其余使用 B。沿用每折训练时的 normalization、长度与 mask，不在 test 上拟合。上传包只包含权重、推理代码和必要预处理参数。
+
+线上比较记录 Public / Private 分数、Notebook 版本、提交状态和最终排行榜参考；Late Submission 的分数不改变比赛已结束时的正式名次。详细本地实验见 [主实验汇总](experiments/RESULTS.md)。
