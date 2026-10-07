@@ -12,6 +12,7 @@
 | cnn_attention | 0.730267 | 0.809325 |
 | cnn_large_kernel | 0.731901 | 0.811549 |
 | cnn_hierarchical_b5 | 未完成 | 0.817910 |
+| cnn_multisensor_hier_v1train | 未完成 | 未完成 |
 
 ## 完整五折
 
@@ -19,6 +20,7 @@
 
 | 配置 | 模型 | fold 0 | fold 1 | fold 2 | fold 3 | fold 4 | 均值 ± 标准差 | Pooled OOF |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| cnn_hierarchical | imu | 0.74299 | 0.72800 | 0.76386 | 0.75901 | 0.71841 | 0.74245 ± 0.01949 | 0.74276 |
 
 ## 参数
 
@@ -28,6 +30,7 @@
 - **cnn_attention**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=attention_max，stage kernels=[5, 5, 5]。
 - **cnn_large_kernel**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 9, 13]。
 - **cnn_hierarchical_b5**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 5, 5]。
+- **cnn_multisensor_hier_v1train**：lr=0.001，batch=64，dropout=0.2，epochs≤70，patience=10，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 5, 5]。
 
 ## 输出与复现
 
