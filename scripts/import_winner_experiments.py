@@ -43,6 +43,10 @@ def main():
     if output_root not in destination.parents:
         raise ValueError("Use a new child directory of outputs/kaggle_training/imported.")
     extract_archive(archive, destination)
+    data_check = json.loads((destination / "data_source_check.json").read_text(encoding="utf-8"))
+    expected_data = json.loads((ROOT / "configs/data_source_hashes.json").read_text(encoding="utf-8"))
+    if data_check.get("status") != "verified" or data_check.get("files") != expected_data["files"]:
+        raise ValueError("GPU training inputs disagree with fixed local training data.")
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     selection = json.loads((destination / "selection.json").read_text(encoding="utf-8"))
     design_names = {row["name"] for row in selection["designs"]}
@@ -72,6 +76,7 @@ def main():
             print(f"PASS {name} fold {fold}: {len(frame)} sequences, CMI={actual['score']:.6f}", flush=True)
     result = {"status": "verified", "source_url": args.source_url,
         "archive_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+        "training_inputs": data_check["files"],
         "folds_sha256": manifest.fingerprint, "selection": selection, "fold_checks": checked,
         "selected_run": directory.relative_to(ROOT).as_posix(),
         "note": "Original artifact metadata retained; CPU runs were not overwritten."}

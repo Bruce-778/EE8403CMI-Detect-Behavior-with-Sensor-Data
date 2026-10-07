@@ -48,3 +48,7 @@
 GPU 三项均在同一 fold 0、同一环境运行：分组 CNN 0.770843（60 / 76 epochs）、仅增加 Mixup 0.772690（56 / 60）、运动特征 + Mixup **0.775652**（38 / 43）。因此统一五折配置为 `cnn_dynamics_mixup`；CPU GRU 不混入该硬件条件下的筛选。已将三项预测、训练 subject 和 checkpoint / 缓存参数逐项核对，紧凑证据为 `experiments/results/*_gpu_pilot.json`。
 
 首轮五折续跑因 Python tuple 与 JSON list 的表示差异被一致性检查误拒绝，未开始新的五折训练。修复为比较精确 JSON 保存值，不放宽参数、标准化统计或训练 ID 的检查；实测三项原始 GPU checkpoint 均能复用，回归检查也确认统计值改变仍会拒绝。已完成 pilot 作为下一轮 Notebook 输入保留，避免重复训练筛选阶段。
+
+跨 Notebook 续跑版本 1 又被缓存来源身份检查拒绝，未训练任何新 fold。该检查包含文件路径、大小和时间戳，不适合直接复制到新的数据挂载。版本 2 保留相同三项筛选结果和 `cnn_dynamics_mixup` 选择，把旧 pilot 权重放入独立证据目录；重新构建训练 fold 缓存，并从头训练选定配置的十个模型。原始训练 CSV 的 SHA256 已固定在 `configs/data_source_hashes.json`，云端两份文件的校验值与本地完全一致。缓存检查保持原样，没有绕过数据来源限制。
+
+当前完整验证版本为 [CMI Winner CNN Fixed Fold Validation v2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432)。五折结果尚未完成；新运行 fold 0 的分数也按实际输出保存，不用之前筛选阶段的最高结果替代。新增两项针对性检查及真实 GPU 产物恢复检查通过，已完成的 63 项项目测试仍保留记录。

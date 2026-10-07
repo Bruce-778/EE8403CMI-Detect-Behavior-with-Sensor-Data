@@ -18,7 +18,8 @@ def main():
     stream = io.BytesIO()
     files = [*sorted((ROOT / "src/cmi_project").glob("*.py")),
              *sorted((ROOT / "scripts").glob("*.py")),
-             ROOT / "configs/folds.csv", ROOT / "configs/folds.meta.json"]
+             ROOT / "configs/folds.csv", ROOT / "configs/folds.meta.json",
+             ROOT / "configs/data_source_hashes.json"]
     files += [ROOT / "configs" / name for name in ("preprocessing.json", "preprocessing_dynamics.json",
         "cnn_grouped_se.json", "cnn_grouped_mixup.json", "cnn_dynamics_mixup.json")]
     with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:

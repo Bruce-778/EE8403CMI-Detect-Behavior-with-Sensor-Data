@@ -1,0 +1,15 @@
+{
+  "status": "failed_before_training",
+  "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356157899",
+  "frozen_pilot_source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-winner-inspired-cnn-training?scriptVersionId=356144886",
+  "observed_error": "CNN cache settings/sources differ; choose a fresh --cache-dir.",
+  "validation_score": null,
+  "diagnosis": "The completed pilots were preserved, but their cache source identity did not match the new notebook mount. File timestamps form part of the cache identity. No new fold was trained in this version.",
+  "remedy": "Retain the three pilot scores and chosen configuration. Verify raw training CSV byte hashes against local inputs, preserve pilot artifacts separately, and rebuild caches and all ten selected fold models in the new workspace. Keep the cache identity guard unchanged.",
+  "verification": [
+    "Two focused continuation/data identity tests passed",
+    "Recovered actual GPU artifacts retained the same selection in a fresh temporary workspace",
+    "Local training CSV SHA256 checks passed; cloud data hashes must match before training"
+  ],
+  "note": "Infrastructure failure, not a model result or online competition score. Local Git only; no push or new competition submission."
+}
