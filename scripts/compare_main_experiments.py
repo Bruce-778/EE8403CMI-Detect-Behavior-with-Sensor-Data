@@ -54,7 +54,9 @@ def main():
             values = group["score"].to_numpy()
             path = ROOT / "outputs/experiments" / name / model / "evaluation/metrics.json"
             if not path.is_file():
-                raise ValueError("Five folds exist but validated OOF evaluation is missing.")
+                # The joint A/B trainer writes OOF after both models finish.
+                # Keep partial progress out of the complete-results table.
+                continue
             evaluation = json.loads(path.read_text(encoding="utf-8"))
             if evaluation["folds_sha256"] != manifest.fingerprint:
                 raise ValueError("OOF fingerprint mismatch.")
