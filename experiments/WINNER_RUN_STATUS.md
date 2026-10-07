@@ -25,7 +25,7 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 
 ## 训练完成与结果回收
 
-[CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432) 已成功完成，不要重新训练。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。当前仅等待下述 CPU 结果导出任务以回收最终 ZIP。
+[CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432) 已成功完成，不要重新训练。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。当前仅等待下述 T4 结果导出任务以回收最终 ZIP。
 
 云端已经通过 `train.csv` 和 `train_demographics.csv` 的字节 SHA256 校验，与 `configs/data_source_hashes.json` 固定的本地输入一致；固定 folds 文件 SHA256 也一致。已恢复原三项筛选结果，开始仅在 fold 0 的 6,524 条训练 sequence 上拟合新缓存。需要重新训练选定配置的 IMU-only 和多传感器各五折，包括重新训练 fold 0。旧筛选阶段 fold 0 产物独立保存于 `outputs/pilot_artifacts/`，不能替代新运行的 fold 0。
 
@@ -41,7 +41,9 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 
 十个模型及缺失场景评估已成功完成，训练版本 2 总用时 7,400.8 秒。日志显示 `COMPLETED FIVE FOLD EXPERIMENTS`，并生成 23,952,382 字节的 `winner_experiments.zip`。IMU fold 0 重训与原筛选结果在日志显示精度下一致。模型训练已结束；完整五折预测核验和新旧比较仍未完成，不能用训练日志替代最终检查。
 
-单文件 Download 按钮打开了二进制文件的新标签页，下载事件没有返回。为避免下载原 working directory 的训练缓存，启动了 [仅导出结果 ZIP 的 CPU 任务](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356184726)：只复制原版本的 `winner_experiments.zip`，不重新训练、不预测测试集、不提交比赛。其输出只有结果 ZIP 及 Notebook 自身文件；可通过 Output actions 的 Download output 回收，再提取内层 ZIP。原训练版本的结果来源 URL 保持 356161432。导出任务完成后还需核对复制的文件大小与 SHA256。
+单文件 Download 按钮打开了二进制文件的新标签页，下载事件没有返回。为避免下载原 working directory 的训练缓存，启动了 [仅导出结果 ZIP 的 CPU 任务版本 1](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356184726)。输入页可见完整结果 ZIP，但运行约 30 分钟仍没有日志、输出为 0 B，已取消；失败记录为 `experiments/results/cnn_results_export_cpu_attempt.json`，已本地 commit。
+
+当前回收任务为 [CMI Fixed Fold Results Export 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356189192)，改用 T4 环境执行同一份文件复制代码，互联网关闭。只复制原版本的 `winner_experiments.zip`，不重新训练、不预测测试集、不提交比赛。其输出只有结果 ZIP 及 Notebook 自身文件；可通过 Output actions 的 Download output 回收，再提取内层 ZIP。原训练版本的结果来源 URL 保持 356161432。导出任务完成后还需核对复制的文件大小与 SHA256。不要再次等待已取消的 CPU 版本 1。
 
 ## 完成后的操作
 
