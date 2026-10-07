@@ -1,0 +1,248 @@
+{
+  "status": "verified",
+  "experiment": "cnn_dynamics_mixup",
+  "model": "multisensor",
+  "result_source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432",
+  "metric_scope": "Paired development CV on the exact same 8,151 sequences; checkpoint/design selection uses validation",
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "configuration_selection": {
+    "selection_fold": 0,
+    "designs": [
+      {
+        "name": "cnn_grouped_se",
+        "fold": 0,
+        "score": 0.7708426137271538,
+        "best_epoch": 60,
+        "epochs_run": 76
+      },
+      {
+        "name": "cnn_grouped_mixup",
+        "fold": 0,
+        "score": 0.7726898350191986,
+        "best_epoch": 56,
+        "epochs_run": 60
+      },
+      {
+        "name": "cnn_dynamics_mixup",
+        "fold": 0,
+        "score": 0.7756521483129168,
+        "best_epoch": 38,
+        "epochs_run": 43
+      }
+    ],
+    "selected": "cnn_dynamics_mixup",
+    "reference_imu_equal_blend_fold0": 0.7463748066010997,
+    "policy": "One fixed configuration chosen on fold 0, applied to A/B and all five folds; no per-fold config selection",
+    "scope": "Development CV; fold 0 used for design selection; validation selects checkpoints"
+  },
+  "official_evaluation": {
+    "experiment_name": "observed",
+    "metric": "cmi_binary_f1_macro_f1_9class_v1",
+    "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+    "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+    "n_splits": 5,
+    "oof_sequences": 8151,
+    "std_ddof": 1,
+    "fold_mean": {
+      "score": 0.8511795476335122,
+      "binary_f1": 0.98655374569252,
+      "macro_f1_9class": 0.7158053495745045
+    },
+    "fold_std": {
+      "score": 0.009654258637777966,
+      "binary_f1": 0.004807202396538611,
+      "macro_f1_9class": 0.015714121413424393
+    },
+    "oof": {
+      "score": 0.8513479450254284,
+      "binary_f1": 0.9865567657737219,
+      "macro_f1_9class": 0.716139124277135
+    }
+  },
+  "reference_evaluation": {
+    "experiment_name": "observed",
+    "metric": "cmi_binary_f1_macro_f1_9class_v1",
+    "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+    "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+    "n_splits": 5,
+    "oof_sequences": 8151,
+    "std_ddof": 1,
+    "fold_mean": {
+      "score": 0.8222681372243944,
+      "binary_f1": 0.9833724001352412,
+      "macro_f1_9class": 0.6611638743135477
+    },
+    "fold_std": {
+      "score": 0.017112731827664592,
+      "binary_f1": 0.007482145541850276,
+      "macro_f1_9class": 0.027073042249610785
+    },
+    "oof": {
+      "score": 0.8223437046906352,
+      "binary_f1": 0.9833677787619329,
+      "macro_f1_9class": 0.6613196306193374
+    }
+  },
+  "fold_scores": [
+    0.8432381633110184,
+    0.8490669862554014,
+    0.8413845981457844,
+    0.8635899541252432,
+    0.8586180363301137
+  ],
+  "paired_fold_deltas": [
+    0.025412637461319054,
+    0.04526778861953784,
+    0.02948897008055884,
+    0.01604727383073401,
+    0.028340382053439583
+  ],
+  "improved_folds": 5,
+  "fold_runs": [
+    {
+      "fold": 0,
+      "validation": {
+        "loss": 1.426829951045406,
+        "accuracy_18class": 0.7393976644130301,
+        "score": 0.8432381633110184,
+        "binary_f1": 0.9837997054491899,
+        "macro_f1_9class": 0.7026766211728469
+      },
+      "best_epoch": 51,
+      "epochs_run": 67,
+      "max_length": 127,
+      "versions": {
+        "python": "3.13.15",
+        "torch": "2.11.0+cu128",
+        "numpy": "2.1.3"
+      }
+    },
+    {
+      "fold": 1,
+      "validation": {
+        "loss": 1.2776676042407167,
+        "accuracy_18class": 0.7622549019607843,
+        "score": 0.8490669862554014,
+        "binary_f1": 0.9808165272995573,
+        "macro_f1_9class": 0.7173174452112456
+      },
+      "best_epoch": 25,
+      "epochs_run": 41,
+      "max_length": 128,
+      "versions": {
+        "python": "3.13.15",
+        "torch": "2.11.0+cu128",
+        "numpy": "2.1.3"
+      }
+    },
+    {
+      "fold": 2,
+      "validation": {
+        "loss": 1.3034356939215224,
+        "accuracy_18class": 0.7572041692213366,
+        "score": 0.8413845981457844,
+        "binary_f1": 0.9852941176470589,
+        "macro_f1_9class": 0.6974750786445099
+      },
+      "best_epoch": 41,
+      "epochs_run": 48,
+      "max_length": 124,
+      "versions": {
+        "python": "3.13.15",
+        "torch": "2.11.0+cu128",
+        "numpy": "2.1.3"
+      }
+    },
+    {
+      "fold": 3,
+      "validation": {
+        "loss": 1.1479052202581332,
+        "accuracy_18class": 0.7865928659286593,
+        "score": 0.8635899541252432,
+        "binary_f1": 0.9926144756277696,
+        "macro_f1_9class": 0.7345654326227169
+      },
+      "best_epoch": 34,
+      "epochs_run": 48,
+      "max_length": 125,
+      "versions": {
+        "python": "3.13.15",
+        "torch": "2.11.0+cu128",
+        "numpy": "2.1.3"
+      }
+    },
+    {
+      "fold": 4,
+      "validation": {
+        "loss": 1.2185741899210378,
+        "accuracy_18class": 0.7681957186544343,
+        "score": 0.8586180363301137,
+        "binary_f1": 0.9902439024390244,
+        "macro_f1_9class": 0.7269921702212029
+      },
+      "best_epoch": 26,
+      "epochs_run": 42,
+      "max_length": 130,
+      "versions": {
+        "python": "3.13.15",
+        "torch": "2.11.0+cu128",
+        "numpy": "2.1.3"
+      }
+    }
+  ],
+  "model_metadata": {
+    "model": "multisensor",
+    "architecture": "grouped_masked_se_cnn_v3",
+    "config": {
+      "imu_channels": [
+        32,
+        64,
+        96
+      ],
+      "auxiliary_channels": [
+        16,
+        32,
+        48
+      ],
+      "kernel_size": 5,
+      "hidden_features": 128,
+      "dropout": 0.2,
+      "pooling": "mean_max",
+      "stage_kernel_sizes": [],
+      "encoder_style": "grouped",
+      "normalization": "masked_batch",
+      "squeeze_excitation": true,
+      "stem_channels": [
+        16,
+        32
+      ],
+      "imu_feature_count": 34
+    },
+    "tof_regions": 2,
+    "normalization": "train-fold standardization + masked_batch",
+    "parameters": 264998
+  },
+  "training": {
+    "seed": 42,
+    "epochs": 80,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0003,
+    "label_smoothing": 0.03,
+    "macro_loss_weight": 0.5,
+    "binary_loss_weight": 0.1,
+    "early_stopping_patience": 16,
+    "min_delta": 0.0001,
+    "lr_patience": 4,
+    "lr_factor": 0.5,
+    "min_lr": 1e-05,
+    "gradient_clip": 1.0,
+    "cpu_threads": 4,
+    "device": "cuda",
+    "mixup_alpha": 0.4,
+    "mixup_probability": 0.5
+  },
+  "oof_predictions": "outputs/winner_comparison/candidate/multisensor/observed/oof_predictions.csv",
+  "evidence": "experiments/results/cnn_winner_import_verified.json",
+  "decision": "Retain fixed configuration: improves all five held-out folds against previous selected reference. Development CV, not a new leaderboard score."
+}
