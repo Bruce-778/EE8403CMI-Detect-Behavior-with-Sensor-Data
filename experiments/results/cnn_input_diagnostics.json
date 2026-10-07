@@ -1,0 +1,30 @@
+{
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "fold": 0,
+  "normalized_clipping": [
+    {
+      "split": "train",
+      "sequences": 6524,
+      "median_real_frames": 59.0,
+      "auxiliary_whole_missing": 96,
+      "imu_clip_fraction": 0.0003965983534045188,
+      "thm_clip_fraction": 8.753525855028575e-05,
+      "tof_clip_fraction": 0.0
+    },
+    {
+      "split": "validation",
+      "sequences": 1627,
+      "median_real_frames": 59.0,
+      "auxiliary_whole_missing": 0,
+      "imu_clip_fraction": 0.0003141572908497836,
+      "thm_clip_fraction": 0.0,
+      "tof_clip_fraction": 0.0
+    }
+  ],
+  "length_quantiles_train": {
+    "0.5": 59.0,
+    "0.9": 102.0,
+    "0.95": 127.0,
+    "0.99": 207.30999999999858
+  }
+}
