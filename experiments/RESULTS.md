@@ -73,4 +73,4 @@ A 与 B 各自融合原始 CNN 和分层损失 CNN 的预测概率，权重固�
 
 ## 输出与复现
 
-配置位于 `configs/cnn_*.json`；完整 checkpoint、OOF、曲线在 `outputs/experiments/<配置名称>/`。`experiments/results/` 保存可追踪的小型结果摘要。命令和资料来源见 [实验记录](README.md)。
+配置位于 `configs/cnn_*.json`；完整 checkpoint、OOF、曲线在 `outputs/experiments/<配置名称>/`。`experiments/results/` 保存可追踪的小型结果摘要。命令和资料来源见 [实验记录](README.md)。真实线上分数与最终排行榜比较见 [Kaggle 提交记录](KAGGLE.md)。

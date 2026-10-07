@@ -115,7 +115,8 @@ def main():
             f"pooling={model.get('pooling', 'mean_max')}，stage kernels={model.get('stage_kernel_sizes') or [model['kernel_size']]*len(model['imu_channels'])}。")
     lines.extend(["", "## 输出与复现", "", "配置位于 `configs/cnn_*.json`；完整 checkpoint、OOF、曲线在"
         " `outputs/experiments/<配置名称>/`。`experiments/results/` 保存可追踪的小型结果摘要。"
-        "命令和资料来源见 [实验记录](README.md)。", ""])
+        "命令和资料来源见 [实验记录](README.md)。"
+        "真实线上分数与最终排行榜比较见 [Kaggle 提交记录](KAGGLE.md)。", ""])
     output = ROOT / "experiments/RESULTS.md"
     output.write_text("\n".join(lines), encoding="utf-8")
     print(output)
