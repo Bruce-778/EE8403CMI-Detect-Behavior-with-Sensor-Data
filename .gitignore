@@ -7,7 +7,6 @@ data/
 *.egg-info/
 build/
 dist/
-outputs/*
-!outputs/.gitkeep
+outputs/
 data/*
 docs/*
