@@ -1,0 +1,95 @@
+"""Evaluate identical held-out sequences with observed or removed auxiliary sensors."""
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+import numpy as np
+import pandas as pd
+import torch
+from torch.utils.data import DataLoader, Dataset
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+from cmi_project.cnn_data import CNNTensorDataset, validate_arrays
+from cmi_project.cnn_training import (CMIHierarchicalLoss, TrainingConfig, evaluate_model,
+                                      load_cnn_checkpoint, seed_everything)
+from cmi_project.evaluation import ALL_GESTURES, PROBABILITY_COLUMNS, evaluate_oof_frames
+from cmi_project.validation import assert_preprocessor_matches, load_fold_manifest
+
+AUXILIARY_KEYS = ("thm", "thm_valid", "thm_observed", "tof", "tof_valid", "tof_fraction", "tof_sensor_present")
+
+
+class ScenarioDataset(Dataset):
+    def __init__(self, arrays, indices, scenario):
+        if scenario not in ("observed", "imu_only", "aux_dropout50"):
+            raise ValueError("Unknown missing-sensor scenario.")
+        self.base = CNNTensorDataset(arrays, indices)
+        self.drop = np.array([scenario == "imu_only" or (scenario == "aux_dropout50" and
+            int(hashlib.sha256(str(arrays["sequence_id"][i]).encode()).hexdigest()[:8], 16) % 2 == 0)
+            for i in indices], dtype=bool)
+
+    def __len__(self):
+        return len(self.base)
+
+    def __getitem__(self, index):
+        sample = self.base[index]
+        if self.drop[index]:
+            for key in AUXILIARY_KEYS:
+                sample[key].zero_()
+        return sample
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("directory", type=Path)
+    parser.add_argument("--name", required=True)
+    args = parser.parse_args()
+    directory = (ROOT / args.directory).resolve()
+    manifest = load_fold_manifest(ROOT / "configs/folds.csv")
+    seed_everything(42, 4)
+    results, predictions = [], {}
+    for path in sorted(directory.glob("*/fold_*/best.pt")):
+        model, processor, checkpoint = load_cnn_checkpoint(path)
+        fold, name = checkpoint["fold"], model.model_name
+        assert_preprocessor_matches(processor.state, manifest, fold)
+        identity = checkpoint["data_metadata"]["identity"]
+        config = TrainingConfig(**checkpoint["training_config"])
+        # Cache path is in run_config, and its identity must match the checkpoint.
+        run = json.loads((directory / "run_config.json").read_text(encoding="utf-8"))
+        cache = Path(run["cache_dir"]) / f"fold_{fold}"
+        if json.loads((cache / "metadata.json").read_text(encoding="utf-8"))["identity"] != identity:
+            raise ValueError("Checkpoint/cache identity mismatch.")
+        with np.load(cache / "data.npz", allow_pickle=False) as archive:
+            arrays = {key: archive[key] for key in archive.files}
+        validate_arrays(arrays, manifest, processor.max_length, model.tof_regions)
+        indices = np.flatnonzero(manifest.table["fold"].to_numpy() == fold)
+        for scenario in ("observed", "imu_only", "aux_dropout50"):
+            dataset = ScenarioDataset(arrays, indices, scenario)
+            metrics, probabilities = evaluate_model(model, DataLoader(dataset, batch_size=64),
+                CMIHierarchicalLoss(config), torch.device("cpu"))
+            results.append({"model": name, "fold": fold, "scenario": scenario,
+                "additional_auxiliary_drop_count": int(dataset.drop.sum()), **metrics})
+            frame = pd.DataFrame({"sequence_id": arrays["sequence_id"][indices],
+                "predicted_gesture": np.asarray(ALL_GESTURES)[probabilities.argmax(1)],
+                "folds_sha256": manifest.fingerprint})
+            frame = pd.concat([frame, pd.DataFrame(probabilities, columns=PROBABILITY_COLUMNS)], axis=1)
+            predictions.setdefault((name, scenario), {})[fold] = frame
+            print(f"{name} fold {fold} {scenario}: {metrics['score']:.6f}", flush=True)
+    evaluations = {}
+    for (name, scenario), frames in predictions.items():
+        if set(frames) == set(range(manifest.n_splits)):
+            evaluations[f"{name}/{scenario}"] = evaluate_oof_frames(manifest, frames,
+                directory / "scenarios" / name / scenario, experiment_name=f"{args.name}_{name}_{scenario}")
+    output = ROOT / "experiments/results" / f"{args.name}_scenarios.json"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps({"folds_sha256": manifest.fingerprint, "results": results,
+        "five_fold_evaluation": evaluations,
+        "scenario_note": "aux_dropout50 deterministically removes THM+ToF for roughly half the same validation sequences; natural missingness is retained; this is a stress test, not the hidden test distribution"},
+        ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

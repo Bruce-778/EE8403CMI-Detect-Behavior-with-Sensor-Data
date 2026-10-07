@@ -37,6 +37,8 @@ class TrainingConfig:
     learning_rate: float = 0.001
     weight_decay: float = 0.001
     label_smoothing: float = 0.03
+    macro_loss_weight: float = 0.0
+    binary_loss_weight: float = 0.0
     early_stopping_patience: int = 10
     min_delta: float = 0.0001
     lr_patience: int = 3
@@ -56,6 +58,9 @@ class TrainingConfig:
                 raise ValueError(f"{name} must be positive and finite.")
         if not np.isfinite(self.weight_decay) or self.weight_decay < 0 or not 0 <= self.label_smoothing < 1:
             raise ValueError("Invalid weight_decay/label_smoothing.")
+        for name in ("macro_loss_weight", "binary_loss_weight"):
+            if not np.isfinite(getattr(self, name)) or getattr(self, name) < 0:
+                raise ValueError(f"{name} must be finite and >= 0.")
         if not 0 < self.lr_factor < 1 or self.lr_patience < 0 or self.min_lr > self.learning_rate:
             raise ValueError("Invalid learning rate scheduler settings.")
         if not np.isfinite(self.min_delta) or self.min_delta < 0:
@@ -84,6 +89,34 @@ class EarlyStopping:
         else:
             self.bad_epochs += 1
         return improved, self.bad_epochs >= self.patience
+
+
+class CMIHierarchicalLoss(nn.Module):
+    """18-class CE plus optional losses on the official label groupings.
+
+    logsumexp aggregates probabilities, not average logits. No extra head or
+    train-only phase/orientation label is required. Zero weights preserve v1.
+    """
+
+    def __init__(self, config: TrainingConfig):
+        super().__init__()
+        self.smoothing = config.label_smoothing
+        self.macro_weight = config.macro_loss_weight
+        self.binary_weight = config.binary_loss_weight
+
+    def forward(self, logits: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        loss = nn.functional.cross_entropy(logits, target, label_smoothing=self.smoothing)
+        if self.macro_weight or self.binary_weight:
+            non_target = torch.logsumexp(logits[:, 8:], dim=1, keepdim=True)
+            if self.macro_weight:
+                nine_logits = torch.cat([logits[:, :8], non_target], dim=1)
+                loss = loss + self.macro_weight * nn.functional.cross_entropy(
+                    nine_logits, target.clamp_max(8), label_smoothing=self.smoothing)
+            if self.binary_weight:
+                odds = torch.logsumexp(logits[:, :8], dim=1) - non_target.squeeze(1)
+                loss = loss + self.binary_weight * nn.functional.binary_cross_entropy_with_logits(
+                    odds, (target < 8).to(logits.dtype))
+        return loss
 
 
 def seed_everything(seed: int, cpu_threads: int) -> None:
@@ -256,7 +289,7 @@ def train_cnn_fold(arrays: dict, processor: FoldPreprocessor, manifest: FoldMani
     optimizer = torch.optim.AdamW(model.parameters(), lr=training.learning_rate, weight_decay=training.weight_decay)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="max", factor=training.lr_factor,
         patience=training.lr_patience, threshold=training.min_delta, threshold_mode="abs", min_lr=training.min_lr)
-    criterion = nn.CrossEntropyLoss(label_smoothing=training.label_smoothing)
+    criterion = CMIHierarchicalLoss(training)
     stopping = EarlyStopping(training.early_stopping_patience, training.min_delta)
     output_dir.mkdir(parents=True, exist_ok=True)
     processor.save(output_dir / "preprocessor.json")
