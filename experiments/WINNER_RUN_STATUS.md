@@ -25,7 +25,7 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 
 ## 训练完成与结果回收
 
-[CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432) 已成功完成，不要重新训练。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。当前仅等待下述 T4 结果导出任务以回收最终 ZIP。
+[CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432) 已成功完成，不要重新训练。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。结果回收目前受阻，两个导出会话均已取消，没有运行中的训练或导出任务；等待手动下载原训练版本的结果 ZIP。
 
 云端已经通过 `train.csv` 和 `train_demographics.csv` 的字节 SHA256 校验，与 `configs/data_source_hashes.json` 固定的本地输入一致；固定 folds 文件 SHA256 也一致。已恢复原三项筛选结果，开始仅在 fold 0 的 6,524 条训练 sequence 上拟合新缓存。需要重新训练选定配置的 IMU-only 和多传感器各五折，包括重新训练 fold 0。旧筛选阶段 fold 0 产物独立保存于 `outputs/pilot_artifacts/`，不能替代新运行的 fold 0。
 
@@ -43,7 +43,9 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 
 单文件 Download 按钮打开了二进制文件的新标签页，下载事件没有返回。为避免下载原 working directory 的训练缓存，启动了 [仅导出结果 ZIP 的 CPU 任务版本 1](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356184726)。输入页可见完整结果 ZIP，但运行约 30 分钟仍没有日志、输出为 0 B，已取消；失败记录为 `experiments/results/cnn_results_export_cpu_attempt.json`，已本地 commit。
 
-当前回收任务为 [CMI Fixed Fold Results Export 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356189192)，改用 T4 环境执行同一份文件复制代码，互联网关闭。只复制原版本的 `winner_experiments.zip`，不重新训练、不预测测试集、不提交比赛。其输出只有结果 ZIP 及 Notebook 自身文件；可通过 Output actions 的 Download output 回收，再提取内层 ZIP。原训练版本的结果来源 URL 保持 356161432。导出任务完成后还需核对复制的文件大小与 SHA256。不要再次等待已取消的 CPU 版本 1。
+[CMI Fixed Fold Results Export 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356189192) 改用 T4 环境执行同一份文件复制代码，互联网关闭。它同样在约 29 分钟后仍无执行日志、输出为 0 B，已取消。Active Events 已确认两个版本均为 Cancelled、0 Active Events。失败记录为 `experiments/results/cnn_results_export_t4_attempt.json`。不再启动新的导出或训练，不要重复等待这两个版本。
+
+需要手动从[原训练版本 Output](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation/output?scriptVersionId=356161432) 下载单个 `winner_experiments.zip`（23,952,382 字节），放到 `outputs/kaggle_training/recovery_inbox/winner_experiments.zip`。该页面已保留在浏览器中。不要下载包含缓存的整个 working directory，也不要绕过浏览器安全检查。跟进自动化 `cmi` 已暂停，等待用户提供结果文件后再继续导入、比较和推理检查；这些工作尚未完成。由于导出脚本没有执行，云端 ZIP 的 SHA256 尚不可用，不能宣称已经与本地哈希核对一致。原训练版本的结果来源 URL 保持 356161432。
 
 ## 完成后的操作
 

@@ -1,0 +1,17 @@
+{
+  "status": "cancelled_after_stalled_startup",
+  "observed_at_utc": "2026-10-07T22:26:41Z",
+  "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356189192",
+  "training_result_source": "https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432",
+  "accelerator": "GPU T4 x2",
+  "purpose": "Copy the completed winner_experiments.zip only, without model training or competition submission.",
+  "observation": "Refreshed Logs reported Running for 1622.5s, no execution logs and 0 B output. Active Events subsequently reported Running: 28m; the session was stopped at approximately 29 minutes. Output contained no result files.",
+  "action": "Stopped the stalled export. Active Events confirmed versions 1 and 2 Cancelled and 0 Active Events. No additional cloud training or export was started.",
+  "expected_archive_bytes": 23952382,
+  "archive_recovered": false,
+  "cloud_archive_sha256": null,
+  "local_oof_verified": false,
+  "validation_score": null,
+  "next_step": "Manual download of winner_experiments.zip from the successful training version's Output, preserving that version as the result source; then import and compare the saved predictions locally.",
+  "note": "Artifact recovery infrastructure attempt. Successful training and checkpoints remain on Kaggle. No new model training, push, or competition submission."
+}
