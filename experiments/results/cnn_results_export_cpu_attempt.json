@@ -1,0 +1,10 @@
+{
+  "status": "cancelled_after_stalled_startup",
+  "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356184726",
+  "training_result_source": "https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432",
+  "purpose": "Copy the completed winner_experiments.zip only, without model training or competition submission.",
+  "observation": "After approximately 30 minutes, a refreshed viewer and Active Events both still reported Running, with no execution logs and 0 B output. The complete result ZIP was visible in the attached input tree.",
+  "action": "Stopped the stalled CPU export session and started the same file-copy notebook with the available T4 environment.",
+  "validation_score": null,
+  "note": "Artifact recovery infrastructure attempt. The successful training version and its checkpoints are retained. No new model training, push, or competition submission."
+}
