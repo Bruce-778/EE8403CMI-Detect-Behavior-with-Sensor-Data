@@ -51,4 +51,12 @@ GPU 三项均在同一 fold 0、同一环境运行：分组 CNN 0.770843（60 / 
 
 跨 Notebook 续跑版本 1 又被缓存来源身份检查拒绝，未训练任何新 fold。该检查包含文件路径、大小和时间戳，不适合直接复制到新的数据挂载。版本 2 保留相同三项筛选结果和 `cnn_dynamics_mixup` 选择，把旧 pilot 权重放入独立证据目录；重新构建训练 fold 缓存，并从头训练选定配置的十个模型。原始训练 CSV 的 SHA256 已固定在 `configs/data_source_hashes.json`，云端两份文件的校验值与本地完全一致。缓存检查保持原样，没有绕过数据来源限制。
 
-当前完整验证版本为 [CMI Winner CNN Fixed Fold Validation v2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432)。五折结果尚未完成；新运行 fold 0 的分数也按实际输出保存，不用之前筛选阶段的最高结果替代。新增两项针对性检查及真实 GPU 产物恢复检查通过，已完成的 63 项项目测试仍保留记录。
+完整验证版本为 [CMI Winner CNN Fixed Fold Validation v2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432)，十个模型及全部五折 OOF 已完成并回收。本机核对了原始训练 CSV SHA256、固定训练 sequence / subject、checkpoint 和官方指标；没有用筛选阶段的 fold 0 替代新运行。新增两项针对性检查及真实 GPU 产物恢复检查通过，已完成的 63 项项目测试仍保留记录。
+
+## 完整五折结论
+
+IMU-only：`0.748366 ± 0.016025 → 0.787194 ± 0.014102`；多传感器：`0.822268 ± 0.017113 → 0.851180 ± 0.009654`；按输入可用性路由：`0.823642 ± 0.016330 → 0.852029 ± 0.008719`。三个比较均提升全部五折，使用完全相同的 8,151 条验证 sequence，标准差为样本标准差。
+
+固定约半数 sequence 额外缺失 THM+ToF 时，路由分数为 `0.821455 ± 0.011675`，比旧方案高 `0.033055`；全部辅助模态缺失时为新 IMU 分支的 `0.787194 ± 0.014102`。新旧缺失样本和每折 A/B 路由数量已核对一致，18 个模型 / 场景组合的概率 argmax、官方指标及完整 OOF 均通过检查。
+
+因此保留一个统一的 `cnn_dynamics_mixup` 配置和十个 A/B 五折权重。结果与每折变化见 `WINNER_RESULTS.md`，完整配置和训练记录见 `experiments/results/cnn_winner_selected.json`。收益属于分组 CNN、masked BatchNorm、SE、34 通道运动特征及 Mixup 的联合效果；现有五折证据无法分别归因。fold 0 参与配置筛选、各折 validation 参与 early stopping，仍是开发 CV，不是独立测试或新的线上成绩。

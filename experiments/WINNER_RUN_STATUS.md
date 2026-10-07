@@ -25,7 +25,7 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 
 ## 训练完成与结果回收
 
-[CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432) 已成功完成，不要重新训练。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。结果回收目前受阻，两个导出会话均已取消，没有运行中的训练或导出任务；等待手动下载原训练版本的结果 ZIP。
+[CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432) 已成功完成，不要重新训练。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。用户已手动下载并解压结果，十个模型和完整 OOF 已在本机核验；新方案在全部五折和固定缺失场景中均提升，保留 `cnn_dynamics_mixup`。两个导出会话均已取消，没有运行中的训练或导出任务。
 
 云端已经通过 `train.csv` 和 `train_demographics.csv` 的字节 SHA256 校验，与 `configs/data_source_hashes.json` 固定的本地输入一致；固定 folds 文件 SHA256 也一致。已恢复原三项筛选结果，开始仅在 fold 0 的 6,524 条训练 sequence 上拟合新缓存。需要重新训练选定配置的 IMU-only 和多传感器各五折，包括重新训练 fold 0。旧筛选阶段 fold 0 产物独立保存于 `outputs/pilot_artifacts/`，不能替代新运行的 fold 0。
 
@@ -39,21 +39,21 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 | 3 | 0.811088 | 0.863590 |
 | 4 | 0.777887 | 0.858618 |
 
-十个模型及缺失场景评估已成功完成，训练版本 2 总用时 7,400.8 秒。日志显示 `COMPLETED FIVE FOLD EXPERIMENTS`，并生成 23,952,382 字节的 `winner_experiments.zip`。IMU fold 0 重训与原筛选结果在日志显示精度下一致。模型训练已结束；完整五折预测核验和新旧比较仍未完成，不能用训练日志替代最终检查。
+十个模型及缺失场景评估已成功完成，训练版本 2 总用时 7,400.8 秒。日志显示 `COMPLETED FIVE FOLD EXPERIMENTS`，并生成 23,952,382 字节的 `winner_experiments.zip`。本机已核对每个 checkpoint 的训练 sequence / subject、固定 folds 和实际预测分数；以下最终分数由全部 8,151 条 OOF 重算，证据见 `WINNER_RESULTS.md` 与 `experiments/results/cnn_winner_comparison.json`。
 
 单文件 Download 按钮打开了二进制文件的新标签页，下载事件没有返回。为避免下载原 working directory 的训练缓存，启动了 [仅导出结果 ZIP 的 CPU 任务版本 1](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356184726)。输入页可见完整结果 ZIP，但运行约 30 分钟仍没有日志、输出为 0 B，已取消；失败记录为 `experiments/results/cnn_results_export_cpu_attempt.json`，已本地 commit。
 
 [CMI Fixed Fold Results Export 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-fixed-fold-results-export?scriptVersionId=356189192) 改用 T4 环境执行同一份文件复制代码，互联网关闭。它同样在约 29 分钟后仍无执行日志、输出为 0 B，已取消。Active Events 已确认两个版本均为 Cancelled、0 Active Events。失败记录为 `experiments/results/cnn_results_export_t4_attempt.json`。不再启动新的导出或训练，不要重复等待这两个版本。
 
-需要手动从[原训练版本 Output](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation/output?scriptVersionId=356161432) 下载单个 `winner_experiments.zip`（23,952,382 字节），放到 `outputs/kaggle_training/recovery_inbox/winner_experiments.zip`。该页面已保留在浏览器中。不要下载包含缓存的整个 working directory，也不要绕过浏览器安全检查。跟进自动化 `cmi` 已暂停，等待用户提供结果文件后再继续导入、比较和推理检查；这些工作尚未完成。由于导出脚本没有执行，云端 ZIP 的 SHA256 尚不可用，不能宣称已经与本地哈希核对一致。原训练版本的结果来源 URL 保持 356161432。
+用户从原训练版本手动下载并解压到 `outputs/kaggle_training/recovery_inbox/winner_experiments`。原下载文件曾在 Downloads 中观测到 23,952,382 字节；随后已解压，原 ZIP 不在目录中。为复用导入检查，只将用户提供的 153 个文件重新打包为 `winner_experiments_repacked.zip`，导入全新目录 `outputs/kaggle_training/imported/winner_selected_v2`。保存了全部解压文件的 SHA256 清单及恢复记录。重新打包后的哈希不等于原 ZIP 的哈希；云端 ZIP SHA256 尚不可用，不能宣称二者已核对一致。训练输入的字节校验值已重新在本机计算，与固定参数和云端记录完全一致。结果来源 URL 保持 356161432。
 
-## 完成后的操作
+## 最终验证与收尾
 
-1. 成功后从 Notebook 的 Output 下载 `winner_experiments.zip`。不要下载包含缓存的整个 working directory。部分失败也会保存紧凑 ZIP；失败 ZIP 不可当作完整结果。
-2. 导入到 `outputs/kaggle_training/imported/` 下的新目录，勿覆盖 CPU 或旧 GPU 运行。执行 `scripts/import_winner_experiments.py --archive ZIP --output-dir NEW_DIRECTORY --source-url CURRENT_VERSION_URL`，核对输入字节校验值、固定 folds、训练 subject、全部 checkpoint 和实际预测分数。
-3. 对导入的 selected run 执行 `scripts/compare_winner_experiments.py --run SELECTED_RUN_DIRECTORY`。核对 8,151 条固定验证 sequence，比较 IMU-only、多传感器及按可用性路由；查看原始输入、全部辅助传感器缺失、固定约 50% 辅助缺失的各折变化、五折均值与样本标准差。
-4. 保存紧凑结果与 OOF，更新 `WINNER_INSPIRED.md`、`WINNER_RESULTS.md` 和本文件；每项已完成尝试或失败分别本地 commit，不 push。按完整证据判断是否保留新方案。
-5. 如果完整验证支持新方案，执行 `scripts/export_kaggle_submission.py --runs SELECTED_RUN_DIRECTORY --validation-report SCENARIOS_JSON --output-dir NEW_EXPORT_DIRECTORY`，再执行 `scripts/check_kaggle_submission.py --directory NEW_EXPORT_DIRECTORY --oof-path NEW_ROUTED_OBSERVED_OOF` 检查推理包。不要新增比赛提交。
-6. 全部工作完成后删除跟进自动化 `cmi`。未变化且无需行动时保持安静；若出现无法解决的训练失败或必须由用户处理的问题，报告具体证据，停止继续训练。
+1. 导入检查通过：十个 checkpoint、训练 sequence / subject、81 个 subject 的固定五折与实际保存预测分数一致。IMU-only 与多传感器的完整五折证据分别本地 commit。
+2. 对新旧两个方案的 18 个模型 / 缺失场景组合逐一重算官方指标，检查每个场景完整覆盖 8,151 条 sequence 一次、概率 argmax 与分类标签一致。固定额外缺失样本、每折 A/B 路由数量一致，辅助模态缺失不改变 IMU 分支概率。
+3. 原始输入路由：`0.823642 ± 0.016330 → 0.852029 ± 0.008719`；约半数额外辅助缺失：`0.788400 ± 0.013442 → 0.821455 ± 0.011675`；全部辅助缺失：`0.748366 ± 0.016025 → 0.787194 ± 0.014102`。均为五折均值与样本标准差，每项均在 5/5 折提升，因此保留新配置；没有按折挑模型或调整权重。
+4. OOF 与每折评价保存在 `outputs/winner_comparison/{reference,candidate}/`；原始权重和产物保存在新导入目录。紧凑检查为 `experiments/results/cnn_winner_import_verified.json`，完整比较为 `cnn_winner_comparison.json`。
+5. 下一步：将新方案导出到新的 `outputs/kaggle_winner_submission_v2`，使用真实 held-out sequence 和公开无标签示例检查推理，不覆盖旧包，不新增比赛提交。
+6. 推理检查完成后删除跟进自动化 `cmi`。当前自动化仍暂停；不需要重启训练。
 
 保留旧方案与首次线上成绩，不搜索测试标签或按验证样本定制规则。开发 CV 不等同于新的线上比赛成绩。
