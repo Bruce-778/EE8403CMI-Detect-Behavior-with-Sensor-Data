@@ -84,13 +84,21 @@ class MaskedBatchNorm1d(nn.Module):
         valid = mask[:, None]
         clean = torch.where(valid, values, 0)
         count = mask.sum().to(values.dtype)
-        if self.training and count > 1:
-            mean = clean.sum((0, 2)) / count
+        if self.training:
+            has_statistics = count > 1
+            denominator = count.clamp_min(1)
+            mean = clean.sum((0, 2)) / denominator
             centered = torch.where(valid, clean - mean[None, :, None], 0)
-            variance = centered.square().sum((0, 2)) / count
+            variance = centered.square().sum((0, 2)) / denominator
             with torch.no_grad():
-                self.running_mean.lerp_(mean.detach(), self.momentum)
-                self.running_var.lerp_(variance.detach() * count / (count - 1), self.momentum)
+                updated_mean = self.running_mean.lerp(mean.detach(), self.momentum)
+                updated_var = self.running_var.lerp(variance.detach() * count / (count - 1).clamp_min(1), self.momentum)
+                self.running_mean.copy_(torch.where(has_statistics, updated_mean, self.running_mean))
+                self.running_var.copy_(torch.where(has_statistics, updated_var, self.running_var))
+            # Keeping this decision on-device avoids a CUDA synchronization for
+            # every norm layer while preserving empty/singleton batch semantics.
+            mean = torch.where(has_statistics, mean, self.running_mean)
+            variance = torch.where(has_statistics, variance, self.running_var)
         else:
             mean, variance = self.running_mean, self.running_var
         out = (clean - mean[None, :, None]) * torch.rsqrt(variance[None, :, None] + self.eps)
