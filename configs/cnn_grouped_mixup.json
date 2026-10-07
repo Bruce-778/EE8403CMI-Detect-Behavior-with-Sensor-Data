@@ -1,0 +1,56 @@
+{
+  "data_dir": "data",
+  "folds_path": "configs/folds.csv",
+  "preprocessing_config": "configs/preprocessing.json",
+  "output_dir": "outputs/experiments/cnn_grouped_mixup",
+  "cache_dir": "outputs/cnn_cache/v1",
+  "folds": [
+    0
+  ],
+  "chunksize": 25000,
+  "length_quantile": 0.95,
+  "sequence_length": null,
+  "tof_regions": 2,
+  "input_clip": 8.0,
+  "model_parameters": {
+    "imu_channels": [
+      32,
+      64,
+      96
+    ],
+    "auxiliary_channels": [
+      16,
+      32,
+      48
+    ],
+    "stem_channels": [
+      16,
+      32
+    ],
+    "encoder_style": "grouped",
+    "normalization": "masked_batch",
+    "squeeze_excitation": true,
+    "kernel_size": 5,
+    "hidden_features": 128,
+    "dropout": 0.2
+  },
+  "training": {
+    "seed": 42,
+    "epochs": 80,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0003,
+    "label_smoothing": 0.03,
+    "macro_loss_weight": 0.5,
+    "binary_loss_weight": 0.1,
+    "early_stopping_patience": 16,
+    "lr_patience": 4,
+    "lr_factor": 0.5,
+    "min_lr": 1e-05,
+    "gradient_clip": 1.0,
+    "cpu_threads": 4,
+    "device": "auto",
+    "mixup_alpha": 0.4,
+    "mixup_probability": 0.5
+  }
+}

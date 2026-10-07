@@ -47,6 +47,8 @@ class TrainingConfig:
     gradient_clip: float = 1.0
     cpu_threads: int = 4
     device: str = "auto"
+    mixup_alpha: float = 0.0
+    mixup_probability: float = 0.0
 
     def __post_init__(self):
         for name in ("epochs", "batch_size", "early_stopping_patience", "cpu_threads"):
@@ -67,6 +69,10 @@ class TrainingConfig:
             raise ValueError("min_delta must be finite and >= 0.")
         if self.device not in ("auto", "cpu", "cuda"):
             raise ValueError("device must be auto, cpu or cuda.")
+        if not np.isfinite(self.mixup_alpha) or self.mixup_alpha < 0 or not 0 <= self.mixup_probability <= 1:
+            raise ValueError("Invalid mixup_alpha/mixup_probability.")
+        if self.mixup_probability and not self.mixup_alpha:
+            raise ValueError("Positive mixup_probability requires positive mixup_alpha.")
 
 
 @dataclass
@@ -141,6 +147,36 @@ def choose_device(name: str) -> torch.device:
 
 def _move(batch: dict, device: torch.device) -> dict:
     return {key: value.to(device) for key, value in batch.items()}
+
+
+def mixup_sensor_batch(batch: dict, permutation: torch.Tensor, weight: float) -> dict:
+    """Mix zero-masked readings; masks describe the union of available tokens.
+
+    Targets stay separate for weighted hierarchical loss. Padding and missing
+    readings never enter the interpolation; the original batch is not mutated.
+    """
+    if not 0 <= weight <= 1:
+        raise ValueError("Mixup weight must be in [0, 1].")
+    result = dict(batch)
+    time = batch["time_mask"].bool()
+    valid_masks = {
+        "imu": batch["imu_valid"].bool() & time[..., None],
+        "thm": batch["thm_valid"].bool() & time[..., None],
+        "tof": batch["tof_valid"].bool() & batch["tof_sensor_present"].bool().repeat_interleave(
+            batch["tof"].shape[-1] // 5, -1) & time[..., None],
+        "tof_fraction": batch["tof_sensor_present"].bool().repeat_interleave(
+            batch["tof"].shape[-1] // 5, -1) & time[..., None],
+    }
+    for key, valid in valid_masks.items():
+        clean = torch.where(valid, batch[key], 0)
+        result[key] = weight * clean + (1 - weight) * clean[permutation]
+    for key in ("time_mask", "imu_valid", "thm_valid", "thm_observed", "tof_valid", "tof_sensor_present"):
+        clean = batch[key].bool()
+        if key != "time_mask":
+            clean = clean & time[..., None]
+        result[key] = (clean if weight > 0 else torch.zeros_like(clean)) | (
+            clean[permutation] if weight < 1 else torch.zeros_like(clean))
+    return result
 
 
 def evaluate_model(model: CMI1DCNN, loader: DataLoader, criterion: nn.Module,
@@ -309,7 +345,14 @@ def train_cnn_fold(arrays: dict, processor: FoldPreprocessor, manifest: FoldMani
         for batch in train_loader:
             batch = _move(batch, device)
             optimizer.zero_grad(set_to_none=True)
-            loss = criterion(model(batch), batch["label"])
+            if training.mixup_probability and np.random.random() < training.mixup_probability:
+                weight = float(np.random.beta(training.mixup_alpha, training.mixup_alpha))
+                weight = max(weight, 1 - weight)
+                permutation = torch.randperm(len(batch["label"]), device=device)
+                logits = model(mixup_sensor_batch(batch, permutation, weight))
+                loss = weight * criterion(logits, batch["label"]) + (1 - weight) * criterion(logits, batch["label"][permutation])
+            else:
+                loss = criterion(model(batch), batch["label"])
             if not torch.isfinite(loss):
                 raise ValueError("Non-finite CNN training loss.")
             loss.backward()

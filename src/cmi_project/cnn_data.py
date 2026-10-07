@@ -13,7 +13,7 @@ from torch.utils.data import Dataset, get_worker_info
 
 from .evaluation import ALL_GESTURES
 from .preprocessing import (FoldPreprocessor, PreprocessingConfig, SensorDropoutConfig,
-                            iter_csv_sequences, tof_region_pool)
+                            iter_csv_sequences, tof_region_pool, rotation_dependent_imu_indices)
 from .validation import FoldManifest, assert_preprocessor_matches
 
 ARRAY_KEYS = ("imu", "imu_valid", "thm", "thm_valid", "thm_observed", "tof", "tof_valid",
@@ -54,7 +54,10 @@ def validate_arrays(arrays: dict, manifest: FoldManifest, length: int, regions: 
     labels = manifest.table["gesture"].map({g: i for i, g in enumerate(ALL_GESTURES)}).to_numpy()
     if not np.array_equal(arrays["label"], labels):
         raise ValueError("CNN cache class order disagrees with ALL_GESTURES.")
-    channels = {"imu": 15, "imu_valid": 15, "thm": 5, "thm_valid": 5, "thm_observed": 5,
+    imu_channels = arrays["imu"].shape[-1]
+    if imu_channels not in (15, 34):
+        raise ValueError("Unsupported cached IMU feature count.")
+    channels = {"imu": imu_channels, "imu_valid": imu_channels, "thm": 5, "thm_valid": 5, "thm_observed": 5,
                 "tof": 5 * regions**2, "tof_valid": 5 * regions**2,
                 "tof_fraction": 5 * regions**2, "tof_sensor_present": 5}
     for key in ARRAY_KEYS:
@@ -90,9 +93,13 @@ def prepare_cnn_fold(data_dir: Path, cache_dir: Path, manifest: FoldManifest, fo
     train, _ = manifest.split(fold)
     if not set(manifest.table["gesture"]).issubset(ALL_GESTURES):
         raise ValueError("CNN training requires the CMI gesture ontology.")
+    preprocessing_identity = asdict(preprocessing)
+    # Preserve the identity of the existing basic-feature caches.
+    if not preprocessing.imu_dynamics:
+        preprocessing_identity.pop("imu_dynamics")
     identity = json.loads(json.dumps({
         "version": 1, "data_dir": str(data_dir), "sources": source_signature(data_dir),
-        "folds_sha256": manifest.fingerprint, "fold": fold, "preprocessing": asdict(preprocessing),
+        "folds_sha256": manifest.fingerprint, "fold": fold, "preprocessing": preprocessing_identity,
         "tof_regions": tof_regions, "sequence_length": sequence_length, "input_clip": input_clip,
         "label_order": list(ALL_GESTURES),
     }))
@@ -185,8 +192,9 @@ class CNNTensorDataset(Dataset):
                 self._rng, self._worker_seed = np.random.default_rng(seed), seed
             cfg, rng = self.dropout, self._rng
             if rng.random() < cfg.rotation_probability:
-                sample["imu"][:, 3:] = 0
-                sample["imu_valid"][:, 3:] = False
+                dependent = rotation_dependent_imu_indices(sample["imu"].shape[-1])
+                sample["imu"][:, dependent] = 0
+                sample["imu_valid"][:, dependent] = False
             thm_drop = rng.random(5) < cfg.channel_probability
             tof_drop = rng.random(5) < cfg.channel_probability
             if rng.random() < cfg.thm_probability:

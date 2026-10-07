@@ -27,6 +27,18 @@ IMU_FEATURES = [
     "linear_acc_x", "linear_acc_y", "linear_acc_z",
 ]
 MODALITIES = ["rotation", "thm", "tof"]
+DYNAMIC_IMU_FEATURES = IMU_FEATURES + [
+    "acc_magnitude", "acc_jerk_x", "acc_jerk_y", "acc_jerk_z", "acc_jerk_magnitude", "acc_magnitude_delta",
+    "angular_velocity_magnitude",
+    "linear_acc_magnitude", "linear_jerk_x", "linear_jerk_y", "linear_jerk_z", "linear_jerk_magnitude", "linear_magnitude_delta",
+    "acc_corr_xy", "acc_corr_xz", "acc_corr_yz", "linear_corr_xy", "linear_corr_xz", "linear_corr_yz",
+]
+
+
+def rotation_dependent_imu_indices(channels: int) -> list[int]:
+    if channels not in (15, 34):
+        raise ValueError("Expected 15 basic or 34 dynamic IMU features.")
+    return list(range(3, 15)) + (list(range(21, 28)) + list(range(31, 34)) if channels == 34 else [])
 
 
 @dataclass(frozen=True)
@@ -43,6 +55,7 @@ class PreprocessingConfig:
     tof_mirror: tuple[str, ...] = ("lr", "lr", "lr", "lr", "lr")
     tof_normalization: str = "standard"
     epsilon: float = 1e-8
+    imu_dynamics: bool = False
 
     def __post_init__(self):
         if not 0 < self.length_quantile <= 1:
@@ -205,6 +218,19 @@ def engineer_sequence(sequence: pd.DataFrame, handedness: int,
         np.repeat(velocity_valid[:, None], 3, axis=1), acc_valid & rotation_valid[:, None],
     ], axis=1) & np.isfinite(imu)
     imu = np.where(imu_valid, imu, 0)
+    if config.imu_dynamics:
+        acc_dynamics, acc_dynamic_valid = vector_dynamics(acc, acc_valid, counters, config)
+        linear_valid = acc_valid & rotation_valid[:, None]
+        linear_dynamics, linear_dynamic_valid = vector_dynamics(linear_acc, linear_valid, counters, config)
+        angular_magnitude = np.linalg.norm(velocity, axis=1, keepdims=True)
+        acc_correlations, acc_corr_valid = rolling_axis_correlations(acc, acc_valid, counters)
+        linear_correlations, linear_corr_valid = rolling_axis_correlations(linear_acc, linear_valid, counters)
+        imu = np.concatenate([imu, acc_dynamics, angular_magnitude, linear_dynamics,
+                              acc_correlations, linear_correlations], axis=1)
+        imu_valid = np.concatenate([imu_valid, acc_dynamic_valid, velocity_valid[:, None],
+                                    linear_dynamic_valid, acc_corr_valid, linear_corr_valid], axis=1)
+        imu_valid &= np.isfinite(imu)
+        imu = np.where(imu_valid, imu, 0)
 
     thm = sensor_values(sequence, SENSOR_COLUMNS["THM"])
     if mirrored:
@@ -235,6 +261,39 @@ def engineer_sequence(sequence: pd.DataFrame, handedness: int,
         "tof_minus1": tof_minus1, "tof_sensor_present": tof_present,
         "sequence_counter": counters.astype(np.int64),
     }
+
+
+def vector_dynamics(values: np.ndarray, valid: np.ndarray, counters: np.ndarray,
+                    config: PreprocessingConfig) -> tuple[np.ndarray, np.ndarray]:
+    """Magnitude and backward differences within one sequence, never across gaps."""
+    clean = np.where(valid, values, 0)
+    magnitude = np.linalg.norm(clean, axis=1, keepdims=True)
+    mag_valid = valid.all(axis=1, keepdims=True)
+    delta, delta_valid = np.zeros_like(clean), np.zeros_like(valid)
+    mag_delta, mag_delta_valid = np.zeros_like(magnitude), np.zeros_like(mag_valid)
+    if len(values) > 1:
+        contiguous = (np.diff(counters) == 1)[:, None]
+        dt = np.diff(counters)[:, None] * (config.sample_period_seconds or 1)
+        delta[1:] = np.diff(clean, axis=0) / dt
+        delta_valid[1:] = valid[:-1] & valid[1:] & contiguous
+        mag_delta[1:] = np.diff(magnitude, axis=0) / dt
+        mag_delta_valid[1:] = mag_valid[:-1] & mag_valid[1:] & contiguous
+    jerk_magnitude = np.linalg.norm(np.where(delta_valid, delta, 0), axis=1, keepdims=True)
+    result = np.concatenate([magnitude, delta, jerk_magnitude, mag_delta], axis=1)
+    mask = np.concatenate([mag_valid, delta_valid, delta_valid.all(1, keepdims=True), mag_delta_valid], axis=1)
+    return np.where(mask, result, 0), mask
+
+
+def rolling_axis_correlations(values: np.ndarray, valid: np.ndarray, counters: np.ndarray,
+                              window: int = 9) -> tuple[np.ndarray, np.ndarray]:
+    frame = pd.DataFrame(np.where(valid, values, np.nan))
+    result = np.column_stack([frame[a].rolling(window, min_periods=window).corr(frame[b]).to_numpy()
+                              for a, b in ((0, 1), (0, 2), (1, 2))])
+    contiguous = np.zeros(len(values), dtype=bool)
+    if len(values) >= window:
+        contiguous[window - 1:] = counters[window - 1:] - counters[:len(values) - window + 1] == window - 1
+    mask = np.isfinite(result) & contiguous[:, None]
+    return np.where(mask, np.clip(result, -1, 1), 0), mask
 
 
 class ChannelStatistics:
@@ -307,7 +366,8 @@ class FoldPreprocessor:
 
     def fit(self, sequences: Iterable[pd.DataFrame], demographics: pd.DataFrame) -> "FoldPreprocessor":
         hands = demographics_lookup(demographics)
-        imu_stats, thm_stats, tof_stats = ChannelStatistics(15), ChannelStatistics(5), ChannelStatistics(5)
+        imu_features = DYNAMIC_IMU_FEATURES if self.config.imu_dynamics else IMU_FEATURES
+        imu_stats, thm_stats, tof_stats = ChannelStatistics(len(imu_features)), ChannelStatistics(5), ChannelStatistics(5)
         lengths, subjects, sequence_ids, labels = [], set(), set(), set()
         for sequence in sequences:
             sequence_id, subject, label = sequence_metadata(sequence)
@@ -329,7 +389,7 @@ class FoldPreprocessor:
         if not lengths:
             raise ValueError("No training sequences to fit.")
         self.state = {
-            "version": self.VERSION, "config": asdict(self.config), "imu_features": IMU_FEATURES,
+            "version": self.VERSION, "config": asdict(self.config), "imu_features": imu_features,
             "modality_order": MODALITIES, "max_length": int(np.ceil(np.quantile(lengths, self.config.length_quantile))),
             "angular_velocity_unit": "rad/s" if self.config.sample_period_seconds is not None else "rad/counter_step",
             "train_subjects": sorted(subjects), "train_sequence_ids": sorted(sequence_ids),
@@ -394,18 +454,20 @@ class FoldPreprocessor:
     @classmethod
     def load(cls, path: Path) -> "FoldPreprocessor":
         state = json.loads(Path(path).read_text(encoding="utf-8"))
-        if state.get("version") != cls.VERSION or state.get("imu_features") != IMU_FEATURES:
+        config = PreprocessingConfig.from_dict(state["config"])
+        features = DYNAMIC_IMU_FEATURES if config.imu_dynamics else IMU_FEATURES
+        if state.get("version") != cls.VERSION or state.get("imu_features") != features:
             raise ValueError("Incompatible preprocessing parameters/schema.")
         if not isinstance(state.get("max_length"), int) or state["max_length"] < 1:
             raise ValueError("Invalid saved max_length.")
-        for modality, channels in (("imu", 15), ("thm", 5), ("tof", 5)):
+        for modality, channels in (("imu", len(features)), ("thm", 5), ("tof", 5)):
             stats = state["statistics"][modality]
             for key in ("count", "offset", "scale"):
                 if len(stats[key]) != channels or not np.isfinite(stats[key]).all():
                     raise ValueError(f"Invalid saved {modality} {key}.")
             if (np.asarray(stats["scale"]) <= 0).any() or (np.asarray(stats["count"]) < 0).any():
                 raise ValueError(f"Invalid saved {modality} statistics.")
-        result = cls(PreprocessingConfig.from_dict(state["config"]))
+        result = cls(config)
         result.state = state
         return result
 
@@ -441,8 +503,9 @@ def sensor_dropout(sample: dict, rng: np.random.Generator, *, training: bool,
     if rng.random() < config.tof_probability:
         drop_tof[:] = True
     if drop_rot:
-        out["imu"][:, 3:] = 0
-        out["imu_valid"][:, 3:] = False
+        indices = rotation_dependent_imu_indices(out["imu"].shape[-1])
+        out["imu"][:, indices] = 0
+        out["imu_valid"][:, indices] = False
         out["rotation_valid"][:] = False
     out["thm"][:, drop_thm] = 0
     out["thm_valid"][:, drop_thm] = False
