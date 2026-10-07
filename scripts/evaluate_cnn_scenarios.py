@@ -51,7 +51,8 @@ def main():
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     seed_everything(42, 4)
     results, predictions, auxiliary_available = [], {}, {}
-    for path in sorted(directory.glob("*/fold_*/best.pt")):
+    for metrics_path in sorted(directory.glob("*/fold_*/metrics.json")):
+        path = metrics_path.parent / "best.pt"
         model, processor, checkpoint = load_cnn_checkpoint(path)
         fold, name = checkpoint["fold"], model.model_name
         assert_preprocessor_matches(processor.state, manifest, fold)

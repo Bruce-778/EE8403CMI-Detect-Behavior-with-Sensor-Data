@@ -1,0 +1,103 @@
+{
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "results": [
+    {
+      "model": "imu",
+      "fold": 0,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.3916051421490783,
+      "accuracy_18class": 0.5636140135218193,
+      "score": 0.7263479979769881,
+      "binary_f1": 0.9736070381231672,
+      "macro_f1_9class": 0.479088957830809
+    },
+    {
+      "model": "imu",
+      "fold": 0,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1627,
+      "loss": 1.3916051421490783,
+      "accuracy_18class": 0.5636140135218193,
+      "score": 0.7263479979769881,
+      "binary_f1": 0.9736070381231672,
+      "macro_f1_9class": 0.479088957830809
+    },
+    {
+      "model": "imu",
+      "fold": 0,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 843,
+      "loss": 1.3916051421490783,
+      "accuracy_18class": 0.5636140135218193,
+      "score": 0.7263479979769881,
+      "binary_f1": 0.9736070381231672,
+      "macro_f1_9class": 0.479088957830809
+    },
+    {
+      "model": "multisensor",
+      "fold": 0,
+      "scenario": "observed",
+      "additional_auxiliary_drop_count": 0,
+      "loss": 1.0966924766711685,
+      "accuracy_18class": 0.6859250153657037,
+      "score": 0.8092482935880994,
+      "binary_f1": 0.9773622047244095,
+      "macro_f1_9class": 0.6411343824517893
+    },
+    {
+      "model": "multisensor",
+      "fold": 0,
+      "scenario": "imu_only",
+      "additional_auxiliary_drop_count": 1627,
+      "loss": 1.5111525277089106,
+      "accuracy_18class": 0.5347264904732637,
+      "score": 0.7096315525710059,
+      "binary_f1": 0.9644076060458313,
+      "macro_f1_9class": 0.45485549909618034
+    },
+    {
+      "model": "multisensor",
+      "fold": 0,
+      "scenario": "aux_dropout50",
+      "additional_auxiliary_drop_count": 843,
+      "loss": 1.3141513532411122,
+      "accuracy_18class": 0.6066379840196681,
+      "score": 0.7556112102739083,
+      "binary_f1": 0.9686274509803922,
+      "macro_f1_9class": 0.5425949695674244
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "observed",
+      "used_model_a": 0,
+      "used_model_b": 1627,
+      "score": 0.8092482935880994,
+      "binary_f1": 0.9773622047244095,
+      "macro_f1_9class": 0.6411343824517893
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "imu_only",
+      "used_model_a": 1627,
+      "used_model_b": 0,
+      "score": 0.7263479979769881,
+      "binary_f1": 0.9736070381231672,
+      "macro_f1_9class": 0.479088957830809
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "aux_dropout50",
+      "used_model_a": 843,
+      "used_model_b": 784,
+      "score": 0.7651598019511565,
+      "binary_f1": 0.974032337089662,
+      "macro_f1_9class": 0.5562872668126511
+    }
+  ],
+  "five_fold_evaluation": {},
+  "scenario_note": "aux_dropout50 deterministically removes THM+ToF for roughly half the same validation sequences; natural missingness is retained; this is a stress test, not the hidden test distribution"
+}
