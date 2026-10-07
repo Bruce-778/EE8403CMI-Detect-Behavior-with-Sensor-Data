@@ -46,20 +46,31 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
     parser.add_argument("--name", required=True)
+    parser.add_argument("--imu-run", type=Path, help="Optional separately selected Model A run for fixed availability routing.")
     args = parser.parse_args()
     directory = (ROOT / args.directory).resolve()
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     seed_everything(42, 4)
     results, predictions, auxiliary_available = [], {}, {}
-    for metrics_path in sorted(directory.glob("*/fold_*/metrics.json")):
+    candidates = {(path.parent.parent.name, path.parent.name): path
+                  for path in directory.glob("*/fold_*/metrics.json")}
+    if args.imu_run is not None:
+        imu_directory = (ROOT / args.imu_run).resolve()
+        candidates.update({("imu", path.parent.name): path
+                           for path in imu_directory.glob("imu/fold_*/metrics.json")})
+    identities = {}
+    for _, metrics_path in sorted(candidates.items()):
         path = metrics_path.parent / "best.pt"
         model, processor, checkpoint = load_cnn_checkpoint(path)
         fold, name = checkpoint["fold"], model.model_name
         assert_preprocessor_matches(processor.state, manifest, fold)
         identity = checkpoint["data_metadata"]["identity"]
+        if fold in identities and identity != identities[fold]:
+            raise ValueError("Routed Model A/B must use the same fold-fitted inputs/cache identity.")
+        identities[fold] = identity
         config = TrainingConfig(**checkpoint["training_config"])
         # Cache path is in run_config, and its identity must match the checkpoint.
-        run = json.loads((directory / "run_config.json").read_text(encoding="utf-8"))
+        run = json.loads((metrics_path.parent.parent.parent / "run_config.json").read_text(encoding="utf-8"))
         cache = Path(run["cache_dir"]) / f"fold_{fold}"
         if json.loads((cache / "metadata.json").read_text(encoding="utf-8"))["identity"] != identity:
             raise ValueError("Checkpoint/cache identity mismatch.")
@@ -103,7 +114,7 @@ def main():
     for (name, scenario), frames in predictions.items():
         if set(frames) == set(range(manifest.n_splits)):
             evaluations[f"{name}/{scenario}"] = evaluate_oof_frames(manifest, frames,
-                directory / "scenarios" / name / scenario, experiment_name=f"{args.name}_{name}_{scenario}")
+                directory / "scenarios" / args.name / name / scenario, experiment_name=f"{args.name}_{name}_{scenario}")
     output = ROOT / "experiments/results" / f"{args.name}_scenarios.json"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps({"folds_sha256": manifest.fingerprint, "results": results,
