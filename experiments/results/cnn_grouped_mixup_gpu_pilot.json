@@ -1,0 +1,131 @@
+{
+  "output_dir": "outputs/experiments/cnn_grouped_mixup",
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "results": [
+    {
+      "model": "imu",
+      "fold": 0,
+      "validation": {
+        "loss": 1.9146148345920302,
+        "accuracy_18class": 0.6441303011677935,
+        "score": 0.7726898350191986,
+        "binary_f1": 0.9794117647058823,
+        "macro_f1_9class": 0.5659679053325151
+      },
+      "best_epoch": 56,
+      "epochs_run": 60,
+      "max_length": 127,
+      "training": {
+        "seed": 42,
+        "epochs": 80,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0003,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.5,
+        "binary_loss_weight": 0.1,
+        "early_stopping_patience": 16,
+        "min_delta": 0.0001,
+        "lr_patience": 4,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "cuda",
+        "mixup_alpha": 0.4,
+        "mixup_probability": 0.5
+      },
+      "model_metadata": {
+        "model": "imu",
+        "architecture": "grouped_masked_se_cnn_v3",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": [],
+          "encoder_style": "grouped",
+          "normalization": "masked_batch",
+          "squeeze_excitation": true,
+          "stem_channels": [
+            16,
+            32
+          ],
+          "imu_feature_count": 15
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + masked_batch",
+        "parameters": 181770
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.13.15",
+        "torch": "2.11.0+cu128",
+        "numpy": "2.1.3"
+      },
+      "best_epoch_train_loss": 1.1795435585835314,
+      "best_epoch_validation_loss": 1.9146148345920304,
+      "last_epoch_train_loss": 1.2074238615559334,
+      "last_epoch_validation_loss": 1.934926379950558,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.5147679324894515,
+        "Cheek - pinch skin": 0.3855421686746988,
+        "Eyebrow - pull hair": 0.3983739837398374,
+        "Eyelash - pull hair": 0.5579710144927537,
+        "Forehead - pull hairline": 0.6064981949458483,
+        "Forehead - scratch": 0.6963562753036437,
+        "Neck - pinch skin": 0.4470588235294118,
+        "Neck - scratch": 0.5217391304347826
+      },
+      "largest_target_confusions": [
+        {
+          "count": 26,
+          "truth": "Above ear - pull hair",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 23,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 22,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 21,
+          "truth": "Neck - pinch skin",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 21,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Forehead - pull hairline"
+        }
+      ]
+    }
+  ],
+  "five_fold_evaluation": {},
+  "scope": "development CV; held-out folds select checkpoints; fold 0 also used for configuration selection",
+  "artifact_source": {
+    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-winner-inspired-cnn-training?scriptVersionId=356144886",
+    "local_root": "outputs\\kaggle_training\\recovered_v2\\cmi_worktree",
+    "verification": "Checkpoint/cache states equivalent after JSON roundtrip; exact folds, training IDs, prediction coverage and official metrics checked"
+  }
+}
