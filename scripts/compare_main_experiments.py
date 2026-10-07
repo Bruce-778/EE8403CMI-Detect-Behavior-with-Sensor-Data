@@ -63,6 +63,30 @@ def main():
             pooled = evaluation["oof"]["score"]
             lines.append(f"| {name} | {model} | " + " | ".join(f"{v:.5f}" for v in values)
                 + f" | {values.mean():.5f} ± {values.std(ddof=1):.5f} | {pooled:.5f} |")
+    lines.extend(["", "## 固定等权概率融合", "", "两个来源均为对应 fold 的 held-out 预测，各 50%；不逐折调权。", "",
+        "| 模型 | fold 0 | fold 1 | fold 2 | fold 3 | fold 4 | 均值 ± 标准差 | Pooled OOF |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"])
+    for path in sorted((ROOT / "experiments/results").glob("cnn_equal_blend_*.json")):
+        blend = json.loads(path.read_text(encoding="utf-8"))
+        evaluation = blend.get("evaluation")
+        if evaluation is None:
+            continue
+        if evaluation["folds_sha256"] != manifest.fingerprint or evaluation["oof_sequences"] != len(manifest.table):
+            raise ValueError("Blend OOF coverage/fingerprint mismatch.")
+        values = [row["score"] for row in sorted(blend["fold_scores"], key=lambda row: row["fold"])]
+        lines.append(f"| {blend['settings']['model']} | " + " | ".join(f"{v:.5f}" for v in values)
+            + f" | {evaluation['fold_mean']['score']:.5f} ± {evaluation['fold_std']['score']:.5f} | {evaluation['oof']['score']:.5f} |")
+    scenario_path = ROOT / "experiments/results/cnn_final_selected_scenarios.json"
+    if scenario_path.is_file():
+        scenario = json.loads(scenario_path.read_text(encoding="utf-8"))
+        lines.extend(["", "## 最终方案的模态缺失压力测试", "", "同一份验证 sequence；额外遮挡由 sequence_id hash 决定，与标签无关。"
+            "这是验证压力测试，不是隐藏测试集成绩。", "", "| 输入 | 模型 | 五折均值 ± 标准差 | Pooled OOF |",
+            "| --- | --- | ---: | ---: |"])
+        for key, evaluation in scenario["five_fold_evaluation"].items():
+            if evaluation["folds_sha256"] != manifest.fingerprint:
+                raise ValueError("Scenario OOF fingerprint mismatch.")
+            model, condition = key.split("/")
+            lines.append(f"| {condition} | {model} | {evaluation['fold_mean']['score']:.5f} ± {evaluation['fold_std']['score']:.5f} | {evaluation['oof']['score']:.5f} |")
     lines.extend(["", "## 参数", ""])
     for name, run in configurations.items():
         training, model = run["training"], run["model_parameters"]
