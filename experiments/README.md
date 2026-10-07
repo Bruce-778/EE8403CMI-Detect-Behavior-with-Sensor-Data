@@ -73,3 +73,13 @@ Attention pooling 单独增加在该配置上，A 暂为 0.730267，低于 0.742
 ```powershell
 & 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --config configs/cnn_hierarchical.json --model multisensor --fold 0 1 2 3 4 --output-dir outputs/experiments/cnn_hierarchical_b5 --resume
 ```
+
+## 尝试 6：B 使用独立训练参数
+
+完整训练继续推进后，A 在 fold 1 为 0.727996（v1 0.728407，基本持平），fold 2 为 0.763863（v1 0.739067），fold 3 为 0.759007（v1 0.744238）。B 分层损失 + 强正则化配置在 fold 1 却为 **0.791769**（v1 **0.807482**），主要是 9 类 macro F1 下降，binary F1 基本相同。这提示 B 不应仅因 fold 0 提升而沿用 A 的参数。
+
+新增独立候选 `cnn_multisensor_hier_v1train`：保留分层损失，恢复 B 原始 lr=1e-3 / dropout=0.2 / patience=10 / scheduler patience=3，最多 70 epochs。先检查固定 fold 0，再决定是否投入完整五折；此前已锁定的五折实验照常完成，不在其中某一折单独换参数。这个新增假设参考了 fold 1，所以最终比较仍属于开发 CV。
+
+```powershell
+& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --config configs/cnn_multisensor_hier_v1train.json --model multisensor
+```
