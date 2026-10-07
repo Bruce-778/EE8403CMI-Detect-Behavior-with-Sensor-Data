@@ -1,0 +1,32 @@
+{
+  "competition": "cmi-detect-behavior-with-sensor-data",
+  "date_local": "2026-10-07",
+  "timezone": "America/Los_Angeles",
+  "submission_status": "Notebook Running (after deadline)",
+  "notebook_url": "https://www.kaggle.com/code/mingweiwei03/cmi-winner-inspired-cnn-inference?scriptVersionId=356204022",
+  "notebook_version": 1,
+  "script_version_id": 356204022,
+  "weights_dataset_url": "https://www.kaggle.com/datasets/mingweiwei03/cmi-winner-cnn-weights-20261007",
+  "weights_dataset_version": 1,
+  "visibility": "private",
+  "weights_archive_sha256": "e7af6cd296b54d75cdd9c135f36d78b7dd684dee4437975401722548b8720e19",
+  "checkpoint_count": 10,
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "bundle_source_git_commit": "c5a952c85e79dc033cbb1a2fbd57a9c3a1f16d0a",
+  "local_natural_cv": {
+    "mean": 0.8520287872641525,
+    "std": 0.008718663967811539
+  },
+  "public_score": null,
+  "private_score": null,
+  "reference_public_score": 0.806408,
+  "reference_private_score": 0.796378,
+  "reference_notebook_url": "https://www.kaggle.com/code/mingweiwei03/cmi-selected-cnn-five-fold-ensemble?scriptVersionId=356132739",
+  "score_note": "No new online score yet. Frozen inference uploaded unchanged; local development CV is not a leaderboard score. User has now authorized online submission.",
+  "submitted_at_utc": "2026-10-07T23:47:19.986203+00:00",
+  "source_url": "https://www.kaggle.com/competitions/cmi-detect-behavior-with-sensor-data/submissions",
+  "submission_file": "submission.parquet",
+  "submission_file_public_example_bytes": 998,
+  "notebook_runtime_seconds": 38.2,
+  "submission_description": "Frozen dynamics CNN: IMU and multisensor, fixed subject-wise five folds, masked normalization, SE and Mixup. Ten checkpoints; availability routing, equal fold probabilities. Local development CV 0.852029; no test fitting."
+}
