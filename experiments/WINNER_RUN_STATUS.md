@@ -29,7 +29,7 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 
 云端已经通过 `train.csv` 和 `train_demographics.csv` 的字节 SHA256 校验，与 `configs/data_source_hashes.json` 固定的本地输入一致；固定 folds 文件 SHA256 也一致。已恢复原三项筛选结果，开始仅在 fold 0 的 6,524 条训练 sequence 上拟合新缓存。需要重新训练选定配置的 IMU-only 和多传感器各五折，包括重新训练 fold 0。旧筛选阶段 fold 0 产物独立保存于 `outputs/pilot_artifacts/`，不能替代新运行的 fold 0。
 
-已确认新运行越过两次失败点，并完成 IMU fold 0：日志报告最佳 CMI=0.775652，最佳 epoch 38，43 epochs 后 early stop，与原筛选结果在日志显示精度下一致。当前训练多传感器 fold 0，至少已进入第 12 个 epoch；十个模型中完成一个，完整五折结果仍未生成。下载后仍需检查实际 checkpoint 和预测，不以训练过程中的临时分数替代最终结果。页面截图保存在 `outputs/kaggle_training/training_status.png`。自动化 `cmi` 已更新为只监控此版本，旧监控链接不再使用。
+已确认新运行越过两次失败点，完成 IMU fold 0（日志最佳 CMI=0.775652，最佳 epoch 38，43 epochs 后 early stop）及多传感器 fold 0（日志最佳 CMI=0.843238）。IMU 重训与原筛选结果在日志显示精度下一致。当前训练 IMU fold 1，至少已进入第 49 个 epoch；十个模型中完成两个，完整五折结果仍未生成。下载后仍需检查实际 checkpoint 和预测，不以单折结果或训练过程中的临时分数替代最终五折比较。页面截图保存在 `outputs/kaggle_training/training_status.png`。自动化 `cmi` 已更新为只监控此版本，旧监控链接不再使用。
 
 ## 完成后的操作
 
