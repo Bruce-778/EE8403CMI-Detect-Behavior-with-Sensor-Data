@@ -60,3 +60,5 @@ IMU-only：`0.748366 ± 0.016025 → 0.787194 ± 0.014102`；多传感器：`0.8
 固定约半数 sequence 额外缺失 THM+ToF 时，路由分数为 `0.821455 ± 0.011675`，比旧方案高 `0.033055`；全部辅助模态缺失时为新 IMU 分支的 `0.787194 ± 0.014102`。新旧缺失样本和每折 A/B 路由数量已核对一致，18 个模型 / 场景组合的概率 argmax、官方指标及完整 OOF 均通过检查。
 
 因此保留一个统一的 `cnn_dynamics_mixup` 配置和十个 A/B 五折权重。结果与每折变化见 `WINNER_RESULTS.md`，完整配置和训练记录见 `experiments/results/cnn_winner_selected.json`。收益属于分组 CNN、masked BatchNorm、SE、34 通道运动特征及 Mixup 的联合效果；现有五折证据无法分别归因。fold 0 参与配置筛选、各折 validation 参与 early stopping，仍是开发 CV，不是独立测试或新的线上成绩。
+
+新推理包已保存于 `outputs/kaggle_winner_submission_v2`，十个冻结 checkpoint，五折等权及原可用性路由。CPU 实际推理核对每折一条 held-out sequence，与 GPU OOF 的最大概率误差为 `3.56e-7`，标签字段被忽略；公开无标签示例和全部辅助模态缺失输入均通过。包内容与源码一致，Notebook 语法有效；推理核验证据已本地保存并 commit。未上传或提交新包，跟进自动化 `cmi` 已删除。

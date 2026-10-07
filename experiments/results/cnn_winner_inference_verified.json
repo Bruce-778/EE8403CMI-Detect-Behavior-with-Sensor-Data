@@ -1,0 +1,184 @@
+{
+  "status": "passed",
+  "directory": "outputs/kaggle_winner_submission_v2",
+  "archive_bytes": 8694116,
+  "archive_sha256": "e7af6cd296b54d75cdd9c135f36d78b7dd684dee4437975401722548b8720e19",
+  "notebook": "outputs/kaggle_winner_submission_v2/cmi-cnn-selected.ipynb",
+  "bundle": {
+    "version": 1,
+    "label_order": [
+      "Above ear - pull hair",
+      "Cheek - pinch skin",
+      "Eyebrow - pull hair",
+      "Eyelash - pull hair",
+      "Forehead - pull hairline",
+      "Forehead - scratch",
+      "Neck - pinch skin",
+      "Neck - scratch",
+      "Write name on leg",
+      "Wave hello",
+      "Glasses on/off",
+      "Text on phone",
+      "Write name in air",
+      "Feel around in tray and pull out an object",
+      "Scratch knee/leg skin",
+      "Pull air toward your face",
+      "Drink from bottle/cup",
+      "Pinch knee/leg skin"
+    ],
+    "folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+    "members": [
+      {
+        "path": "weights/cnn_dynamics_mixup/imu/fold_0.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "imu",
+        "fold": 0,
+        "weight_within_branch": 1.0,
+        "sha256": "550d74ffecdccf1140561e90e0c6adf2d590d4fb7e2f59c3cc886dc32f9c1031"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/imu/fold_1.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "imu",
+        "fold": 1,
+        "weight_within_branch": 1.0,
+        "sha256": "59a6cb5f40d70ac8117033786a32f2b955d905da791fe3a195c0e3ef85826a17"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/imu/fold_2.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "imu",
+        "fold": 2,
+        "weight_within_branch": 1.0,
+        "sha256": "2c31a61cb4f529e0db51b014db6432f1722f6fe46607b4971df4ac7e1d88b793"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/imu/fold_3.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "imu",
+        "fold": 3,
+        "weight_within_branch": 1.0,
+        "sha256": "aa498f20082395059e35b0dea38c0caefe49a101f639a31832ccba0a3187a9bc"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/imu/fold_4.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "imu",
+        "fold": 4,
+        "weight_within_branch": 1.0,
+        "sha256": "26cd23459320f893caf16590dea9c017d8c764ba8a52e6deb4bd7ab12d0fb4b3"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/multisensor/fold_0.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "multisensor",
+        "fold": 0,
+        "weight_within_branch": 1.0,
+        "sha256": "277e17b923d7f1014a3315c572fa43bcbb2c274b5deca11c4732605331c0462c"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/multisensor/fold_1.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "multisensor",
+        "fold": 1,
+        "weight_within_branch": 1.0,
+        "sha256": "e17e4c85c8ff39f7908b50a85575783ea77819d766164c2018f55622bb1aa612"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/multisensor/fold_2.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "multisensor",
+        "fold": 2,
+        "weight_within_branch": 1.0,
+        "sha256": "87477fbbb00ecd4962174d72ebcd66992100ef587bec3e37db3774f4952a215a"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/multisensor/fold_3.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "multisensor",
+        "fold": 3,
+        "weight_within_branch": 1.0,
+        "sha256": "5c950a9443cd9359b89e56832de0d6e00ead06d00e50dc3eb786855dc28651df"
+      },
+      {
+        "path": "weights/cnn_dynamics_mixup/multisensor/fold_4.pt",
+        "source": "cnn_dynamics_mixup",
+        "model": "multisensor",
+        "fold": 4,
+        "weight_within_branch": 1.0,
+        "sha256": "a5629915b66b5e8130fc0e9a414604fc6fd0ecb0d942221dc53085e2f374860e"
+      }
+    ],
+    "members_per_branch": 1,
+    "fold_probability_weights": [
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2
+    ],
+    "routing": "THM valid or ToF hardware present => B; otherwise A",
+    "source_git_commit": "c5a952c85e79dc033cbb1a2fbd57a9c3a1f16d0a",
+    "local_validation_score": {
+      "mean": 0.8520287872641525,
+      "std": 0.008718663967811539
+    },
+    "note": "Local validation score is not a Kaggle leaderboard score. No test fitting or label access."
+  },
+  "inference_checks": {
+    "status": "passed",
+    "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+    "heldout_checks": [
+      {
+        "fold": 1,
+        "sequence_id": "SEQ_000007",
+        "max_probability_error": 3.5574111934000285e-07
+      },
+      {
+        "fold": 0,
+        "sequence_id": "SEQ_000008",
+        "max_probability_error": 1.6385816192787672e-07
+      },
+      {
+        "fold": 3,
+        "sequence_id": "SEQ_000016",
+        "max_probability_error": 1.745857238777404e-07
+      },
+      {
+        "fold": 2,
+        "sequence_id": "SEQ_000022",
+        "max_probability_error": 7.87162780513384e-08
+      },
+      {
+        "fold": 4,
+        "sequence_id": "SEQ_000091",
+        "max_probability_error": 6.527862550509411e-08
+      }
+    ],
+    "public_test_examples": [
+      {
+        "sequence_id": "SEQ_000001",
+        "prediction": "Neck - scratch",
+        "forced_imu_prediction": "Eyebrow - pull hair"
+      },
+      {
+        "sequence_id": "SEQ_000011",
+        "prediction": "Eyelash - pull hair",
+        "forced_imu_prediction": "Eyelash - pull hair"
+      }
+    ],
+    "note": "Public examples have no labels; this is inference verification, not a test score."
+  },
+  "archive_crc_and_contents_match": true,
+  "bundled_source_matches_project": true,
+  "notebook_syntax_valid": true,
+  "runtime_scope": "Local CPU inference. Five real held-out sequences, one per fold, compared with GPU OOF probabilities. Public test examples are unlabeled. The Kaggle gateway/hidden rerun was not executed; no leaderboard score or new submission.",
+  "limitation": "Full five-fold scores recomputed from all saved OOF predictions; raw checkpoint inference rechecked on one held-out sequence per fold, not every sequence."
+}

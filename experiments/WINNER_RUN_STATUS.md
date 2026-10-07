@@ -16,7 +16,7 @@
 
 CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,627 条验证 sequence、训练 subject、checkpoint 与实际预测分数，并分别本地 commit。证据为 `experiments/results/*_cpu_pilot.json` 和 `*_gpu_pilot.json`。GPU 三项选定一个固定配置 `cnn_dynamics_mixup`，CPU GRU 不混入 GPU 筛选；禁止按每折最高结果拼接。
 
-这些是单折开发 CV，尚不能证明五折或线上提升。63 项项目测试、两项续跑/数据身份专项测试与真实 GPU 产物恢复检查通过。
+上述 pilot 是单折开发 CV，用于选择固定配置。后续完整五折提升已在下文核验，线上提升尚未验证。63 项项目测试、两项续跑/数据身份专项测试与真实 GPU 产物恢复检查通过。
 
 ## 两次基础设施失败
 
@@ -27,9 +27,9 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 
 [CMI Winner CNN Fixed Fold Validation 版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-cnn-fixed-fold-validation?scriptVersionId=356161432) 已成功完成，不要重新训练。训练使用免费 T4、关闭互联网，是我们的固定 subject-wise CV，不是线上比赛分数。用户已手动下载并解压结果，十个模型和完整 OOF 已在本机核验；新方案在全部五折和固定缺失场景中均提升，保留 `cnn_dynamics_mixup`。两个导出会话均已取消，没有运行中的训练或导出任务。
 
-云端已经通过 `train.csv` 和 `train_demographics.csv` 的字节 SHA256 校验，与 `configs/data_source_hashes.json` 固定的本地输入一致；固定 folds 文件 SHA256 也一致。已恢复原三项筛选结果，开始仅在 fold 0 的 6,524 条训练 sequence 上拟合新缓存。需要重新训练选定配置的 IMU-only 和多传感器各五折，包括重新训练 fold 0。旧筛选阶段 fold 0 产物独立保存于 `outputs/pilot_artifacts/`，不能替代新运行的 fold 0。
+云端通过了 `train.csv` 和 `train_demographics.csv` 的字节 SHA256 校验，与 `configs/data_source_hashes.json` 固定的本地输入一致；固定 folds 文件 SHA256 也一致。原三项筛选结果保留，选定配置的 IMU-only 和多传感器各五折已从头训练，缓存仅在各折训练 sequence 上拟合（fold 0 为 6,524 条）。旧筛选阶段 fold 0 产物独立保存于 `outputs/pilot_artifacts/`，未替代新运行的 fold 0。
 
-已确认新运行越过两次失败点，训练日志报告的已完成 checkpoint 分数如下（下载后仍需核对实际预测）：
+新运行越过两次失败点，以下十个 checkpoint 的日志分数已由本机实际保存预测重算核对：
 
 | Fold | IMU-only | 多传感器 |
 | --- | ---: | ---: |
@@ -53,7 +53,7 @@ CPU GRU 已完成，不能继续监控旧进程。所有尝试已核对同一 1,
 2. 对新旧两个方案的 18 个模型 / 缺失场景组合逐一重算官方指标，检查每个场景完整覆盖 8,151 条 sequence 一次、概率 argmax 与分类标签一致。固定额外缺失样本、每折 A/B 路由数量一致，辅助模态缺失不改变 IMU 分支概率。
 3. 原始输入路由：`0.823642 ± 0.016330 → 0.852029 ± 0.008719`；约半数额外辅助缺失：`0.788400 ± 0.013442 → 0.821455 ± 0.011675`；全部辅助缺失：`0.748366 ± 0.016025 → 0.787194 ± 0.014102`。均为五折均值与样本标准差，每项均在 5/5 折提升，因此保留新配置；没有按折挑模型或调整权重。
 4. OOF 与每折评价保存在 `outputs/winner_comparison/{reference,candidate}/`；原始权重和产物保存在新导入目录。紧凑检查为 `experiments/results/cnn_winner_import_verified.json`，完整比较为 `cnn_winner_comparison.json`。
-5. 下一步：将新方案导出到新的 `outputs/kaggle_winner_submission_v2`，使用真实 held-out sequence 和公开无标签示例检查推理，不覆盖旧包，不新增比赛提交。
-6. 推理检查完成后删除跟进自动化 `cmi`。当前自动化仍暂停；不需要重启训练。
+5. 新方案已导出到独立的 `outputs/kaggle_winner_submission_v2`，共十个冻结权重，ZIP 为 8,694,116 字节。每折一条真实 held-out sequence 的推理概率与 GPU OOF 相符，最大绝对误差 `3.56e-7`；修改输入标签不影响预测。两个公开无标签示例及全部辅助模态缺失输入正常，ZIP CRC / 文件内容、打包源码和 Notebook 语法检查通过。证据为 `experiments/results/cnn_winner_inference_verified.json`。没有重新对全部 8,151 条原始序列运行 checkpoint 推理，也未执行线上 gateway / 隐藏测试。
+6. 跟进自动化 `cmi` 已删除，本轮结果回收、固定五折比较和本机推理检查完成。旧推理包和原线上成绩保留；无 push、无新比赛提交，不需要重启训练。
 
 保留旧方案与首次线上成绩，不搜索测试标签或按验证样本定制规则。开发 CV 不等同于新的线上比赛成绩。
