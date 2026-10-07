@@ -10,7 +10,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from cmi_project.evaluation import ALL_GESTURES, PROBABILITY_COLUMNS
+from cmi_project.evaluation import ALL_GESTURES, PROBABILITY_COLUMNS, _checked_predictions
 from cmi_project.inference import RoutedCNNPredictor
 from cmi_project.preprocessing import iter_csv_sequences
 from cmi_project.validation import load_fold_manifest
@@ -19,14 +19,17 @@ from cmi_project.validation import load_fold_manifest
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--directory", type=Path, default=Path("outputs/kaggle_submission"))
+    parser.add_argument("--oof-path", type=Path, default=Path(
+        "outputs/experiments/cnn_hierarchical/scenarios/cnn_final_selected/routed/observed/oof_predictions.csv"))
     args = parser.parse_args()
     directory = ROOT / args.directory
     predictor = RoutedCNNPredictor(directory / "bundle")
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     if predictor.folds_sha256 != manifest.fingerprint:
         raise ValueError("Submission differs from the fixed local folds.")
-    expected = pd.read_csv(ROOT / "outputs/experiments/cnn_hierarchical/scenarios/cnn_final_selected/routed/observed/oof_predictions.csv",
-                           dtype={"sequence_id": str}).set_index("sequence_id")
+    expected = pd.read_csv(ROOT / args.oof_path, dtype={"sequence_id": str})
+    expected = pd.concat([_checked_predictions(manifest, fold, expected.loc[expected["fold"] == fold],
+        require_fingerprint=True) for fold in range(5)]).set_index("sequence_id")
     demographics = pd.read_csv(ROOT / "data/train_demographics.csv", dtype={"subject": str})
     checked = set()
     records = []

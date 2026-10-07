@@ -29,7 +29,7 @@ def as_pandas(frame) -> pd.DataFrame:
 class RoutedCNNPredictor:
     """Average the five frozen folds, routing A/B independently within each fold.
 
-    Each branch averages the original and hierarchical-loss CNN probabilities.
+    Each branch averages one or more explicitly selected CNN probabilities.
     Test inputs never fit normalization, change weights or select checkpoints.
     """
 
@@ -43,6 +43,9 @@ class RoutedCNNPredictor:
         if manifest.get("folds") != list(range(5)):
             raise ValueError("Submission requires all five frozen folds.")
         self.folds_sha256 = manifest["folds_sha256"]
+        member_count = manifest.get("members_per_branch", 2)
+        if not isinstance(member_count, int) or member_count < 1:
+            raise ValueError("Invalid members_per_branch.")
         self.members = defaultdict(lambda: defaultdict(list))
         self.processors, self.inputs = {}, {}
         for member in manifest["members"]:
@@ -75,8 +78,8 @@ class RoutedCNNPredictor:
         for fold in range(5):
             if set(self.members[fold]) != {"imu", "multisensor"}:
                 raise ValueError("Each fold requires Model A and Model B.")
-            if any(len(models) != 2 for models in self.members[fold].values()):
-                raise ValueError("Each branch requires exactly two equal-weight CNNs.")
+            if any(len(models) != member_count for models in self.members[fold].values()):
+                raise ValueError("Each branch requires the declared number of equal-weight CNNs.")
 
     @torch.inference_mode()
     def predict_proba(self, sequence, demographics, *, fold: int | None = None) -> np.ndarray:

@@ -22,6 +22,9 @@ from cmi_project.validation import assert_preprocessor_matches, load_fold_manife
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/kaggle_submission"))
+    parser.add_argument("--runs", type=Path, nargs="+", default=[Path("outputs/experiments/cnn_v1"),
+                        Path("outputs/experiments/cnn_hierarchical")])
+    parser.add_argument("--validation-report", type=Path, default=Path("experiments/results/cnn_final_selected_scenarios.json"))
     args = parser.parse_args()
     output = ROOT / args.output_dir
     if output.exists() and any(output.iterdir()):
@@ -30,10 +33,14 @@ def main():
     bundle.mkdir(parents=True)
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     members = []
-    for run in ("cnn_v1", "cnn_hierarchical"):
+    runs = [(ROOT / path).resolve() for path in args.runs]
+    if not runs or len(set(path.name for path in runs)) != len(runs):
+        raise ValueError("Choose distinct complete experiment directories.")
+    for run_directory in runs:
+        run = run_directory.name
         for name in ("imu", "multisensor"):
             for fold in range(5):
-                source = ROOT / "outputs/experiments" / run / name / f"fold_{fold}/best.pt"
+                source = run_directory / name / f"fold_{fold}/best.pt"
                 if not source.with_name("metrics.json").is_file():
                     raise ValueError(f"Incomplete source checkpoint: {source}")
                 _, processor, checkpoint = load_cnn_checkpoint(source)
@@ -52,13 +59,23 @@ def main():
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 torch.save(compact, destination)
                 members.append({"path": destination.relative_to(bundle).as_posix(), "source": run,
-                    "model": name, "fold": fold, "weight_within_branch": 0.5,
+                    "model": name, "fold": fold, "weight_within_branch": 1 / len(runs),
                     "sha256": hashlib.sha256(destination.read_bytes()).hexdigest()})
     code = bundle / "src/cmi_project"
     code.mkdir(parents=True)
     for source in (ROOT / "src/cmi_project").glob("*.py"):
         shutil.copy2(source, code / source.name)
-    selected = json.loads((ROOT / "experiments/results/cnn_final_selected_scenarios.json").read_text(encoding="utf-8"))
+    selected = json.loads((ROOT / args.validation_report).read_text(encoding="utf-8"))
+    sources = selected["source_runs"]
+    primary = Path(sources["primary"]).name
+    declared_a = {Path(sources.get("imu_override") or sources["primary"]).name}
+    declared_b = {primary}
+    if sources.get("imu_equal_blend"):
+        declared_a.add(Path(sources["imu_equal_blend"]).name)
+    if sources.get("multisensor_equal_blend"):
+        declared_b.add(Path(sources["multisensor_equal_blend"]).name)
+    if declared_a != declared_b or declared_a != {path.name for path in runs}:
+        raise ValueError("Validation report does not describe the selected A/B ensemble sources.")
     evaluation = selected["five_fold_evaluation"]["routed/observed"]
     if evaluation["folds_sha256"] != manifest.fingerprint or evaluation["oof_sequences"] != len(manifest.table):
         raise ValueError("Selected local results do not match the exported folds.")
@@ -66,6 +83,7 @@ def main():
                             cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()
     metadata = {"version": 1, "label_order": list(ALL_GESTURES), "folds": list(range(5)),
         "folds_sha256": manifest.fingerprint, "members": members,
+        "members_per_branch": len(runs),
         "fold_probability_weights": [0.2] * 5,
         "routing": "THM valid or ToF hardware present => B; otherwise A",
         "source_git_commit": commit,
