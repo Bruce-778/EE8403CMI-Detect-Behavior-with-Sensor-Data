@@ -1,0 +1,112 @@
+{
+  "output_dir": "outputs/experiments/cnn_tuned",
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "results": [
+    {
+      "model": "imu",
+      "fold": 0,
+      "validation": {
+        "loss": 1.3916051421490783,
+        "accuracy_18class": 0.5636140135218193,
+        "score": 0.7263479979769881,
+        "binary_f1": 0.9736070381231672,
+        "macro_f1_9class": 0.479088957830809
+      },
+      "best_epoch": 45,
+      "epochs_run": 60,
+      "max_length": 127,
+      "training": {
+        "seed": 42,
+        "epochs": 70,
+        "batch_size": 64,
+        "learning_rate": 0.0005,
+        "weight_decay": 0.001,
+        "label_smoothing": 0.03,
+        "early_stopping_patience": 15,
+        "min_delta": 0.0001,
+        "lr_patience": 4,
+        "lr_factor": 0.5,
+        "min_lr": 1e-05,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "auto"
+      },
+      "model_metadata": {
+        "model": "imu",
+        "architecture": "masked_residual_1d_cnn_v1",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.3
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + per-token channel LayerNorm",
+        "parameters": 126098
+      },
+      "sensor_dropout": {
+        "rotation_probability": 0.05,
+        "thm_probability": 0.1,
+        "tof_probability": 0.1,
+        "channel_probability": 0.03
+      },
+      "versions": {
+        "python": "3.10.22",
+        "torch": "2.8.0+cpu",
+        "numpy": "2.2.6"
+      },
+      "best_epoch_train_loss": 1.039426084532466,
+      "best_epoch_validation_loss": 1.3916051421490785,
+      "last_epoch_train_loss": 0.9615077182312526,
+      "last_epoch_validation_loss": 1.3973805350838224,
+      "target_class_f1": {
+        "Above ear - pull hair": 0.4176706827309236,
+        "Cheek - pinch skin": 0.3184079601990049,
+        "Eyebrow - pull hair": 0.3583333333333333,
+        "Eyelash - pull hair": 0.4731182795698925,
+        "Forehead - pull hairline": 0.4852941176470588,
+        "Forehead - scratch": 0.5977859778597786,
+        "Neck - pinch skin": 0.2740740740740741,
+        "Neck - scratch": 0.4318181818181818
+      },
+      "largest_target_confusions": [
+        {
+          "count": 32,
+          "truth": "Above ear - pull hair",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 31,
+          "truth": "Neck - pinch skin",
+          "prediction": "Neck - scratch"
+        },
+        {
+          "count": 24,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 23,
+          "truth": "Neck - pinch skin",
+          "prediction": "Above ear - pull hair"
+        },
+        {
+          "count": 20,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        }
+      ]
+    }
+  ],
+  "five_fold_evaluation": {},
+  "scope": "development CV; held-out folds select checkpoints; fold 0 also used for configuration selection"
+}
