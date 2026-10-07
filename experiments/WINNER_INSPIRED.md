@@ -34,10 +34,11 @@
 | --- | ---: | ---: | --- |
 | 旧原始/分层 CNN 的固定等权融合 | 0.746375 | — | 同一验证样本 |
 | 分组 CNN + SE + masked BatchNorm | 0.773586 | 29 / 45 | CPU 单折 pilot |
-| 34 通道运动特征 + 同一网络 + Mixup | **0.775116** | 39 / 55 | CPU 单折 pilot |
+| 34 通道运动特征 + 同一网络 + Mixup | 0.775116 | 39 / 55 | CPU 单折 pilot |
+| 分组 CNN + 同一输入 + 双向 GRU | **0.775714** | 25 / 41 | CPU 单折 pilot |
 
 第一项本地尝试提升 0.027211；二值 F1 与 9 类 macro F1 按官方方式计算。它仍为单折开发结果，不能当作五折或线上提升。60 项检查通过，包含 padding 对 BatchNorm 统计的隔离、空分支、恢复模型、Mixup 的 mask 以及衍生特征的缺失语义。完整证据见 `experiments/results/cnn_grouped_se_cpu_pilot.json`。
 
 第二项本地尝试为 0.775116，比第一项高 0.001530，比旧融合高 0.028741。新增运动特征和 Mixup 的联合收益较小，尚不能分别归因；单独 Mixup 的 GPU pilot 用于进一步区分。55 epochs 后 early stop，最佳第 39 轮，完整证据见 `experiments/results/cnn_dynamics_mixup_cpu_pilot.json`。
 
-补充 CPU 对照 `cnn_grouped_gru`：保持第一项的输入、损失和训练参数，仅将 CNN 的 mean/max pooling 换成双向 GRU 的有效时间均值与末状态。先将有效 CNN token 按原时间顺序打包，排除 padding，整段不可用分支输出零。该对照尚在训练中，不参与已启动的三项 GPU 配置筛选。
+补充 CPU 对照 `cnn_grouped_gru`：保持第一项的输入、损失和训练参数，仅将 CNN 的 mean/max pooling 换成双向 GRU 的有效时间均值与末状态。先将有效 CNN token 按原时间顺序打包，排除 padding，整段不可用分支输出零。结果为 0.775714，比第一项高 0.002128；最佳 epoch 25，41 epochs 后 early stop。已核对同一 1,627 条验证 sequence、训练 subject 与保存的 OOF 分数，证据为 `experiments/results/cnn_grouped_gru_cpu_pilot.json`。仅为 CPU 单折对照，不参与已启动的三项 GPU 配置筛选；与运动特征 + Mixup 的差距不足 0.001，不能据此认定 GRU 更优。

@@ -7,12 +7,13 @@
 - CPU fold 0 旧 IMU 等权融合：0.746375。
 - CPU fold 0 分组 CNN + masked BatchNorm + SE：0.773586，最佳 epoch 29，运行 45 epochs。
 - CPU fold 0 34 通道运动特征 + Mixup：0.775116，最佳 epoch 39，运行 55 epochs。
+- CPU fold 0 分组 CNN + 双向 GRU：0.775714，最佳 epoch 25，运行 41 epochs；已核对固定 1,627 条验证 sequence 与 OOF。
 - 两项 CPU 结果已分别提交；结果证据在 `experiments/results/*_cpu_pilot.json`。
 - 63 项测试通过。GRU 代码、打包、导入校验与五折比较工具已经准备好。
 
 ## 运行中
 
-CPU 的 `cnn_grouped_gru` 只做固定 fold 0 对照，输出在 `outputs/experiments/cnn_grouped_gru`。模型配置已冻结，勿中途修改。
+CPU 的 `cnn_grouped_gru` 已完成，只做固定 fold 0 对照，输出在 `outputs/experiments/cnn_grouped_gru`。
 
 [GPU 训练版本 2](https://www.kaggle.com/code/mingweiwei03/cmi-winner-inspired-cnn-training?scriptVersionId=356144886) 在 Kaggle 免费 T4 上计算我们的固定验证 folds，不是线上测试分数。版本 1 已取消，勿监控版本 1。
 
