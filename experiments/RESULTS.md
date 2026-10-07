@@ -11,7 +11,6 @@
 | cnn_hierarchical | 0.742987 | 0.817910 |
 | cnn_attention | 0.730267 | 0.809325 |
 | cnn_large_kernel | 0.731901 | 0.811549 |
-| cnn_hierarchical_b5 | 未完成 | 0.817910 |
 | cnn_multisensor_hier_v1train | 未完成 | 0.807612 |
 
 ## 完整五折
@@ -23,6 +22,7 @@
 | cnn_v1 | imu | 0.72278 | 0.72841 | 0.73907 | 0.74424 | 0.71938 | 0.73077 ± 0.01060 | 0.73099 |
 | cnn_v1 | multisensor | 0.81152 | 0.80748 | 0.80803 | 0.83318 | 0.81994 | 0.81603 ± 0.01080 | 0.81629 |
 | cnn_hierarchical | imu | 0.74299 | 0.72800 | 0.76386 | 0.75901 | 0.71841 | 0.74245 ± 0.01949 | 0.74276 |
+| cnn_hierarchical | multisensor | 0.81791 | 0.79177 | 0.80249 | 0.84387 | 0.83118 | 0.81744 ± 0.02104 | 0.81774 |
 
 ## 固定等权概率融合
 
@@ -31,6 +31,7 @@
 | 模型 | fold 0 | fold 1 | fold 2 | fold 3 | fold 4 | 均值 ± 标准差 | Pooled OOF |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | imu | 0.74637 | 0.74179 | 0.76683 | 0.76060 | 0.72624 | 0.74837 ± 0.01602 | 0.74849 |
+| multisensor | 0.81783 | 0.80380 | 0.81190 | 0.84754 | 0.83028 | 0.82227 ± 0.01711 | 0.82234 |
 
 ## 参数
 
@@ -39,7 +40,6 @@
 - **cnn_hierarchical**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 5, 5]。
 - **cnn_attention**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=attention_max，stage kernels=[5, 5, 5]。
 - **cnn_large_kernel**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 9, 13]。
-- **cnn_hierarchical_b5**：lr=0.0005，batch=64，dropout=0.3，epochs≤70，patience=15，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 5, 5]。
 - **cnn_multisensor_hier_v1train**：lr=0.001，batch=64，dropout=0.2，epochs≤70，patience=10，macro loss weight=0.5，binary loss weight=0.1，pooling=mean_max，stage kernels=[5, 5, 5]。
 
 ## 输出与复现
