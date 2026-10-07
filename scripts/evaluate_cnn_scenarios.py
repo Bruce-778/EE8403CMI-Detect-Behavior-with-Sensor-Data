@@ -17,6 +17,7 @@ from cmi_project.cnn_data import CNNTensorDataset, validate_arrays
 from cmi_project.cnn_training import (CMIHierarchicalLoss, TrainingConfig, evaluate_model,
                                       load_cnn_checkpoint, seed_everything)
 from cmi_project.evaluation import ALL_GESTURES, PROBABILITY_COLUMNS, cmi_metrics, evaluate_oof_frames
+from cmi_project.preprocessing import preprocessor_states_equal
 from cmi_project.validation import assert_preprocessor_matches, load_fold_manifest
 
 AUXILIARY_KEYS = ("thm", "thm_valid", "thm_observed", "tof", "tof_valid", "tof_fraction", "tof_sensor_present")
@@ -96,7 +97,7 @@ def main():
             if (extra_checkpoint["fold"] != fold or extra_model.model_name != name
                     or extra_checkpoint["folds_sha256"] != manifest.fingerprint
                     or extra_checkpoint["data_metadata"]["identity"] != identity
-                    or extra_processor.state != processor.state):
+                    or not preprocessor_states_equal(extra_processor.state, processor.state)):
                 raise ValueError("Ensemble members must use identical fold-fitted inputs.")
             model = FixedProbabilityEnsemble(model, extra_model)
         if fold in identities and identity != identities[fold]:

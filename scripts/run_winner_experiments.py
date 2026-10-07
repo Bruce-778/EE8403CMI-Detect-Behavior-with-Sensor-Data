@@ -1,8 +1,10 @@
 """Screen three fixed designs on fold 0, then validate one fixed design on all folds."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import zipfile
@@ -14,14 +16,18 @@ def run(*arguments):
     subprocess.run([sys.executable, "-s", "-u", *map(str, arguments)], cwd=ROOT, check=True)
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-dir", type=Path, required=True)
-    parser.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
-    args = parser.parse_args()
+def execute(args):
     import torch
     if args.device == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("GPU experiment requires an available CUDA accelerator.")
+    if args.continue_from is not None:
+        source = args.continue_from.resolve()
+        if hashlib.sha256((source / "configs/folds.csv").read_bytes()).digest() != hashlib.sha256((ROOT / "configs/folds.csv").read_bytes()).digest():
+            raise ValueError("Continuation source uses different fixed folds.")
+        if (ROOT / "outputs").exists():
+            raise ValueError("Continue in a fresh workspace, preserving source artifacts.")
+        shutil.copytree(source / "outputs", ROOT / "outputs")
+        print("Recovered pilot outputs and caches from", source, flush=True)
     directory = ROOT / "runtime_configs"
     directory.mkdir(exist_ok=True)
     designs = ("cnn_grouped_se", "cnn_grouped_mixup", "cnn_dynamics_mixup")
@@ -48,15 +54,32 @@ def main():
     run(ROOT / "scripts/train_cnn.py", "--config", path, "--model", "both", "--fold", "0", "1", "2", "3", "4", "--resume")
     run(ROOT / "scripts/summarize_cnn_experiment.py", f"outputs/experiments/{selected}", "--name", "cnn_winner_selected")
     run(ROOT / "scripts/evaluate_cnn_scenarios.py", f"outputs/experiments/{selected}", "--name", "cnn_winner_selected")
+    print("COMPLETED FIVE FOLD EXPERIMENTS", flush=True)
+
+
+def archive_results():
     archive = ROOT.parent / "winner_experiments.zip"
-    files = [ROOT / "selection.json"]
+    files = [ROOT / "selection.json"] if (ROOT / "selection.json").is_file() else []
     files += list((ROOT / "runtime_configs").glob("*.json"))
     files += list((ROOT / "experiments/results").glob("*.json"))
     files += [path for path in (ROOT / "outputs/experiments").rglob("*") if path.is_file()]
     with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
         for path in sorted(set(files)):
             bundle.write(path, path.relative_to(ROOT).as_posix())
-    print("COMPLETED FIVE FOLD EXPERIMENTS", archive, archive.stat().st_size, flush=True)
+    print("SAVED EXPERIMENT ARTIFACTS", archive, archive.stat().st_size, flush=True)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--data-dir", type=Path, required=True)
+    parser.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
+    parser.add_argument("--continue-from", type=Path, help="Previous notebook output root; reuse checked completed pilots/caches.")
+    args = parser.parse_args()
+    try:
+        execute(args)
+    finally:
+        # Keep completed attempts downloadable even if a later fold fails.
+        archive_results()
 
 
 if __name__ == "__main__":

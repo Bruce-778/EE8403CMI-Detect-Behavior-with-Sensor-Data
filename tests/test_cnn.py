@@ -187,6 +187,14 @@ class CNNPipelineTests(unittest.TestCase):
                 reused, repeated = reuse_completed_fold(folder, processor, self.manifest, 0,
                     "multisensor", tiny_config(), training, SensorDropoutConfig(), metadata, 2)
                 self.assertEqual(reused, json.loads(json.dumps(summary)))
+                cached_processor = FoldPreprocessor.load(folder / "preprocessor.json")
+                cached_reused, _ = reuse_completed_fold(folder, cached_processor, self.manifest, 0,
+                    "multisensor", tiny_config(), training, SensorDropoutConfig(), metadata, 2)
+                self.assertEqual(cached_reused, reused)
+                cached_processor.state["statistics"]["imu"]["offset"][0] += 0.001
+                with self.assertRaisesRegex(ValueError, "settings/data differ"):
+                    reuse_completed_fold(folder, cached_processor, self.manifest, 0, "multisensor", tiny_config(),
+                        training, SensorDropoutConfig(), metadata, 2)
                 np.testing.assert_allclose(repeated[PROBABILITY_COLUMNS], predictions[PROBABILITY_COLUMNS], atol=1e-7)
                 with self.assertRaisesRegex(ValueError, "settings/data differ"):
                     reuse_completed_fold(folder, processor, self.manifest, 0, "multisensor", tiny_config(),

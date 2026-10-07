@@ -25,7 +25,7 @@ from .cnn_data import CNNTensorDataset, prepare_cnn_fold, validate_arrays
 from .dataset_analysis import PROJECT_DIR
 from .evaluation import (ALL_GESTURES, METRIC_NAME, PROBABILITY_COLUMNS, cmi_metrics,
                          evaluate_oof_frames, write_fold_predictions, _checked_predictions)
-from .preprocessing import FoldPreprocessor, PreprocessingConfig, SensorDropoutConfig
+from .preprocessing import FoldPreprocessor, PreprocessingConfig, SensorDropoutConfig, preprocessor_states_equal
 from .validation import FoldManifest, assert_preprocessor_matches, load_fold_manifest
 
 
@@ -428,7 +428,7 @@ def reuse_completed_fold(output_dir: Path, processor: FoldPreprocessor, manifest
         and TrainingConfig(**checkpoint["training_config"]) == training
         and checkpoint["sensor_dropout"] == asdict(sensor_dropout)
         and checkpoint["data_metadata"] == data_metadata
-        and restored.state == processor.state
+        and preprocessor_states_equal(restored.state, processor.state)
         and summary["fold"] == fold and summary["model"] == model_name
         and summary["folds_sha256"] == manifest.fingerprint
         and summary["validation"] == checkpoint["validation_metrics"])

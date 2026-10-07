@@ -43,9 +43,12 @@ class InferenceBundleTests(unittest.TestCase):
                         model.classifier[-1].bias.copy_(bias if name == "multisensor" else bias.flip(0))
                     probabilities.append(model.classifier[-1].bias.softmax(0).detach().numpy())
                     path = root / f"{name}_{fold}.pt"
+                    member_state = json.loads(json.dumps(state))
+                    if name == "multisensor":
+                        member_state["config"] = processor.state["config"]
                     torch.save({"fold": fold, "folds_sha256": "fixed", "label_order": list(ALL_GESTURES),
                         "model_metadata": model.metadata(), "state_dict": model.state_dict(),
-                        "preprocessor": state, "input_clip": 8.0}, path)
+                        "preprocessor": member_state, "input_clip": 8.0}, path)
                     members.append({"path": path.name, "model": name, "fold": fold,
                         "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
             manifest = {"version": 1, "label_order": list(ALL_GESTURES), "folds": list(range(5)),
@@ -58,6 +61,13 @@ class InferenceBundleTests(unittest.TestCase):
             raw[SENSOR_COLUMNS["THM"] + SENSOR_COLUMNS["ToF"]] = np.nan
             np.testing.assert_allclose(predictor.predict_proba(raw, demographics), np.mean(expected_a, axis=0), atol=1e-7)
             self.assertEqual(state, predictor.processors[0].state)
+            changed = torch.load(path, weights_only=True)
+            changed["preprocessor"]["statistics"]["imu"]["offset"][0] += 0.001
+            torch.save(changed, path)
+            manifest["members"][-1]["sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
+            (root / "bundle.json").write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError, "identical fold-fitted inputs"):
+                RoutedCNNPredictor(root)
 
 
 if __name__ == "__main__":

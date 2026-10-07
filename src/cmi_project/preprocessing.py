@@ -357,6 +357,11 @@ def refresh_input_availability(sample: dict) -> None:
     sample["tof_input"] = np.stack([sample["tof"], sample["tof_valid"].astype(np.float32)], axis=2).transpose(1, 2, 0, 3, 4).copy()
 
 
+def preprocessor_states_equal(first: dict, second: dict) -> bool:
+    """Compare saved values exactly, with tuple/list JSON roundtrips equivalent."""
+    return json.dumps(first, sort_keys=True, allow_nan=False) == json.dumps(second, sort_keys=True, allow_nan=False)
+
+
 class FoldPreprocessor:
     VERSION = 1
 

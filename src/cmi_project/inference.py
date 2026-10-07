@@ -14,7 +14,7 @@ import torch
 from .cnn import CMI1DCNN, CNNConfig
 from .cnn_data import ARRAY_KEYS, compact_sample
 from .evaluation import ALL_GESTURES
-from .preprocessing import FoldPreprocessor, PreprocessingConfig
+from .preprocessing import FoldPreprocessor, PreprocessingConfig, preprocessor_states_equal
 
 
 def as_pandas(frame) -> pd.DataFrame:
@@ -68,7 +68,7 @@ class RoutedCNNPredictor:
             state = checkpoint["preprocessor"]
             inputs = {"tof_regions": meta["tof_regions"], "input_clip": checkpoint["input_clip"]}
             if fold in self.processors:
-                if state != self.processors[fold].state or inputs != self.inputs[fold]:
+                if not preprocessor_states_equal(state, self.processors[fold].state) or inputs != self.inputs[fold]:
                     raise ValueError("Ensemble members require identical fold-fitted inputs.")
             else:
                 processor = FoldPreprocessor(PreprocessingConfig.from_dict(state["config"]))
