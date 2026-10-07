@@ -66,6 +66,36 @@
       "score": 0.7522290768176374,
       "binary_f1": 0.9698149951314509,
       "macro_f1_9class": 0.534643158503824
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "observed",
+      "used_model_a": 0,
+      "used_model_b": 1627,
+      "score": 0.8115235235456635,
+      "binary_f1": 0.9793510324483776,
+      "macro_f1_9class": 0.6436960146429495
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "imu_only",
+      "used_model_a": 1627,
+      "used_model_b": 0,
+      "score": 0.7227776671455419,
+      "binary_f1": 0.9671084928816888,
+      "macro_f1_9class": 0.47844684140939514
+    },
+    {
+      "model": "routed",
+      "fold": 0,
+      "scenario": "aux_dropout50",
+      "used_model_a": 843,
+      "used_model_b": 784,
+      "score": 0.7631290560689028,
+      "binary_f1": 0.9738529847064628,
+      "macro_f1_9class": 0.5524051274313427
     }
   ],
   "five_fold_evaluation": {},

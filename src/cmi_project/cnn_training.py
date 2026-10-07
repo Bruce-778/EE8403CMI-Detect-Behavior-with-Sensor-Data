@@ -24,7 +24,7 @@ from .cnn import CMI1DCNN, CNNConfig
 from .cnn_data import CNNTensorDataset, prepare_cnn_fold, validate_arrays
 from .dataset_analysis import PROJECT_DIR
 from .evaluation import (ALL_GESTURES, METRIC_NAME, PROBABILITY_COLUMNS, cmi_metrics,
-                         evaluate_oof_frames, write_fold_predictions)
+                         evaluate_oof_frames, write_fold_predictions, _checked_predictions)
 from .preprocessing import FoldPreprocessor, PreprocessingConfig, SensorDropoutConfig
 from .validation import FoldManifest, assert_preprocessor_matches, load_fold_manifest
 
@@ -366,6 +366,35 @@ def train_cnn_fold(arrays: dict, processor: FoldPreprocessor, manifest: FoldMani
     return summary, predictions
 
 
+def reuse_completed_fold(output_dir: Path, processor: FoldPreprocessor, manifest: FoldManifest,
+                        fold: int, model_name: str, model_config: CNNConfig,
+                        training: TrainingConfig, sensor_dropout: SensorDropoutConfig,
+                        data_metadata: dict, tof_regions: int) -> tuple[dict, pd.DataFrame]:
+    """Reuse a completed fold only when its effective settings and data match."""
+    summary = json.loads((output_dir / "metrics.json").read_text(encoding="utf-8"))
+    _, restored, checkpoint = load_cnn_checkpoint(output_dir / "best.pt")
+    expected = (checkpoint["fold"] == fold and checkpoint["folds_sha256"] == manifest.fingerprint
+        and checkpoint["model_metadata"]["model"] == model_name
+        and checkpoint["model_metadata"]["tof_regions"] == tof_regions
+        and CNNConfig.from_dict(checkpoint["model_metadata"]["config"]) == model_config
+        and TrainingConfig(**checkpoint["training_config"]) == training
+        and checkpoint["sensor_dropout"] == asdict(sensor_dropout)
+        and checkpoint["data_metadata"] == data_metadata
+        and restored.state == processor.state
+        and summary["fold"] == fold and summary["model"] == model_name
+        and summary["folds_sha256"] == manifest.fingerprint
+        and summary["validation"] == checkpoint["validation_metrics"])
+    if not expected:
+        raise ValueError("Completed CNN fold settings/data differ; use a fresh output directory.")
+    predictions = _checked_predictions(manifest, fold,
+        pd.read_csv(output_dir / "predictions.csv", dtype={"sequence_id": str}), require_fingerprint=True)
+    actual = cmi_metrics(predictions["gesture"], predictions["predicted_gesture"])
+    if any(not np.isclose(actual[key], summary["validation"][key], atol=1e-12, rtol=0) for key in actual):
+        raise ValueError("Completed fold predictions disagree with checkpoint metrics.")
+    print(f"Reused completed {model_name} fold {fold}: CMI={actual['score']:.6f}", flush=True)
+    return summary, predictions
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Main experiment v1: IMU-only and multisensor temporal CNNs.")
     parser.add_argument("--config", type=Path, default=PROJECT_DIR / "configs/cnn_v1.json")
@@ -380,6 +409,7 @@ def main() -> int:
     parser.add_argument("--sequence-length", type=int)
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"))
     parser.add_argument("--prepare-only", action="store_true")
+    parser.add_argument("--resume", action="store_true", help="Reuse completed folds with matching settings; does not resume partial epochs.")
     args = parser.parse_args()
     try:
         settings = json.loads(args.config.read_text(encoding="utf-8"))
@@ -408,7 +438,17 @@ def main() -> int:
         names = ["imu", "multisensor"] if args.model == "both" else [args.model]
         if not args.prepare_only:
             if output_dir.exists() and any(output_dir.iterdir()):
-                raise ValueError("CNN output directory is non-empty; choose a fresh --output-dir.")
+                if not args.resume:
+                    raise ValueError("CNN output directory is non-empty; choose a fresh --output-dir or --resume.")
+                previous = json.loads((output_dir / "run_config.json").read_text(encoding="utf-8"))
+                if (TrainingConfig(**previous["training"]) != training
+                    or CNNConfig.from_dict(previous["model_parameters"]) != model_config
+                    or previous["folds_sha256"] != manifest.fingerprint
+                    or Path(previous["cache_dir"]).resolve() != cache_root
+                    or previous["sequence_length"] != (args.sequence_length if args.sequence_length is not None else settings.get("sequence_length"))
+                    or any(previous["settings"].get(key) != settings.get(key) for key in
+                        ("data_dir", "folds_path", "preprocessing_config", "length_quantile", "tof_regions", "input_clip"))):
+                    raise ValueError("Resume settings differ; choose a fresh output directory.")
             output_dir.mkdir(parents=True, exist_ok=True)
         input_settings = json.loads((PROJECT_DIR / settings.get("preprocessing_config", "configs/preprocessing.json")).read_text(encoding="utf-8"))
         preprocessing = PreprocessingConfig.from_dict(input_settings.get("preprocessing", {}))
@@ -430,9 +470,14 @@ def main() -> int:
             if args.prepare_only:
                 continue
             for name in names:
-                summary, prediction = train_cnn_fold(arrays, processor, manifest, fold,
-                    output_dir / name / f"fold_{fold}", model_name=name, tof_regions=regions,
-                    model_config=model_config, training=training, sensor_dropout=sensor_dropout, data_metadata=data_metadata)
+                folder = output_dir / name / f"fold_{fold}"
+                if args.resume and folder.exists() and any(folder.iterdir()):
+                    summary, prediction = reuse_completed_fold(folder, processor, manifest, fold,
+                        name, model_config, training, sensor_dropout, data_metadata, regions)
+                else:
+                    summary, prediction = train_cnn_fold(arrays, processor, manifest, fold,
+                        folder, model_name=name, tof_regions=regions,
+                        model_config=model_config, training=training, sensor_dropout=sensor_dropout, data_metadata=data_metadata)
                 summaries.append(summary)
                 predictions[name][fold] = prediction
                 pd.DataFrame([{"model": s["model"], "fold": s["fold"], **s["validation"],

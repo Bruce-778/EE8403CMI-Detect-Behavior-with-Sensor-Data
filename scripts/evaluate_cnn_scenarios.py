@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from cmi_project.cnn_data import CNNTensorDataset, validate_arrays
 from cmi_project.cnn_training import (CMIHierarchicalLoss, TrainingConfig, evaluate_model,
                                       load_cnn_checkpoint, seed_everything)
-from cmi_project.evaluation import ALL_GESTURES, PROBABILITY_COLUMNS, evaluate_oof_frames
+from cmi_project.evaluation import ALL_GESTURES, PROBABILITY_COLUMNS, cmi_metrics, evaluate_oof_frames
 from cmi_project.validation import assert_preprocessor_matches, load_fold_manifest
 
 AUXILIARY_KEYS = ("thm", "thm_valid", "thm_observed", "tof", "tof_valid", "tof_fraction", "tof_sensor_present")
@@ -50,7 +50,7 @@ def main():
     directory = (ROOT / args.directory).resolve()
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     seed_everything(42, 4)
-    results, predictions = [], {}
+    results, predictions, auxiliary_available = [], {}, {}
     for path in sorted(directory.glob("*/fold_*/best.pt")):
         model, processor, checkpoint = load_cnn_checkpoint(path)
         fold, name = checkpoint["fold"], model.model_name
@@ -66,6 +66,7 @@ def main():
             arrays = {key: archive[key] for key in archive.files}
         validate_arrays(arrays, manifest, processor.max_length, model.tof_regions)
         indices = np.flatnonzero(manifest.table["fold"].to_numpy() == fold)
+        present = arrays["thm_valid"][indices].any(axis=(1, 2)) | arrays["tof_sensor_present"][indices].any(axis=(1, 2))
         for scenario in ("observed", "imu_only", "aux_dropout50"):
             dataset = ScenarioDataset(arrays, indices, scenario)
             metrics, probabilities = evaluate_model(model, DataLoader(dataset, batch_size=64),
@@ -77,7 +78,26 @@ def main():
                 "folds_sha256": manifest.fingerprint})
             frame = pd.concat([frame, pd.DataFrame(probabilities, columns=PROBABILITY_COLUMNS)], axis=1)
             predictions.setdefault((name, scenario), {})[fold] = frame
+            auxiliary_available[(fold, scenario)] = dict(zip(arrays["sequence_id"][indices], present & ~dataset.drop))
             print(f"{name} fold {fold} {scenario}: {metrics['score']:.6f}", flush=True)
+    # Fixed availability rule; no validation labels, confidence threshold or
+    # per-fold weight search participates in choosing A versus B.
+    if ("imu", "observed") in predictions and ("multisensor", "observed") in predictions:
+        for scenario in ("observed", "imu_only", "aux_dropout50"):
+            shared = set(predictions[("imu", scenario)]) & set(predictions[("multisensor", scenario)])
+            for fold in sorted(shared):
+                a = predictions[("imu", scenario)][fold].set_index("sequence_id")
+                b = predictions[("multisensor", scenario)][fold].set_index("sequence_id").loc[a.index]
+                use_b = np.array([auxiliary_available[(fold, scenario)][sid] for sid in a.index])
+                combined = a.copy()
+                combined.loc[use_b] = b.loc[use_b]
+                combined = combined.reset_index()
+                truth = manifest.table.set_index("sequence_id").loc[combined["sequence_id"], "gesture"]
+                metrics = cmi_metrics(truth, combined["predicted_gesture"])
+                predictions.setdefault(("routed", scenario), {})[fold] = combined
+                results.append({"model": "routed", "fold": fold, "scenario": scenario,
+                    "used_model_a": int((~use_b).sum()), "used_model_b": int(use_b.sum()), **metrics})
+                print(f"routed fold {fold} {scenario}: {metrics['score']:.6f}", flush=True)
     evaluations = {}
     for (name, scenario), frames in predictions.items():
         if set(frames) == set(range(manifest.n_splits)):

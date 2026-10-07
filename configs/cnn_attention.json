@@ -1,0 +1,49 @@
+{
+  "data_dir": "data",
+  "folds_path": "configs/folds.csv",
+  "preprocessing_config": "configs/preprocessing.json",
+  "output_dir": "outputs/experiments/cnn_attention",
+  "cache_dir": "outputs/cnn_cache/v1",
+  "folds": [
+    0
+  ],
+  "chunksize": 25000,
+  "length_quantile": 0.95,
+  "sequence_length": null,
+  "tof_regions": 2,
+  "input_clip": 8.0,
+  "model_parameters": {
+    "imu_channels": [
+      32,
+      64,
+      96
+    ],
+    "auxiliary_channels": [
+      16,
+      32,
+      48
+    ],
+    "kernel_size": 5,
+    "hidden_features": 128,
+    "dropout": 0.3,
+    "pooling": "attention_max"
+  },
+  "training": {
+    "seed": 42,
+    "epochs": 70,
+    "batch_size": 64,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.001,
+    "label_smoothing": 0.03,
+    "early_stopping_patience": 15,
+    "min_delta": 0.0001,
+    "lr_patience": 4,
+    "lr_factor": 0.5,
+    "min_lr": 1E-05,
+    "gradient_clip": 1.0,
+    "cpu_threads": 4,
+    "device": "auto",
+    "macro_loss_weight": 0.5,
+    "binary_loss_weight": 0.1
+  }
+}

@@ -1,7 +1,7 @@
 """Padding, missing modalities, fold isolation and real CNN training checks."""
 
 from contextlib import redirect_stdout
-from dataclasses import asdict
+from dataclasses import asdict, replace
 import io
 import json
 from pathlib import Path
@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from cmi_project.cnn import CMI1DCNN, CNNConfig, TemporalCNNEncoder
 from cmi_project.cnn_data import CNNTensorDataset, compact_sample, prepare_cnn_fold
-from cmi_project.cnn_training import EarlyStopping, TrainingConfig, load_cnn_checkpoint, train_cnn_fold
+from cmi_project.cnn_training import EarlyStopping, TrainingConfig, load_cnn_checkpoint, train_cnn_fold, reuse_completed_fold
 from cmi_project.evaluation import ALL_GESTURES, PROBABILITY_COLUMNS, evaluate_oof_frames
 from cmi_project.preprocessing import FoldPreprocessor, SensorDropoutConfig
 from cmi_project.validation import save_fixed_folds, scan_sequence_index
@@ -184,6 +184,13 @@ class CNNPipelineTests(unittest.TestCase):
                 self.assertEqual(restored.state, processor.state)
                 self.assertEqual(checkpoint["best_epoch"], summary["best_epoch"])
                 self.assertEqual(model.model_name, "multisensor")
+                reused, repeated = reuse_completed_fold(folder, processor, self.manifest, 0,
+                    "multisensor", tiny_config(), training, SensorDropoutConfig(), metadata, 2)
+                self.assertEqual(reused, json.loads(json.dumps(summary)))
+                np.testing.assert_allclose(repeated[PROBABILITY_COLUMNS], predictions[PROBABILITY_COLUMNS], atol=1e-7)
+                with self.assertRaisesRegex(ValueError, "settings/data differ"):
+                    reuse_completed_fold(folder, processor, self.manifest, 0, "multisensor", tiny_config(),
+                        replace(training, learning_rate=0.002), SensorDropoutConfig(), metadata, 2)
                 np.testing.assert_allclose(predictions[PROBABILITY_COLUMNS].sum(axis=1), 1, atol=1e-6)
                 results.append(predictions)
         np.testing.assert_array_equal(results[0][PROBABILITY_COLUMNS], results[1][PROBABILITY_COLUMNS])

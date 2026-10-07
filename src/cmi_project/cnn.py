@@ -18,6 +18,8 @@ class CNNConfig:
     kernel_size: int = 5
     hidden_features: int = 128
     dropout: float = 0.2
+    pooling: str = "mean_max"
+    stage_kernel_sizes: tuple[int, ...] = ()
 
     def __post_init__(self):
         for widths in (self.imu_channels, self.auxiliary_channels):
@@ -27,11 +29,17 @@ class CNNConfig:
             raise ValueError("kernel_size must be a positive odd integer.")
         if self.hidden_features < 2 or not 0 <= self.dropout < 1:
             raise ValueError("Invalid hidden_features/dropout.")
+        if self.pooling not in ("mean_max", "attention_max"):
+            raise ValueError("pooling must be mean_max or attention_max.")
+        if self.stage_kernel_sizes and (len(self.stage_kernel_sizes) != len(self.imu_channels)
+                or len(self.stage_kernel_sizes) != len(self.auxiliary_channels)
+                or any(not isinstance(k, int) or k < 1 or k % 2 != 1 for k in self.stage_kernel_sizes)):
+            raise ValueError("stage_kernel_sizes needs one positive odd kernel per encoder stage.")
 
     @classmethod
     def from_dict(cls, values: dict) -> "CNNConfig":
         values = dict(values)
-        for key in ("imu_channels", "auxiliary_channels"):
+        for key in ("imu_channels", "auxiliary_channels", "stage_kernel_sizes"):
             if key in values:
                 values[key] = tuple(values[key])
         return cls(**values)
@@ -73,20 +81,31 @@ class MaskedResidualBlock(nn.Module):
 
 class TemporalCNNEncoder(nn.Module):
     def __init__(self, inputs: int, channels: tuple[int, ...], kernel_size: int = 5,
-                 dropout: float = 0.2):
+                 dropout: float = 0.2, pooling: str = "mean_max", stage_kernel_sizes: tuple[int, ...] = ()):
         super().__init__()
         blocks = []
         for i, output in enumerate(channels):
-            blocks.append(MaskedResidualBlock(inputs, output, kernel_size, 1 if i == 0 else 2, dropout))
+            kernel = stage_kernel_sizes[i] if stage_kernel_sizes else kernel_size
+            blocks.append(MaskedResidualBlock(inputs, output, kernel, 1 if i == 0 else 2, dropout))
             inputs = output
         self.blocks = nn.ModuleList(blocks)
         self.output_features = 2 * channels[-1]
+        self.attention = (nn.Sequential(nn.Conv1d(channels[-1], max(4, channels[-1] // 4), 1),
+            nn.Tanh(), nn.Conv1d(max(4, channels[-1] // 4), 1, 1)) if pooling == "attention_max" else None)
 
     def forward(self, values: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         out = values.transpose(1, 2)
         for block in self.blocks:
             out, mask = block(out, mask)
-        mean = masked_mean_time(out.transpose(1, 2), mask)
+        if self.attention is None:
+            mean = masked_mean_time(out.transpose(1, 2), mask)
+        else:
+            scores = self.attention(out).squeeze(1).masked_fill(~mask, -torch.inf)
+            # Empty modalities must have zero weights, finite gradients, and
+            # zero embeddings. Softmax of an all-negative-infinity row is NaN.
+            scores = torch.where(mask.any(dim=1, keepdim=True), scores, 0)
+            weights = scores.softmax(dim=1) * mask
+            mean = (out * weights[:, None]).sum(dim=2)
         maximum = out.masked_fill(~mask[:, None], -torch.inf).amax(dim=2)
         maximum = torch.where(mask.any(dim=1, keepdim=True), maximum, 0)
         return torch.cat([mean, maximum], dim=1)
@@ -109,13 +128,13 @@ class CMI1DCNN(nn.Module):
         self.model_name, self.tof_regions = model_name, tof_regions
         self.config = config or CNNConfig()
         self.imu_encoder = TemporalCNNEncoder(30, self.config.imu_channels,
-            self.config.kernel_size, self.config.dropout)
+            self.config.kernel_size, self.config.dropout, self.config.pooling, self.config.stage_kernel_sizes)
         features = self.imu_encoder.output_features + 1
         if model_name == "multisensor":
             self.thm_encoder = TemporalCNNEncoder(15, self.config.auxiliary_channels,
-                self.config.kernel_size, self.config.dropout)
+                self.config.kernel_size, self.config.dropout, self.config.pooling, self.config.stage_kernel_sizes)
             self.tof_encoder = TemporalCNNEncoder(10 * tof_regions**2 + 5, self.config.auxiliary_channels,
-                self.config.kernel_size, self.config.dropout)
+                self.config.kernel_size, self.config.dropout, self.config.pooling, self.config.stage_kernel_sizes)
             features += self.thm_encoder.output_features + self.tof_encoder.output_features + 2
         self.classifier = nn.Sequential(
             nn.Linear(features, self.config.hidden_features), nn.LayerNorm(self.config.hidden_features),
@@ -123,7 +142,9 @@ class CMI1DCNN(nn.Module):
         )
 
     def metadata(self) -> dict:
-        return {"model": self.model_name, "architecture": "masked_residual_1d_cnn_v1",
+        architecture = ("masked_residual_1d_cnn_v2" if self.config.pooling != "mean_max"
+                        or self.config.stage_kernel_sizes else "masked_residual_1d_cnn_v1")
+        return {"model": self.model_name, "architecture": architecture,
                 "config": asdict(self.config), "tof_regions": self.tof_regions,
                 "normalization": "train-fold standardization + per-token channel LayerNorm",
                 "parameters": sum(p.numel() for p in self.parameters())}

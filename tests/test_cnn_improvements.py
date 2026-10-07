@@ -11,6 +11,7 @@ from cmi_project.cnn_training import CMIHierarchicalLoss, TrainingConfig
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from evaluate_cnn_scenarios import AUXILIARY_KEYS, ScenarioDataset
 from test_cnn import toy_batch
+from cmi_project.cnn import CMI1DCNN, CNNConfig, TemporalCNNEncoder
 import numpy as np
 
 
@@ -62,6 +63,35 @@ class ScenarioTests(unittest.TestCase):
         arrays["label"][:] = 3
         b = ScenarioDataset(arrays, [0, 1, 2], "aux_dropout50").drop
         np.testing.assert_array_equal(a, b)
+
+
+class AttentionCNNTests(unittest.TestCase):
+    def setUp(self):
+        torch.set_num_threads(1)
+
+    def test_empty_attention_branch_is_zero_and_gradients_are_finite(self):
+        encoder = TemporalCNNEncoder(5, (4, 8), pooling="attention_max", stage_kernel_sizes=(5, 9)).eval()
+        values = torch.full((2, 12, 5), float("nan"))
+        mask = torch.zeros(2, 12, dtype=torch.bool)
+        output = encoder(values, mask)
+        torch.testing.assert_close(output, torch.zeros_like(output))
+        output.square().sum().backward()
+        self.assertTrue(all(torch.isfinite(p.grad).all() for p in encoder.parameters() if p.grad is not None))
+
+    def test_attention_ignores_padding_and_checkpoint_config_roundtrips(self):
+        batch = toy_batch()
+        config = CNNConfig(imu_channels=(4, 8), auxiliary_channels=(4, 8),
+            hidden_features=8, pooling="attention_max", stage_kernel_sizes=(5, 9))
+        model = CMI1DCNN("multisensor", config=config).eval()
+        corrupt = {key: value.clone() for key, value in batch.items()}
+        for key in ("imu", "thm", "tof", "tof_fraction"):
+            corrupt[key][~batch["time_mask"]] = float("nan")
+        torch.testing.assert_close(model(batch), model(corrupt))
+        restored = CMI1DCNN("multisensor", config=CNNConfig.from_dict(model.metadata()["config"])).eval()
+        restored.load_state_dict(model.state_dict())
+        torch.testing.assert_close(model(batch), restored(batch))
+        with self.assertRaises(ValueError):
+            CNNConfig(stage_kernel_sizes=(4, 9, 13))
 
 
 if __name__ == "__main__":
