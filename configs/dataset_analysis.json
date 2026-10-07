@@ -1,0 +1,6 @@
+{
+  "data_dir": "data",
+  "output_dir": "outputs/dataset_analysis",
+  "chunksize": 25000,
+  "expected_gestures": 18
+}
