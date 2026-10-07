@@ -1,0 +1,24 @@
+{
+  "settings": {
+    "model": "imu",
+    "sources": [
+      "outputs/experiments/cnn_v1",
+      "outputs/experiments/cnn_hierarchical"
+    ],
+    "probability_weights": [
+      0.5,
+      0.5
+    ],
+    "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+    "selection_note": "equal weights fixed before five-fold comparison; no per-fold or per-sequence score selection"
+  },
+  "fold_scores": [
+    {
+      "fold": 0,
+      "score": 0.7463748066010997,
+      "binary_f1": 0.9695181907571289,
+      "macro_f1_9class": 0.5232314224450705
+    }
+  ],
+  "evaluation": null
+}
