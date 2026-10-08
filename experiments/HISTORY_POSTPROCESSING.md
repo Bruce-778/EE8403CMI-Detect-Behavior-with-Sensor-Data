@@ -42,3 +42,43 @@ python -s -u scripts/evaluate_history_postprocessing.py
 Compact evidence will be saved as `experiments/results/history_postprocessing_v1.json`.
 The source OOF hashes, fold fingerprint, fitted capacities, changed prediction
 counts, overflow fallbacks and all fixed-order results are retained there.
+
+## Completed result
+
+All nine scenario/order evaluations completed with all 8,151 held-out sequences,
+unchanged fold fingerprints and zero capacity-overflow fallbacks. Means and sample
+standard deviations below describe five folds; the three seeds describe arrival
+orders, not independent retrainings.
+
+| Scenario | Arrival seed | Baseline mean ± sample SD | History mean ± sample SD | Delta mean | Changed labels |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| observed | 42 | 0.852029 ± 0.008719 | 0.856516 ± 0.009778 | +0.004488 | 360 |
+| observed | 142 | 0.852029 ± 0.008719 | 0.857156 ± 0.009911 | +0.005127 | 340 |
+| observed | 242 | 0.852029 ± 0.008719 | 0.856433 ± 0.008676 | +0.004404 | 355 |
+| aux_dropout50 | 42 | 0.821455 ± 0.011675 | 0.825773 ± 0.010533 | +0.004318 | 387 |
+| aux_dropout50 | 142 | 0.821455 ± 0.011675 | 0.824980 ± 0.010653 | +0.003525 | 383 |
+| aux_dropout50 | 242 | 0.821455 ± 0.011675 | 0.825021 ± 0.010440 | +0.003566 | 396 |
+| imu_only | 42 | 0.787194 ± 0.014102 | 0.791760 ± 0.015203 | +0.004566 | 435 |
+| imu_only | 142 | 0.787194 ± 0.014102 | 0.792055 ± 0.015046 | +0.004860 | 435 |
+| imu_only | 242 | 0.787194 ± 0.014102 | 0.791344 ± 0.014331 | +0.004150 | 465 |
+
+Across all three fixed orders the mean deltas are +0.004673, +0.003803 and
++0.004525 respectively. Every order improved its scenario's fold mean. This does
+not imply every fold improved, statistical significance or an online gain.
+The source network probabilities and weights were not modified. The original
+scored ensemble remains the production default.
+
+Decision: retain this development evaluation prototype and its evidence; do not
+promote it to production on this result alone. It is useful but smaller than the
+joint-label/context gains reported by the leading teams, and its protocol must
+be validated against real inference call order and observable history.
+
+Detailed per-fold scores, fitted training-fold capacities and source hashes:
+[history_postprocessing_v1.json](results/history_postprocessing_v1.json).
+Complete OOF and arrival traces: `outputs/history_postprocessing/pilot_v1/`.
+Five focused tests check training-only quota fitting, subject separation,
+annotation isolation, causal prefix behavior, input copy safety and invalid inputs.
+The complete 73-test project suite passed (54.198 seconds). Independent rechecks
+recomputed all 45 fold scores and sample SDs and verified all 45 arrival traces.
+The original submitted bundle SHA256 remains
+`e7af6cd296b54d75cdd9c135f36d78b7dd684dee4437975401722548b8720e19`.

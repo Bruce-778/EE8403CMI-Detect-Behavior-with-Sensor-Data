@@ -118,6 +118,7 @@ def main():
         baseline_frames = {fold: frame.drop(columns=PROBABILITY_COLUMNS) for fold, frame in checked.items()}
         baseline = evaluate_oof_frames(manifest, baseline_frames, output / scenario / "baseline",
                                        experiment_name=f"{args.name}_{scenario}_baseline")
+        baseline["fold_scores"] = pd.read_csv(output / scenario / "baseline/fold_scores.csv").to_dict("records")
         evaluations, changes = {}, []
         for seed in seeds:
             frames, overflow, changed = {}, 0, 0
@@ -137,6 +138,7 @@ def main():
             delta = evaluation["fold_mean"]["score"] - baseline["fold_mean"]["score"]
             changes.append(delta)
             evaluations[str(seed)] = {"metrics": evaluation, "changed_predictions": changed,
+                                      "fold_scores": pd.read_csv(output / scenario / f"seed_{seed}/evaluation/fold_scores.csv").to_dict("records"),
                                       "overflow_baseline_fallbacks": overflow, "delta_fold_mean": delta}
             print(f"{scenario} seed={seed}: mean={evaluation['fold_mean']['score']:.6f}, delta={delta:+.6f}, changed={changed}, overflow={overflow}", flush=True)
         result["scenarios"][scenario] = {"source_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
@@ -144,6 +146,8 @@ def main():
             "mean_delta_across_orders": float(np.mean(changes)),
             "min_delta_across_orders": float(min(changes)), "max_delta_across_orders": float(max(changes))}
         result_path.write_text(json.dumps(result, indent=2, allow_nan=False), encoding="utf-8")
+    result["decision"] = "Evaluation prototype only; no production promotion or online score claim. Review all arrival orders and protocols before deciding."
+    result_path.write_text(json.dumps(result, indent=2, allow_nan=False), encoding="utf-8")
     print("Completed all three scenarios and all three predeclared arrival orders.", flush=True)
 
 
