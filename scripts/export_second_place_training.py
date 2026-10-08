@@ -13,9 +13,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--folds', nargs='+', type=int, default=[0])
     parser.add_argument('--architectures', nargs='+', choices=['base', 'simple', 'deep'], default=['base'])
+    parser.add_argument('--run-name', default='pilot_v1')
+    parser.add_argument('--notebook-name', default='cmi-second-place-training.ipynb')
     args = parser.parse_args()
     if set(args.folds) - set(range(5)) or len(set(args.folds)) != len(args.folds):
         raise ValueError('Use unique fixed folds 0..4.')
+    if (Path(args.run_name).name != args.run_name or any(c in args.run_name for c in '\\/:')
+            or Path(args.notebook_name).name != args.notebook_name or not args.notebook_name.endswith('.ipynb')):
+        raise ValueError('Use plain run and notebook file names.')
     stream = io.BytesIO()
     files = [*sorted((ROOT / 'src/cmi_project').glob('*.py')),
              ROOT / 'scripts/train_second_place.py', ROOT / 'scripts/run_winner_experiments.py',
@@ -45,7 +50,8 @@ print('FIXED FOLDS', hashlib.sha256((project / 'configs/folds.csv').read_bytes()
 print('TRAINING DATA DIRECTORY', data_dir, flush=True)
 '''
     training = f'''command = [sys.executable, '-s', '-u', str(project / 'scripts/train_second_place.py'),
-    '--data-dir', str(data_dir), '--device', 'cuda', '--folds', *{[str(f) for f in args.folds]!r},
+    '--data-dir', str(data_dir), '--output', str(project / 'outputs/second_place' / {args.run_name!r}),
+    '--device', 'cuda', '--folds', *{[str(f) for f in args.folds]!r},
     '--architectures', *{args.architectures!r}, '--epochs', '50', '--batch-size', '32']
 subprocess.run(command, cwd=project, check=True)
 print('Completed requested folds; no competition submission.', flush=True)
@@ -62,7 +68,7 @@ print('Completed requested folds; no competition submission.', flush=True)
                'source': text.splitlines(keepends=True)} for text in [setup, training]]]}
     out = ROOT / 'outputs/second_place/notebooks'
     out.mkdir(parents=True, exist_ok=True)
-    path = out / 'cmi-second-place-training.ipynb'
+    path = out / args.notebook_name
     path.write_text(json.dumps(notebook, indent=1), encoding='utf-8')
     print(path, path.stat().st_size)
 

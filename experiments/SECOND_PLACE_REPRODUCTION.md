@@ -265,3 +265,31 @@ aux_dropout50 0.892822 / 0.886263 / 0.891081；IMU-only
 紧凑证据 `experiments/results/second_place_base_fold0_v1.json`；权重及
 预测存于 `outputs/kaggle_training/imported/second_place_base_fold0_v1_audited`。
 下一步按实际 GPU 额度分批完成未训练 folds，复用已完成首折。
+
+
+### 后续固定 fold 1 已启动：2026-10-08 04:33 PDT
+
+账户菜单明确显示 GPU **22 小时 37 分 available of 30h**；编辑器的
+Quota 07:22 表示已用，不能误当剩余。按首折 4h31m23s 的实测估算，
+base 剩余四折约 18.09 小时，预计在当前额度内；尚没有三架构五折
+均可完成的预算证据。每个后续批次应重新读取实际 available 额度，
+并根据实测安排，不启动明知预算不足的任务。
+
+私有 Notebook **CMI Second Place Fixed Fold Reproduction v2**，
+scriptVersionId **356387143**，T4 x2、互联网关闭，已确认 Running。
+只训练 **base fold 1** 的四个原始分支各 50 epoch，保存最后权重；
+不重训已通过核验的 fold 0，不修改 lr/batch/mixup/loss/seed 等参数。
+新目录 `base_fold1_v2`，ZIP 显式包含 logit sequence IDs 和小 metadata。
+导出器新增可指定结果目录/Notebook文件名的参数，使历史 Notebook
+保留；新包源代码和 fixed folds 与本地字节一致，全部代码 cell
+编译通过。Notebook SHA256
+`ead09b839b33960ea39d4a80b6bda1495edc888da957222961022a9eb1f92694`。
+
+运行链接：
+https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356387143
+
+没有比赛提交、push 或生产权重替换。cmi 跟进已更新到此版本；
+完成后先独立核验，再在真实额度内继续 folds 2/3/4。五折齐全后
+才报告五折均值、样本标准差及 8,151 条 OOF；其他架构和在线伪标签
+贡献仍未完成。页面运行证据
+`outputs/second_place/evidence/kaggle_v2_fold1_running.jpg`。

@@ -1,5 +1,5 @@
 {
-  "status": "first_fold_artifacts_verified_pending_remaining_fold_budget",
+  "status": "running_base_fold1_after_verified_fold0",
   "actual_reproduction_scores": {
     "scope": "partial held-out folds; not five-fold CV",
     "record": "experiments/results/second_place_base_fold0_v1.json",
@@ -180,7 +180,7 @@
     "status": "ACTIVE",
     "policy": "Quiet on unchanged state; collect verified results and continue fixed-fold comparison; no push or competition submission"
   },
-  "scope": "Adapted upstream base architectures on original fixed project fold 0; four sensor variants, 50 epochs each; not full five-fold or leaderboard reproduction",
+  "scope": "Verified base fold0 screening, additional base fold1 training underway; not complete five-fold or author leaderboard reproduction",
   "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
   "source_manifest": "configs/second_place_source.json",
   "design_commit": "feedb82",
@@ -209,22 +209,30 @@
   "runtime": {
     "source": "Kaggle private notebook",
     "title": "CMI Second Place Fixed Fold Reproduction",
-    "script_version_id": 356304653,
-    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653",
+    "script_version_id": 356387143,
+    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356387143",
+    "version": 2,
+    "status": "Running; new base fold1, all four 50-epoch variants; no duplicate fold0",
+    "last_observed_at_utc": "2026-10-08T11:35:52.525429+00:00",
     "accelerator": "GPU T4 x2",
     "internet": false,
-    "status": "Complete: all four base fold0 arms and routed scenarios; artifacts audited locally",
-    "last_observed_at_utc": "2026-10-08T11:30:45.746772+00:00",
     "actual_torch": "2.11.0+cu128",
     "actual_gpu": "Tesla T4",
-    "initial_imu_epoch_seconds_approx": 24,
-    "initial_tof_first_epoch_seconds": 136.7,
-    "tof_completed_arm_epochs": 50,
-    "tof_steady_epoch_median_seconds": 135.8,
-    "tof_completed_arm_total_epoch_seconds_rounded": 6788.3,
-    "runtime_budget_note": "ToF first epoch is substantially slower; measure steady-state and check remaining quota before scheduling full five-fold three-architecture reproduction",
-    "gpu_quota_remaining_hours_at_launch": 27,
-    "run_seconds": 16283
+    "folds": [
+      1
+    ],
+    "architectures": [
+      "base"
+    ],
+    "epochs": 50,
+    "batch_size": 32,
+    "output_run": "base_fold1_v2",
+    "gpu_quota_available_at_launch_hours": 22.616666666666667,
+    "quota_evidence": "Account menu: GPU 22h 37m available of30h. Editor Quota07:22 denotes used; do not read as remaining.",
+    "estimated_remaining_base_four_fold_hours": 18.092222222222222,
+    "budget_limit": "Base four remaining folds estimated to fit; three full architectures not established within remaining quota. Recheck actual available hours and measured runtime before each subsequent batch.",
+    "notebook_sha256": "ead09b839b33960ea39d4a80b6bda1495edc888da957222961022a9eb1f92694",
+    "screenshot": "outputs/second_place/evidence/kaggle_v2_fold1_running.jpg"
   },
   "notebook_sha256": "03165f139b7c13fc4f02207a50290c083b262f1590857fd9492da76061dd142d",
   "author_reference": {
@@ -304,11 +312,55 @@
       "log_evidence": "outputs/second_place/evidence/v1_all_completed_log.txt"
     }
   },
-  "next": "Check actual remaining Kaggle quota, then train uncompleted fixed folds with unchanged source architecture and training hyperparameters. Preserve completed fold0; causal history and online pseudo-label contributions remain separate. No push, competition submission, or production replacement.",
+  "next": "Monitor exact v2 356387143; import/audit into fresh directory, then sequentially continue uncompleted base folds2/3/4 within actual GPU quota. Preserve verified v1 fold0. Full-five-fold OOF and further architecture/pseudo-label studies remain outstanding.",
   "local_audit_repair": {
     "initial_import": "outputs/kaggle_training/imported/second_place_base_fold0_v1",
     "error": "AttributeError: DataFrame has no sequence_id: unnamed logit ID Index erased the column name on reset_index",
     "fix": "reset_index(names=sequence_id); added reversed anonymous ID alignment regression test; fresh audited import passed",
     "training_changed": false
+  },
+  "completed_pilot_runtime": {
+    "source": "Kaggle private notebook",
+    "title": "CMI Second Place Fixed Fold Reproduction",
+    "script_version_id": 356304653,
+    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653",
+    "accelerator": "GPU T4 x2",
+    "internet": false,
+    "status": "Complete: all four base fold0 arms and routed scenarios; artifacts audited locally",
+    "last_observed_at_utc": "2026-10-08T11:30:45.746772+00:00",
+    "actual_torch": "2.11.0+cu128",
+    "actual_gpu": "Tesla T4",
+    "initial_imu_epoch_seconds_approx": 24,
+    "initial_tof_first_epoch_seconds": 136.7,
+    "tof_completed_arm_epochs": 50,
+    "tof_steady_epoch_median_seconds": 135.8,
+    "tof_completed_arm_total_epoch_seconds_rounded": 6788.3,
+    "runtime_budget_note": "ToF first epoch is substantially slower; measure steady-state and check remaining quota before scheduling full five-fold three-architecture reproduction",
+    "gpu_quota_remaining_hours_at_launch": 27,
+    "run_seconds": 16283
+  },
+  "planned_training": {
+    "epochs": 50,
+    "batch_size": 32,
+    "folds": [
+      1
+    ],
+    "architectures": [
+      "base"
+    ],
+    "variants": [
+      "imu",
+      "imu_rot",
+      "all",
+      "all_rot"
+    ],
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "checkpoint_selection": "last",
+    "history_postprocessing": false,
+    "online_pseudo_labels": false,
+    "output_run": "base_fold1_v2",
+    "explicit_logit_ids": true,
+    "small_cache_metadata_in_archive": true
   }
 }
