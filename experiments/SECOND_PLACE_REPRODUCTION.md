@@ -347,3 +347,9 @@ https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproductio
 启动前明确available额度17h53m；cmi跟进已更新到v3。排队尚不能当作
 训练完成或成功分数，后续只监控这一次已接受的运行。完成后先核验再
 继续未完成fold3/4，所有结果单独保留，本地commit，不push或比赛提交。
+
+
+2026-10-08 09:52 PDT：v3 已从排队进入 Running，云端再次核验原始 train/demo
+SHA256，环境 torch2.11.0+cu128/Tesla T4。base/imu fold2 正常训练，
+6,520 train / 1,631 validation、102 联合类别；尚无完整折结果，不报告
+中间epoch为最终分数，不重复启动。

@@ -1,5 +1,5 @@
 {
-  "status": "base_folds0_1_verified_base_fold2_queued",
+  "status": "base_folds0_1_verified_base_fold2_running",
   "actual_reproduction_scores": {
     "scope": "partial held-out folds; not five-fold CV",
     "record": "experiments/results/second_place_base_fold0_v1.json",
@@ -362,8 +362,8 @@
     "script_version_id": 356470282,
     "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356470282",
     "version": 3,
-    "status": "Queued: accepted new base fold2, four50epoch variants; not yet confirmed running",
-    "last_observed_at_utc": "2026-10-08T16:29:52.716946+00:00",
+    "status": "Running: pinned inputs verified; base/imu fold2 training, no complete fold result yet",
+    "last_observed_at_utc": "2026-10-08T16:52:00Z",
     "accelerator": "GPU T4 x2",
     "internet": false,
     "environment": "Pin to original environment (2026-10-02), same selected environment as completed v2",
@@ -381,7 +381,13 @@
     "estimated_remaining_base_three_fold_hours": 14.210833333333333,
     "budget_limit": "Base three remaining folds estimated14.21h; recheck actual available quota and runtime before each batch. Three full architectures not established within budget.",
     "notebook_sha256": "10b291363d3ef73d281107a762fdb7087d091bc5456409e81346d7a63b6a1880",
-    "screenshot": "outputs/second_place/evidence/kaggle_v3_fold2_started.jpg"
+    "screenshot": "outputs/second_place/evidence/kaggle_v3_fold2_started.jpg",
+    "actual_torch": "2.11.0+cu128",
+    "actual_gpu": "Tesla T4",
+    "training_input_hashes_verified_in_log": true,
+    "logged_train_sequences": 6520,
+    "logged_validation_sequences": 1631,
+    "logged_joint_classes": 102
   },
   "notebook_sha256": "03165f139b7c13fc4f02207a50290c083b262f1590857fd9492da76061dd142d",
   "author_reference": {
@@ -463,7 +469,7 @@
       "log_evidence": "outputs/second_place/evidence/v1_all_completed_log.txt"
     }
   },
-  "next": "Monitor exact v3 356470282 accepted queue; do not duplicate launch. Audit fold2 artifacts, then continue base folds3/4 within actual GPU quota. Preserve verified folds0/1; no five-fold summary until8151OOF, no online submission/push/production replacement.",
+  "next": "Monitor exact running v3 356470282 without duplicate launch; collect and audit completed fold2 artifacts, then continue base folds3/4 within actual GPU quota. Preserve verified folds0/1; no five-fold summary until8151OOF, no online submission/push/production replacement.",
   "local_audit_repair": {
     "initial_import": "outputs/kaggle_training/imported/second_place_base_fold0_v1",
     "error": "AttributeError: DataFrame has no sequence_id: unnamed logit ID Index erased the column name on reset_index",
