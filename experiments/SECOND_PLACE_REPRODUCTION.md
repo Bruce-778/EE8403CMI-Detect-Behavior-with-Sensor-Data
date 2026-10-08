@@ -353,3 +353,33 @@ https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproductio
 SHA256，环境 torch2.11.0+cu128/Tesla T4。base/imu fold2 正常训练，
 6,520 train / 1,631 validation、102 联合类别；尚无完整折结果，不报告
 中间epoch为最终分数，不重复启动。
+
+
+### 固定 fold 2 结果回收核验：2026-10-08 14:39 PDT
+
+v3 (356470282) 完成，runtime **4h44m41s**。ZIP 75,836,154 字节，
+SHA256 `816e8ff58845391618e7b37b4f40c6c19dc58902edb56111fb8486fb844c1843`。
+正常 UI 下载事件超时但 Downloads 实际文件完整，已复制进独立 recovery_v3；
+无重复下载任务或重训。metadata SHA 与前两批一致，显式 logit IDs、原始输入字节
+SHA、固定 folds、实际 train 6,520 / val 1,631 subjects/IDs、train-only 102
+联合类别、四份最后50epoch权重/history、概率/硬决策/官方指标均通过严格核验。
+导入 `outputs/kaggle_training/imported/second_place_base_fold2_v3_audited`，
+紧凑记录 `experiments/results/second_place_base_fold2_v3.json`。
+
+| 同一 fold2 / 1,631 条验证样本 | 冻结方案 | 第二名 base 路由 | 差值 |
+| --- | ---: | ---: | ---: |
+| 原始输入 | 0.845631 | 0.874310 | +0.028679 |
+| 固定一半辅助传感器缺失 | 0.817661 | 0.847898 | +0.030237 |
+| IMU-only | 0.785455 | 0.818403 | +0.032948 |
+
+四分支 imu / imu_rot / all / all_rot 为0.814243 / 0.722499 / 0.869669 / 0.834925。
+严格因果联合历史固定到达顺序42/142/242（实际seed+fold），observed
+0.904481 / 0.903522 / 0.906080；aux_dropout50
+0.874777 / 0.879220 / 0.876835；IMU-only
+0.851301 / 0.851085 / 0.849331。overflow均0，无真实验证标签/未来样本参与，
+无在线伪标签权重更新，不挑选最佳顺序。
+
+三折共4,890条独立验证sequence，仍非完整五折或线上分数，暂不报告五折均值/标准差。
+下一批前账户明确 **GPU13h8m available of30h**；剩余base两折按v3实测
+约9.489h，预计在额度内；simple/deep完整五折没有预算保证。
+保留已完成三折，不push、不比赛提交、不替换生产权重。
