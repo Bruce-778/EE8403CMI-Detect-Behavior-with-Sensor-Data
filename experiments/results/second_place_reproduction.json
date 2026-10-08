@@ -35,12 +35,15 @@
     "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653",
     "accelerator": "GPU T4 x2",
     "internet": false,
-    "status": "Running; base/imu and base/imu_rot fold0 completed 50 epochs; base/all has started; base/all_rot pending",
-    "last_observed_at_utc": "2026-10-08T07:33:52Z",
+    "status": "Running; base/imu, base/imu_rot and base/all fold0 completed 50 epochs; base/all_rot is training",
+    "last_observed_at_utc": "2026-10-08T09:34:37Z",
     "actual_torch": "2.11.0+cu128",
     "actual_gpu": "Tesla T4",
     "initial_imu_epoch_seconds_approx": 24,
     "initial_tof_first_epoch_seconds": 136.7,
+    "tof_completed_arm_epochs": 50,
+    "tof_steady_epoch_median_seconds": 135.8,
+    "tof_completed_arm_total_epoch_seconds_rounded": 6788.3,
     "runtime_budget_note": "ToF first epoch is substantially slower; measure steady-state and check remaining quota before scheduling full five-fold three-architecture reproduction",
     "gpu_quota_remaining_hours_at_launch": 27
   },
@@ -99,6 +102,20 @@
       "logged_parameters": 3459948,
       "comparison_scope": "All rotation and derived feature channels zeroed for this branch; not comparable to observed IMU score as a model improvement. Rounded single-fold cloud log only; formal artifacts not yet audited",
       "log_evidence": "outputs/second_place/evidence/v1_imu_rot_completed_log.txt"
+    },
+    "base_all_fold0": {
+      "status": "50 epochs complete in cloud log; checkpoint and OOF download/audit pending",
+      "epoch": 50,
+      "logged_score_6dp": 0.888491,
+      "logged_training_loss_4dp": 1.6554,
+      "logged_train_sequences": 6524,
+      "logged_validation_sequences": 1627,
+      "logged_joint_classes": 102,
+      "logged_parameters": 7101852,
+      "frozen_original_multisensor_same_fold_score": 0.8432381633110184,
+      "approximate_logged_delta": 0.04525283668898161,
+      "comparison_scope": "Same fixed validation sequences, independent-sequence arm, no history/pseudo. Reference uses IMU+ToF without THM; original multisensor includes THM. Rounded single-fold cloud log only, not full CV or online score",
+      "log_evidence": "outputs/second_place/evidence/v1_all_completed_log.txt"
     }
   },
   "next": "Collect completed first-fold artifacts, verify raw data hashes and actual training subjects; compare identical validation sequences and three missingness scenarios. Expand to full five folds subject to real runtime/quota; three architecture ensemble and causal joint-label postprocessing reported separately. No push or new competition submission."

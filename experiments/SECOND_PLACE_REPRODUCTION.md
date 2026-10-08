@@ -206,3 +206,22 @@ base/all (IMU + ToF，不含 THM) 已开始，参数 7,101,852，首个 epoch �
 估算完整复现、不提前宣称有足够算力。当前 v1 正常继续，不重复训练，
 没有修改超参或创建线上比赛提交。证据文件
 `outputs/second_place/evidence/v1_imu_rot_completed_log.txt`。
+
+### IMU + ToF 分支完成：2026-10-08 02:34 PDT
+
+base/all fold 0 完成 50/50，最后 epoch 日志 CMI **0.888491**、loss 1.6554；
+6,524 train / 1,627 validation、102 联合类别、7,101,852 参数。首个基础
+ToF 模型的 50 次 epoch 耗时总计约 6,788.3 秒（按日志舍入值求和），排除
+首个 epoch 后中位耗时 **135.8 秒/epoch**。完整复现预算须按实际 ToF
+耗时重新核算，不能沿用 IMU 24 秒/epoch，也不能将 base 的耗时当成其余
+两个深度架构的实测。base/all_rot 已开始，其他三分支已完成；当前 v1
+正常运行，未重跑、未修改训练设置、未提交比赛。
+
+冻结原多传感器方法相同 fold 0 的 1,627 条 OOF 用统一官方指标重新计算
+为 **0.8432381633110184**，与日志结果的初步差约 **+0.04525**。原方法
+包含 THM，此参考分支只用 IMU + ToF，因此这是方法整体对照，并非单独
+ToF encoder 的因果消融。此分数未加历史分配或在线伪标签；最后一轮的
+分数按照上游规则保留，不选取中间更高 epoch。仍待真实 checkpoint/OOF
+下载核验和另外四折，不能解释为线上分数、五折提升或超过第二名。
+证据 `outputs/second_place/evidence/v1_all_completed_log.txt`；JSON 仍保持
+`actual_reproduction_scores=null`，将本项放在 `pending_artifact_audit`。
