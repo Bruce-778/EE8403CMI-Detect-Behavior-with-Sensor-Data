@@ -1,0 +1,558 @@
+{
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "scope": "Five-fold KD ablation and separate fold-0 warm-start screening",
+  "full_five_fold": [
+    {
+      "fold": 0,
+      "baseline": 0.7756521483129168,
+      "finetune": 0.7756521483129168,
+      "distill": 0.7787646212232417,
+      "kd_minus_finetune": 0.003112472910324904,
+      "kd_minus_baseline": 0.003112472910324904
+    },
+    {
+      "fold": 1,
+      "baseline": 0.7858883322473339,
+      "finetune": 0.7860796640454895,
+      "distill": 0.7859491627043163,
+      "kd_minus_finetune": -0.0001305013411732059,
+      "kd_minus_baseline": 6.0830456982352565e-05
+    },
+    {
+      "fold": 2,
+      "baseline": 0.7854549869180467,
+      "finetune": 0.7854549869180467,
+      "distill": 0.7854549869180467,
+      "kd_minus_finetune": 0.0,
+      "kd_minus_baseline": 0.0
+    },
+    {
+      "fold": 3,
+      "baseline": 0.8110881820473532,
+      "finetune": 0.8110881820473532,
+      "distill": 0.8110881820473532,
+      "kd_minus_finetune": 0.0,
+      "kd_minus_baseline": 0.0
+    },
+    {
+      "fold": 4,
+      "baseline": 0.7778869672472511,
+      "finetune": 0.7816696157039409,
+      "distill": 0.7858197252518451,
+      "kd_minus_finetune": 0.004150109547904179,
+      "kd_minus_baseline": 0.00793275800459392
+    }
+  ],
+  "five_fold_evaluation": {
+    "finetune": {
+      "experiment_name": "posttraining_fivefold_v1_finetune",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7879889194055494,
+        "binary_f1": 0.9802218641324014,
+        "macro_f1_9class": 0.5957559746786977
+      },
+      "fold_std": {
+        "score": 0.013562554375387312,
+        "binary_f1": 0.006550406160670819,
+        "macro_f1_9class": 0.025957676457597858
+      },
+      "oof": {
+        "score": 0.7883871749225011,
+        "binary_f1": 0.9802301563883151,
+        "macro_f1_9class": 0.5965441934566871
+      }
+    },
+    "distill": {
+      "experiment_name": "posttraining_fivefold_v1_distill",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7894153356289607,
+        "binary_f1": 0.9802306786341255,
+        "macro_f1_9class": 0.5985999926237956
+      },
+      "fold_std": {
+        "score": 0.012487765211067758,
+        "binary_f1": 0.0060888192278191105,
+        "macro_f1_9class": 0.022637842671600166
+      },
+      "oof": {
+        "score": 0.7899179536182177,
+        "binary_f1": 0.9802379313735129,
+        "macro_f1_9class": 0.5995979758629225
+      }
+    }
+  },
+  "routed_five_fold_evaluation": {
+    "baseline": {
+      "observed": {
+        "experiment_name": "posttraining_fivefold_v1_baseline_observed",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8520287872641525,
+          "binary_f1": 0.9872411250048525,
+          "macro_f1_9class": 0.7168164495234526
+        },
+        "fold_std": {
+          "score": 0.008718663967811539,
+          "binary_f1": 0.004827736615349934,
+          "macro_f1_9class": 0.014342624840866923
+        },
+        "oof": {
+          "score": 0.8522023681112654,
+          "binary_f1": 0.9872448979591837,
+          "macro_f1_9class": 0.7171598382633471
+        }
+      },
+      "aux_dropout50": {
+        "experiment_name": "posttraining_fivefold_v1_baseline_aux_dropout50",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8214550540966442,
+          "binary_f1": 0.984661433331142,
+          "macro_f1_9class": 0.6582486748621464
+        },
+        "fold_std": {
+          "score": 0.011674976819305785,
+          "binary_f1": 0.006390086324718739,
+          "macro_f1_9class": 0.019846477550397725
+        },
+        "oof": {
+          "score": 0.8215828472988969,
+          "binary_f1": 0.9846667977196776,
+          "macro_f1_9class": 0.6584988968781161
+        }
+      },
+      "imu_only": {
+        "experiment_name": "posttraining_fivefold_v1_baseline_imu_only",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.7871941233545804,
+          "binary_f1": 0.9803190079186714,
+          "macro_f1_9class": 0.5940692387904893
+        },
+        "fold_std": {
+          "score": 0.014102269936457891,
+          "binary_f1": 0.005973396108311792,
+          "macro_f1_9class": 0.026969188278173052
+        },
+        "oof": {
+          "score": 0.7877327390265136,
+          "binary_f1": 0.9803227075954348,
+          "macro_f1_9class": 0.5951427704575926
+        }
+      }
+    },
+    "finetune": {
+      "observed": {
+        "experiment_name": "posttraining_fivefold_v1_finetune_observed",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8520287872641525,
+          "binary_f1": 0.9872411250048525,
+          "macro_f1_9class": 0.7168164495234526
+        },
+        "fold_std": {
+          "score": 0.008718663967811539,
+          "binary_f1": 0.004827736615349934,
+          "macro_f1_9class": 0.014342624840866923
+        },
+        "oof": {
+          "score": 0.8522023681112654,
+          "binary_f1": 0.9872448979591837,
+          "macro_f1_9class": 0.7171598382633471
+        }
+      },
+      "aux_dropout50": {
+        "experiment_name": "posttraining_fivefold_v1_finetune_aux_dropout50",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8211635395684516,
+          "binary_f1": 0.9842659087964742,
+          "macro_f1_9class": 0.6580611703404288
+        },
+        "fold_std": {
+          "score": 0.011784525507362658,
+          "binary_f1": 0.006642239462136873,
+          "macro_f1_9class": 0.019968781525615674
+        },
+        "oof": {
+          "score": 0.8212610679740665,
+          "binary_f1": 0.9842736386868488,
+          "macro_f1_9class": 0.6582484972612842
+        }
+      },
+      "imu_only": {
+        "experiment_name": "posttraining_fivefold_v1_finetune_imu_only",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.7879889194055494,
+          "binary_f1": 0.9802218641324014,
+          "macro_f1_9class": 0.5957559746786977
+        },
+        "fold_std": {
+          "score": 0.013562554375387312,
+          "binary_f1": 0.006550406160670819,
+          "macro_f1_9class": 0.025957676457597858
+        },
+        "oof": {
+          "score": 0.7883871749225011,
+          "binary_f1": 0.9802301563883151,
+          "macro_f1_9class": 0.5965441934566871
+        }
+      }
+    },
+    "distill": {
+      "observed": {
+        "experiment_name": "posttraining_fivefold_v1_distill_observed",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8520287872641525,
+          "binary_f1": 0.9872411250048525,
+          "macro_f1_9class": 0.7168164495234526
+        },
+        "fold_std": {
+          "score": 0.008718663967811539,
+          "binary_f1": 0.004827736615349934,
+          "macro_f1_9class": 0.014342624840866923
+        },
+        "oof": {
+          "score": 0.8522023681112654,
+          "binary_f1": 0.9872448979591837,
+          "macro_f1_9class": 0.7171598382633471
+        }
+      },
+      "aux_dropout50": {
+        "experiment_name": "posttraining_fivefold_v1_distill_aux_dropout50",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8225569480252302,
+          "binary_f1": 0.9845669977219302,
+          "macro_f1_9class": 0.6605468983285301
+        },
+        "fold_std": {
+          "score": 0.011081554720272235,
+          "binary_f1": 0.006486226117176567,
+          "macro_f1_9class": 0.017863871107261287
+        },
+        "oof": {
+          "score": 0.82269713320848,
+          "binary_f1": 0.984573056892994,
+          "macro_f1_9class": 0.660821209523966
+        }
+      },
+      "imu_only": {
+        "experiment_name": "posttraining_fivefold_v1_distill_imu_only",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.7894153356289607,
+          "binary_f1": 0.9802306786341255,
+          "macro_f1_9class": 0.5985999926237956
+        },
+        "fold_std": {
+          "score": 0.012487765211067758,
+          "binary_f1": 0.0060888192278191105,
+          "macro_f1_9class": 0.022637842671600166
+        },
+        "oof": {
+          "score": 0.7899179536182177,
+          "binary_f1": 0.9802379313735129,
+          "macro_f1_9class": 0.5995979758629225
+        }
+      }
+    }
+  },
+  "fold0_pilot": [
+    {
+      "arm": "phase_adapter",
+      "model": "imu",
+      "fold": 0,
+      "validation_sequences": 1627,
+      "baseline_score": 0.7756521483129168,
+      "best_trained_score": 0.7733541413186747,
+      "selected_score": 0.7756521483129168,
+      "best_epoch": 0,
+      "epochs_run": 3,
+      "source_sha256": "ae57a1738839ac7dc5e8e21653623a83c675a1109dfed5ad6024494e6c97baa6",
+      "source_parameters_and_buffers_exact": true,
+      "train_subjects_disjoint_from_validation": true,
+      "prediction_metric_recomputed": true,
+      "change_after_training_vs_start": -0.0022980069942420966,
+      "matched_control_best_trained_score": 0.7738999290375546,
+      "change_vs_control_best_trained_score": -0.0005457877188798088
+    },
+    {
+      "arm": "phase_adapter_control",
+      "model": "imu",
+      "fold": 0,
+      "validation_sequences": 1627,
+      "baseline_score": 0.7756521483129168,
+      "best_trained_score": 0.7738999290375546,
+      "selected_score": 0.7756521483129168,
+      "best_epoch": 0,
+      "epochs_run": 3,
+      "source_sha256": "ae57a1738839ac7dc5e8e21653623a83c675a1109dfed5ad6024494e6c97baa6",
+      "source_parameters_and_buffers_exact": true,
+      "train_subjects_disjoint_from_validation": true,
+      "prediction_metric_recomputed": true,
+      "change_after_training_vs_start": -0.0017522192753622878
+    },
+    {
+      "arm": "metric_finetune",
+      "model": "multisensor",
+      "fold": 0,
+      "validation_sequences": 1627,
+      "baseline_score": 0.8432381633110184,
+      "best_trained_score": 0.8406851841143659,
+      "selected_score": 0.8432381633110184,
+      "best_epoch": 0,
+      "epochs_run": 3,
+      "source_sha256": "4080427ce06a92d94bce437e3285280a70fdf340226f891dfaf810fa8b63f732",
+      "source_parameters_and_buffers_exact": true,
+      "train_subjects_disjoint_from_validation": true,
+      "prediction_metric_recomputed": true,
+      "change_after_training_vs_start": -0.0025529791966525384,
+      "matched_control_best_trained_score": 0.8402099367776428,
+      "change_vs_control_best_trained_score": 0.0004752473367231058
+    },
+    {
+      "arm": "metric_finetune_control",
+      "model": "multisensor",
+      "fold": 0,
+      "validation_sequences": 1627,
+      "baseline_score": 0.8432381633110184,
+      "best_trained_score": 0.8402099367776428,
+      "selected_score": 0.8432381633110184,
+      "best_epoch": 0,
+      "epochs_run": 3,
+      "source_sha256": "4080427ce06a92d94bce437e3285280a70fdf340226f891dfaf810fa8b63f732",
+      "source_parameters_and_buffers_exact": true,
+      "train_subjects_disjoint_from_validation": true,
+      "prediction_metric_recomputed": true,
+      "change_after_training_vs_start": -0.003028226533375644
+    },
+    {
+      "arm": "cross_subject_supcon",
+      "model": "imu",
+      "fold": 0,
+      "validation_sequences": 1627,
+      "baseline_score": 0.7756521483129168,
+      "best_trained_score": 0.773296235575972,
+      "selected_score": 0.7756521483129168,
+      "best_epoch": 0,
+      "epochs_run": 3,
+      "source_sha256": "ae57a1738839ac7dc5e8e21653623a83c675a1109dfed5ad6024494e6c97baa6",
+      "source_parameters_and_buffers_exact": true,
+      "train_subjects_disjoint_from_validation": true,
+      "prediction_metric_recomputed": true,
+      "change_after_training_vs_start": -0.0023559127369447985,
+      "matched_control_best_trained_score": 0.7739916796696373,
+      "change_vs_control_best_trained_score": -0.0006954440936652873
+    },
+    {
+      "arm": "phase",
+      "model": "imu",
+      "fold": 0,
+      "validation_sequences": 1627,
+      "baseline_score": 0.7756521483129168,
+      "best_trained_score": 0.7721438259049911,
+      "selected_score": 0.7756521483129168,
+      "best_epoch": 0,
+      "epochs_run": 3,
+      "source_sha256": "ae57a1738839ac7dc5e8e21653623a83c675a1109dfed5ad6024494e6c97baa6",
+      "source_parameters_and_buffers_exact": true,
+      "train_subjects_disjoint_from_validation": true,
+      "prediction_metric_recomputed": true,
+      "change_after_training_vs_start": -0.003508322407925757,
+      "matched_control_best_trained_score": 0.7739916796696373,
+      "change_vs_control_best_trained_score": -0.0018478537646462456
+    }
+  ],
+  "reference_oof_diagnostics": [
+    {
+      "branch": "imu",
+      "sequences": 8151,
+      "official_metrics": {
+        "score": 0.7877327390265136,
+        "binary_f1": 0.9803227075954348,
+        "macro_f1_9class": 0.5951427704575926
+      },
+      "f1_9class": {
+        "Above ear - pull hair": 0.5660377358490566,
+        "Cheek - pinch skin": 0.44178628389154706,
+        "Eyebrow - pull hair": 0.40502092050209204,
+        "Eyelash - pull hair": 0.5357710651828299,
+        "Forehead - pull hairline": 0.6133743274404304,
+        "Forehead - scratch": 0.7394113424264178,
+        "Neck - pinch skin": 0.48126561199000834,
+        "Neck - scratch": 0.6062015503875969,
+        "non_target": 0.9674160964483545
+      },
+      "target_confusions": [
+        {
+          "count": 127,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 113,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 108,
+          "truth": "Neck - pinch skin",
+          "prediction": "Above ear - pull hair"
+        },
+        {
+          "count": 98,
+          "truth": "Above ear - pull hair",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 82,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 77,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Forehead - pull hairline"
+        },
+        {
+          "count": 75,
+          "truth": "Neck - pinch skin",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 72,
+          "truth": "Neck - pinch skin",
+          "prediction": "Neck - scratch"
+        }
+      ]
+    },
+    {
+      "branch": "multisensor",
+      "sequences": 8151,
+      "official_metrics": {
+        "score": 0.8513479450254284,
+        "binary_f1": 0.9865567657737219,
+        "macro_f1_9class": 0.716139124277135
+      },
+      "f1_9class": {
+        "Above ear - pull hair": 0.7661538461538462,
+        "Cheek - pinch skin": 0.6193969030154849,
+        "Eyebrow - pull hair": 0.537759336099585,
+        "Eyelash - pull hair": 0.5858747993579454,
+        "Forehead - pull hairline": 0.7686395080707148,
+        "Forehead - scratch": 0.8386123680241327,
+        "Neck - pinch skin": 0.6328916601714731,
+        "Neck - scratch": 0.718342287029931,
+        "non_target": 0.9775814105711013
+      },
+      "target_confusions": [
+        {
+          "count": 113,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 109,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Eyebrow - pull hair"
+        },
+        {
+          "count": 94,
+          "truth": "Neck - scratch",
+          "prediction": "Neck - pinch skin"
+        },
+        {
+          "count": 88,
+          "truth": "Neck - pinch skin",
+          "prediction": "Neck - scratch"
+        },
+        {
+          "count": 72,
+          "truth": "Eyebrow - pull hair",
+          "prediction": "Forehead - pull hairline"
+        },
+        {
+          "count": 65,
+          "truth": "Cheek - pinch skin",
+          "prediction": "Eyelash - pull hair"
+        },
+        {
+          "count": 64,
+          "truth": "Eyelash - pull hair",
+          "prediction": "Cheek - pinch skin"
+        },
+        {
+          "count": 61,
+          "truth": "Cheek - pinch skin",
+          "prediction": "Neck - pinch skin"
+        }
+      ]
+    }
+  ],
+  "source_files": [
+    "experiments/results/posttraining_fivefold_v1_comparison.json",
+    "experiments/results/representation_study_v1.json"
+  ],
+  "interpretation": "No statistical significance or equivalence claims; phase package is not a single-factor ablation; only KD weight, frozen-phase CE weight, and CE18 weight have paired single-factor controls",
+  "history_protocol_experiment": "experiments/results/history_postprocessing_v1.json"
+}

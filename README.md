@@ -114,4 +114,7 @@ python -s -m unittest discover -s tests -v
 已完成的蒸馏与普通微调对照见 [experiments/POSTTRAINING.md](experiments/POSTTRAINING.md)。
 动作阶段与跨 subject 对比学习的逐步方法、参数、检查及结果见
 [experiments/REPRESENTATION.md](experiments/REPRESENTATION.md)。这些开发实验不自动替换已上线权重。
+正式消融汇总见 [ABLATION_STUDY.md](experiments/ABLATION_STUDY.md)，区分完整五折与单折筛选；
+前五名公开方案核对、OOF 瓶颈及下一轮设计见 [TOP_SOLUTIONS_REVIEW.md](experiments/TOP_SOLUTIONS_REVIEW.md)。
+因果 subject 历史后处理的独立协议实验见 [HISTORY_POSTPROCESSING.md](experiments/HISTORY_POSTPROCESSING.md)，尚未接入线上推理。
 推理 Notebook 需挂载比赛输入和冻结权重，关闭互联网；本地导出、检查不会自动创建比赛提交。
