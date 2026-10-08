@@ -38,6 +38,18 @@ class SecondPlaceTests(unittest.TestCase):
         self.assertEqual(result[0, 0], 1.)
         self.assertEqual(result.sum(), 1.)
 
+    def test_anonymous_logit_index_preserves_sequence_column(self):
+        sys.path.insert(0, str(ROOT / 'scripts'))
+        from train_second_place import prediction_frame
+        metadata = pd.DataFrame({'sequence_id': ['b', 'a'], 'subject': ['p', 'q'],
+            'gesture': [ALL_GESTURES[0], ALL_GESTURES[1]]})
+        ids = pd.Index(['a', 'b'])  # np.load IDs and v1 fallback have no index name
+        aligned = metadata.set_index('sequence_id').loc[ids].reset_index(names='sequence_id')
+        labels = [('up', ALL_GESTURES[0], 'move'), ('up', ALL_GESTURES[1], 'move')]
+        frame = prediction_frame(aligned, np.array([[0., 1.], [1., 0.]]), labels, 'fixed')
+        self.assertEqual(frame.sequence_id.tolist(), ['a', 'b'])
+        self.assertEqual(frame.predicted_gesture.tolist(), [ALL_GESTURES[1], ALL_GESTURES[0]])
+
     def test_all_six_upstream_architectures_forward_backward_and_annotation_isolation(self):
         for arch, names in ARCHITECTURES.items():
             for full, name in enumerate(names):

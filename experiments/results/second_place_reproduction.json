@@ -1,7 +1,185 @@
 {
-  "status": "running_first_fold_base_architecture",
-  "actual_reproduction_scores": null,
-  "followup_automation": {"id": "cmi", "status": "ACTIVE", "policy": "Quiet on unchanged state; collect verified results and continue fixed-fold comparison; no push or competition submission"},
+  "status": "first_fold_artifacts_verified_pending_remaining_fold_budget",
+  "actual_reproduction_scores": {
+    "scope": "partial held-out folds; not five-fold CV",
+    "record": "experiments/results/second_place_base_fold0_v1.json",
+    "folds": [
+      0
+    ],
+    "architectures": [
+      "base"
+    ],
+    "scenarios": {
+      "observed": {
+        "folds": [
+          {
+            "fold": 0,
+            "sequences": 1627,
+            "old": {
+              "score": 0.8432381633110184,
+              "binary_f1": 0.9837997054491899,
+              "macro_f1_9class": 0.7026766211728469
+            },
+            "new": {
+              "score": 0.8891767762627416,
+              "binary_f1": 0.9960822722820764,
+              "macro_f1_9class": 0.782271280243407
+            },
+            "delta": 0.04593861295172319,
+            "history": {
+              "42": {
+                "overflow_fallbacks": 0,
+                "score": 0.9171114517333309,
+                "binary_f1": 0.9965703086722195,
+                "macro_f1_9class": 0.8376525947944422
+              },
+              "142": {
+                "overflow_fallbacks": 0,
+                "score": 0.9188360818356278,
+                "binary_f1": 0.997559785261103,
+                "macro_f1_9class": 0.8401123784101527
+              },
+              "242": {
+                "overflow_fallbacks": 0,
+                "score": 0.9188766455709647,
+                "binary_f1": 0.9975550122249389,
+                "macro_f1_9class": 0.8401982789169904
+              }
+            }
+          }
+        ]
+      },
+      "aux_dropout50": {
+        "folds": [
+          {
+            "fold": 0,
+            "sequences": 1627,
+            "old": {
+              "score": 0.8127170475548207,
+              "binary_f1": 0.9847815414825725,
+              "macro_f1_9class": 0.6406525536270687
+            },
+            "new": {
+              "score": 0.8598284258574741,
+              "binary_f1": 0.9931305201177625,
+              "macro_f1_9class": 0.7265263315971857
+            },
+            "delta": 0.04711137830265344,
+            "history": {
+              "42": {
+                "overflow_fallbacks": 0,
+                "score": 0.8928216172218659,
+                "binary_f1": 0.9950980392156863,
+                "macro_f1_9class": 0.7905451952280457
+              },
+              "142": {
+                "overflow_fallbacks": 0,
+                "score": 0.8862627606439965,
+                "binary_f1": 0.9951028403525954,
+                "macro_f1_9class": 0.7774226809353975
+              },
+              "242": {
+                "overflow_fallbacks": 0,
+                "score": 0.8910811789629469,
+                "binary_f1": 0.9936180657830143,
+                "macro_f1_9class": 0.7885442921428795
+              }
+            }
+          }
+        ]
+      },
+      "imu_only": {
+        "folds": [
+          {
+            "fold": 0,
+            "sequences": 1627,
+            "old": {
+              "score": 0.7756521483129168,
+              "binary_f1": 0.9847665847665847,
+              "macro_f1_9class": 0.566537711859249
+            },
+            "new": {
+              "score": 0.8325818577551118,
+              "binary_f1": 0.9911591355599214,
+              "macro_f1_9class": 0.6740045799503022
+            },
+            "delta": 0.056929709442195,
+            "history": {
+              "42": {
+                "overflow_fallbacks": 0,
+                "score": 0.8641593771511759,
+                "binary_f1": 0.9941234084231146,
+                "macro_f1_9class": 0.7341953458792371
+              },
+              "142": {
+                "overflow_fallbacks": 0,
+                "score": 0.8589593827521556,
+                "binary_f1": 0.9941176470588236,
+                "macro_f1_9class": 0.7238011184454876
+              },
+              "242": {
+                "overflow_fallbacks": 0,
+                "score": 0.8679564439359586,
+                "binary_f1": 0.992133726647001,
+                "macro_f1_9class": 0.7437791612249163
+              }
+            }
+          }
+        ]
+      }
+    },
+    "arms": [
+      {
+        "fold": 0,
+        "architecture": "base",
+        "variant": "all",
+        "sequences": 1627,
+        "joint_classes": 102,
+        "score": 0.8884907179086694,
+        "binary_f1": 0.9965736661771905,
+        "macro_f1_9class": 0.7804077696401484
+      },
+      {
+        "fold": 0,
+        "architecture": "base",
+        "variant": "all_rot",
+        "sequences": 1627,
+        "joint_classes": 102,
+        "score": 0.8316677755316482,
+        "binary_f1": 0.9946157611355849,
+        "macro_f1_9class": 0.6687197899277113
+      },
+      {
+        "fold": 0,
+        "architecture": "base",
+        "variant": "imu",
+        "sequences": 1627,
+        "joint_classes": 102,
+        "score": 0.8325818577551118,
+        "binary_f1": 0.9911591355599214,
+        "macro_f1_9class": 0.6740045799503022
+      },
+      {
+        "fold": 0,
+        "architecture": "base",
+        "variant": "imu_rot",
+        "sequences": 1627,
+        "joint_classes": 102,
+        "score": 0.7441089393390461,
+        "binary_f1": 0.9799118079372856,
+        "macro_f1_9class": 0.5083060707408065
+      }
+    ],
+    "online_score": null,
+    "five_fold_mean": null,
+    "five_fold_sample_std": null,
+    "online_pseudo_labels_evaluated": false
+  },
+  "followup_automation": {
+    "id": "cmi",
+    "status": "ACTIVE",
+    "policy": "Quiet on unchanged state; collect verified results and continue fixed-fold comparison; no push or competition submission"
+  },
   "scope": "Adapted upstream base architectures on original fixed project fold 0; four sensor variants, 50 epochs each; not full five-fold or leaderboard reproduction",
   "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
   "source_manifest": "configs/second_place_source.json",
@@ -35,8 +213,8 @@
     "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653",
     "accelerator": "GPU T4 x2",
     "internet": false,
-    "status": "Running; base/imu, base/imu_rot and base/all fold0 completed 50 epochs; base/all_rot is training",
-    "last_observed_at_utc": "2026-10-08T09:34:37Z",
+    "status": "Complete: all four base fold0 arms and routed scenarios; artifacts audited locally",
+    "last_observed_at_utc": "2026-10-08T11:30:45.746772+00:00",
     "actual_torch": "2.11.0+cu128",
     "actual_gpu": "Tesla T4",
     "initial_imu_epoch_seconds_approx": 24,
@@ -45,7 +223,8 @@
     "tof_steady_epoch_median_seconds": 135.8,
     "tof_completed_arm_total_epoch_seconds_rounded": 6788.3,
     "runtime_budget_note": "ToF first epoch is substantially slower; measure steady-state and check remaining quota before scheduling full five-fold three-architecture reproduction",
-    "gpu_quota_remaining_hours_at_launch": 27
+    "gpu_quota_remaining_hours_at_launch": 27,
+    "run_seconds": 16283
   },
   "notebook_sha256": "03165f139b7c13fc4f02207a50290c083b262f1590857fd9492da76061dd142d",
   "author_reference": {
@@ -68,17 +247,24 @@
   },
   "recovery": {
     "evaluator": "scripts/evaluate_second_place.py",
-    "focused_tests_passed": 6,
-    "focused_tests_seconds": 4.982,
+    "focused_tests_passed": 7,
+    "focused_tests_seconds": 3.73,
     "v1_requires_same_version_cache_metadata_csv": true,
     "reason": "v1 joint logits use raw cache order while predictions CSV is sorted; never guess row alignment",
     "future_run_change": "Explicit joint_sequence_ids.npy and small cache metadata included in ZIP; active v1 unaffected",
     "history_policy": "Exact upstream prefix Hungarian on joint logits, latest return only, orders 42/142/242, explicit overflow baseline fallback; no validation annotations or future rows",
-    "status_screenshot": "outputs/second_place/evidence/kaggle_v1_running.jpg"
+    "status_screenshot": "outputs/second_place/evidence/kaggle_v1_complete.jpg",
+    "archive_bytes": 74789671,
+    "archive_sha256": "e90cdcd1ebbd56496980f0f007ae99745078c55824a2547b466f98907d106b5c",
+    "metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+    "metadata_method": "Read same-version raw CSV document through browser DOM; preserve row order, not a claim of byte-exact cloud CSV checksum",
+    "import_directory": "outputs/kaggle_training/imported/second_place_base_fold0_v1_audited",
+    "sequence_metadata_rows": 8151,
+    "validation_predictions_per_scenario": 1627
   },
   "pending_artifact_audit": {
     "base_imu_fold0": {
-      "status": "50 epochs complete in cloud log; checkpoint and OOF download/audit pending",
+      "status": "Audited against last-epoch checkpoint, fixed train/validation subjects and sequence IDs, probabilities/logits/history; see verified record",
       "epoch": 50,
       "logged_score_6dp": 0.832582,
       "logged_training_loss_4dp": 1.7911,
@@ -92,7 +278,7 @@
       "log_evidence": "outputs/second_place/evidence/v1_imu_completed_log.txt"
     },
     "base_imu_rot_fold0": {
-      "status": "50 epochs complete in cloud log; checkpoint and OOF download/audit pending",
+      "status": "Audited against last-epoch checkpoint, fixed train/validation subjects and sequence IDs, probabilities/logits/history; see verified record",
       "epoch": 50,
       "logged_score_6dp": 0.744109,
       "logged_training_loss_4dp": 2.3924,
@@ -104,7 +290,7 @@
       "log_evidence": "outputs/second_place/evidence/v1_imu_rot_completed_log.txt"
     },
     "base_all_fold0": {
-      "status": "50 epochs complete in cloud log; checkpoint and OOF download/audit pending",
+      "status": "Audited against last-epoch checkpoint, fixed train/validation subjects and sequence IDs, probabilities/logits/history; see verified record",
       "epoch": 50,
       "logged_score_6dp": 0.888491,
       "logged_training_loss_4dp": 1.6554,
@@ -118,5 +304,11 @@
       "log_evidence": "outputs/second_place/evidence/v1_all_completed_log.txt"
     }
   },
-  "next": "Collect completed first-fold artifacts, verify raw data hashes and actual training subjects; compare identical validation sequences and three missingness scenarios. Expand to full five folds subject to real runtime/quota; three architecture ensemble and causal joint-label postprocessing reported separately. No push or new competition submission."
+  "next": "Check actual remaining Kaggle quota, then train uncompleted fixed folds with unchanged source architecture and training hyperparameters. Preserve completed fold0; causal history and online pseudo-label contributions remain separate. No push, competition submission, or production replacement.",
+  "local_audit_repair": {
+    "initial_import": "outputs/kaggle_training/imported/second_place_base_fold0_v1",
+    "error": "AttributeError: DataFrame has no sequence_id: unnamed logit ID Index erased the column name on reset_index",
+    "fix": "reset_index(names=sequence_id); added reversed anonymous ID alignment regression test; fresh audited import passed",
+    "training_changed": false
+  }
 }

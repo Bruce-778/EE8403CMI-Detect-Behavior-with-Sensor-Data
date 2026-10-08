@@ -91,7 +91,7 @@ def main():
         baseline, candidate, history, rows = {}, {}, {seed: {} for seed in result['orders']}, []
         for fold in folds:
             ids, first, labels = audited[(architectures[0], 'imu', fold)]
-            meta = metadata.set_index('sequence_id').loc[ids].reset_index()
+            meta = metadata.set_index('sequence_id').loc[ids].reset_index(names='sequence_id')
             drop = np.array([scenario == 'imu_only' or (scenario == 'aux_dropout50' and
                 int(hashlib.sha256(str(sid).encode()).hexdigest()[:8], 16) % 2 == 0) for sid in ids])
             full = ~meta.tof_missing.to_numpy() & ~drop

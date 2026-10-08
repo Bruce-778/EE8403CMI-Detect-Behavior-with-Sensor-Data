@@ -225,3 +225,43 @@ ToF encoder 的因果消融。此分数未加历史分配或在线伪标签；�
 下载核验和另外四折，不能解释为线上分数、五折提升或超过第二名。
 证据 `outputs/second_place/evidence/v1_all_completed_log.txt`；JSON 仍保持
 `actual_reproduction_scores=null`，将本项放在 `pending_artifact_audit`。
+
+
+### 首折结果回收与严格核验：2026-10-08 04:25 PDT
+
+v1 成功结束，运行 4 小时 31 分 23 秒；四个 base 分支各训练 50 epoch。
+正常浏览器下载的 ZIP 为 74,789,671 字节，SHA256
+`e90cdcd1ebbd56496980f0f007ae99745078c55824a2547b466f98907d106b5c`。
+同版本 cache/metadata.csv 的下载打开原始 CSV 文档，从浏览器可见 DOM
+保存全部 8,151 行及其原始顺序。记录本地保存后的 metadata SHA256；
+该值不宣称是云端 CSV 的原始字节哈希。未下载大型训练缓存。
+
+核验脚本验证原始输入字节 SHA256、固定 folds、实际 6,524 train / 1,627
+validation sequence 及不重叠 subject、训练集定义的 102 联合类别、四份
+50 epoch history 和最后 checkpoint、logits 与排序 CSV 的 ID 对齐、
+概率/硬决策/官方指标，以及三个缺失场景的分支路由。均通过。
+首次本地回收遇到匿名 pd.Index 导致 reset_index 丢失 sequence_id 列名，
+已显式保留列名，新增逆序 ID 回归检查，重新导入独立目录后核验成功。
+此修复仅涉及评价代码，云端训练及权重不变；7 项相关测试通过。
+
+| 相同 fold 0 / 1,627 条验证样本 | 冻结方案 | 第二名 base 路由 | 差值 |
+| --- | ---: | ---: | ---: |
+| 原始输入 | 0.843238 | 0.889177 | +0.045939 |
+| 固定一半辅助传感器缺失 | 0.812717 | 0.859828 | +0.047111 |
+| IMU-only | 0.775652 | 0.832582 | +0.056930 |
+
+四个独立分支为 imu 0.832582、imu_rot 0.744109、all 0.888491、
+all_rot 0.831668。旋转缺失分支的输入条件不同，不直接作为 observed
+模型的优劣消融。all 使用 IMU+ToF，冻结多传感器方案另含 THM。
+
+严格因果联合类别 Hungarian 只使用同 subject 已到达的 logits，返回
+当前样本且不修改此前结果；三种固定顺序分别报告，不选择最佳顺序。
+42 / 142 / 242 的分数：原始输入 0.917111 / 0.918836 / 0.918877；
+aux_dropout50 0.892822 / 0.886263 / 0.891081；IMU-only
+0.864159 / 0.858959 / 0.867956。各场景和顺序均无 overflow fallback。
+在线伪标签尚未评价。以上全部是固定首折开发验证，不是五折均值、
+作者十折权重精确复现或线上成绩；不据此替换冻结方案。
+
+紧凑证据 `experiments/results/second_place_base_fold0_v1.json`；权重及
+预测存于 `outputs/kaggle_training/imported/second_place_base_fold0_v1_audited`。
+下一步按实际 GPU 额度分批完成未训练 folds，复用已完成首折。
