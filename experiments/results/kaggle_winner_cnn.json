@@ -45,5 +45,7 @@
   "leaderboard_benchmark_exclusion": "Rank 0 perfect_submission.csv excluded",
   "comparison_note": "Approximate insertion into the same downloaded final Private leaderboard; late submission has no official final rank.",
   "score_evidence": "outputs/kaggle_winner_submission_v2/online_scores_verified.txt",
-  "score_screenshot": "outputs/kaggle_winner_submission_v2/online_scores_verified.png"
+  "score_screenshot": "outputs/kaggle_winner_submission_v2/online_scores_verified.png",
+  "score_screenshot_sha256": "ee15628e33a346e6cd6ef096208354e827fdc3dd00baf9f03bf024fc86aa47bb",
+  "score_evidence_sha256": "c3614c30477bb42976a87521d273a72d1716883ef4dd64bb6b7313fc41c3d610"
 }

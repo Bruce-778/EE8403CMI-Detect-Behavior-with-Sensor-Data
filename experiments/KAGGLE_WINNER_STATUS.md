@@ -10,6 +10,6 @@
 
 冻结方案为 `cnn_dynamics_mixup`：IMU-only / 多传感器各五折，输入可用性路由，五折等权概率。没有根据测试集拟合标准化、选择 checkpoint 或调整融合权重。本地开发 CV 为 0.852029 ± 0.008719，不等于预期线上分数。
 
-紧凑、可追踪记录：`experiments/results/kaggle_winner_cnn.json`。新旧分数与官方状态截图为 `outputs/kaggle_winner_submission_v2/online_scores_verified.png`，对应可见页面文字证据为 `online_scores_verified.txt`。已更新本文件与 `KAGGLE.md`，旧结果保留；本次只新增这一份提交，没有修改模型或按线上分数调参。
+紧凑、可追踪记录：`experiments/results/kaggle_winner_cnn.json`。新提交的成功状态与两项分数截图为 `outputs/kaggle_winner_submission_v2/online_scores_verified.png`；同时包含新旧提交、版本和评分列的可见页面文字证据为 `online_scores_verified.txt`。已更新本文件与 `KAGGLE.md`，旧结果保留；本次只新增这一份提交，没有修改模型或按线上分数调参。
 
 同线程跟进自动化 `cmi-cnn` 已在实际评分返回后删除。成功结果本地 Git commit，不 push；本轮线上评分跟进完成。
