@@ -190,3 +190,19 @@ CMI **0.832582**、loss 1.7911，训练 6,524 / 验证 1,627 个 sequence，联�
 核验，不能确认完整五折提升，不能称为线上分数。此项保存于 JSON 的
 `pending_artifact_audit`；正式 `actual_reproduction_scores` 仍为 null。
 日志证据存于 `outputs/second_place/evidence/v1_imu_completed_log.txt`。
+
+### 旋转缺失分支完成：2026-10-08 00:33 PDT
+
+base/imu_rot fold 0 完成 50/50，最后 epoch 日志 CMI **0.744109**、loss
+2.3924；同样为 6,524 train / 1,627 validation、102 联合类别。该分支把
+全部 sequence 的旋转及其衍生通道置零，仅在推理的旋转缺失路由使用。
+信息条件与原始 observed IMU 不同，不用 0.744109 与 0.832582 的差来判断
+模型进步或退步。完整路由仍需另两个 ToF 分支完成，且下载真实 artifact
+核验；此分支记录也属于 pending_artifact_audit。
+
+base/all (IMU + ToF，不含 THM) 已开始，参数 7,101,852，首个 epoch 实测
+136.7 秒，相比 IMU 约 24 秒更慢。此数为启动 epoch 耗时，后续应测稳定
+耗时并检查实际剩余 GPU quota，再安排完整五折和三架构，不按 IMU 耗时
+估算完整复现、不提前宣称有足够算力。当前 v1 正常继续，不重复训练，
+没有修改超参或创建线上比赛提交。证据文件
+`outputs/second_place/evidence/v1_imu_rot_completed_log.txt`。
