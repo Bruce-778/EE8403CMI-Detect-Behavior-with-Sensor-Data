@@ -94,3 +94,9 @@ python -s -u scripts/train_representation.py --method phase_adapter --output-dir
 R3 实现检查完成：新增冻结范围与权重为 0 的配对控制，经 5 项表示学习检查通过；
 其中实际跑过 full phase、SupCon、frozen control、frozen phase 四种训练/恢复路径，
 冻结两组都精确核对 encoder/classifier 参数和 BN buffers，原始文件哈希保持不变。
+
+**R3 对照臂已完成：** 冻结原始模型，仅新增适配层且不加阶段 CE；
+fold 0 三轮为 0.772015、0.768724、0.773900，最终保留起点 0.775652。
+实际只训练 56,070 个新增参数，原始参数和 buffers 在训练过程中保持精确一致。
+保存 `results/representation_adapter_pilot_v1_phase_adapter_control.json`；配对阶段臂继续使用相同结构、
+预算和初始化，仅将阶段 CE 权重设为 0.1。对照完成后单独本地 commit。
