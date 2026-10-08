@@ -17,7 +17,7 @@ from cmi_project.cnn_training import TrainingConfig, train_cnn_fold
 from cmi_project.posttraining import (DistillationConfig, DistillationDataset, checked_pair,
     distillation_loss, teacher_training_targets, train_posttraining_fold)
 from cmi_project.preprocessing import SensorDropoutConfig
-from cmi_project.evaluation import cmi_metrics
+from cmi_project.evaluation import cmi_metrics, PROBABILITY_COLUMNS
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from train_posttraining import routed_metrics
 import test_cnn as cnn_fixture
@@ -148,6 +148,15 @@ class PosttrainingPipelineTests(unittest.TestCase):
             self.assertEqual(result["aux_dropout50"]["used_model_a"], removed)
             with self.assertRaisesRegex(ValueError, "fingerprint"):
                 routed_metrics(arrays, self.manifest, 0, a.drop(columns="folds_sha256"), self.root)
+        with patch("train_posttraining.pd.read_csv", return_value=a):
+            frames = {}
+            result = routed_metrics(arrays, self.manifest, 0, b, self.root,
+                                    updated_model="multisensor", prediction_sink=frames)
+            self.assertEqual(result["observed"]["score"], expected_b["score"])
+            np.testing.assert_allclose(frames["observed"].set_index("sequence_id").loc[b.sequence_id, PROBABILITY_COLUMNS],
+                                       b[PROBABILITY_COLUMNS], rtol=0, atol=0)
+            np.testing.assert_allclose(frames["imu_only"].set_index("sequence_id").loc[a.sequence_id, PROBABILITY_COLUMNS],
+                                       a[PROBABILITY_COLUMNS], rtol=0, atol=0)
 
 
 if __name__ == "__main__":

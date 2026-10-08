@@ -27,7 +27,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=ROOT / "configs/representation.json")
     parser.add_argument("--method", required=True, choices=("phase", "cross_subject_supcon",
-                                                          "phase_adapter_control", "phase_adapter"))
+                                                          "phase_adapter_control", "phase_adapter",
+                                                          "metric_finetune_control", "metric_finetune"))
+    parser.add_argument("--model", choices=("imu", "multisensor"), default="imu")
     parser.add_argument("--fold", type=int, nargs="+", default=[0])
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/representation/pilot_v1"))
     parser.add_argument("--name", default="representation_pilot_v1")
@@ -40,21 +42,27 @@ def main():
     settings = json.loads(args.config.read_text(encoding="utf-8"))
     base = json.loads((ROOT / settings["base_config"]).read_text(encoding="utf-8"))
     experiment = RepresentationConfig(**settings["methods"][args.method])
+    if args.model != "imu" and experiment.method != "official_metric":
+        raise ValueError("Phase / contrastive pilots change only Model A.")
     source = (ROOT / base["source_run"]).resolve()
     data_dir, cache = (ROOT / base["data_dir"]).resolve(), (ROOT / base["cache_dir"]).resolve()
-    output = (ROOT / args.output_dir / args.method).resolve()
+    output = (ROOT / args.output_dir / args.method).resolve() if experiment.method != "official_metric" else (
+        ROOT / args.output_dir / args.model / args.method).resolve()
     control_setting = settings.get("method_control_runs", {}).get(args.method, settings["control_run"])
+    if isinstance(control_setting, dict):
+        control_setting = control_setting[args.model]
     control = (ROOT / control_setting).resolve() if control_setting is not None else None
     for protected in (source, data_dir, cache, *([control] if control is not None else [])):
         if output == protected or protected in output.parents or output in protected.parents:
             raise ValueError("Use a separate experiment output directory.")
-    result_path = ROOT / f"experiments/results/{args.name}_{args.method}.json"
+    suffix = args.method if experiment.method != "official_metric" else f"{args.model}_{args.method}"
+    result_path = ROOT / f"experiments/results/{args.name}_{suffix}.json"
     if (result_path.exists() or output.exists()) and not args.resume:
         raise ValueError("Preserve existing attempts; use a fresh output/name or --resume.")
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     verify_training_data(data_dir)
     locked = {"settings": settings, "base_settings": base, "method": asdict(experiment),
-              "folds_sha256": manifest.fingerprint, "source_run": str(source)}
+              "folds_sha256": manifest.fingerprint, "source_run": str(source), "model": args.model}
     output.mkdir(parents=True, exist_ok=True)
     config_path = output / "run_config.json"
     if config_path.exists() and json.loads(config_path.read_text(encoding="utf-8")) != locked:
@@ -63,11 +71,11 @@ def main():
     frames, summaries, controls = {}, [], []
     routed_frames = {scenario: {} for scenario in ("observed", "aux_dropout50", "imu_only")}
     for fold in args.fold:
-        path = source / f"imu/fold_{fold}/best.pt"
+        path = source / f"{args.model}/fold_{fold}/best.pt"
         model, processor, checkpoint = load_cnn_checkpoint(path)
         assert_preprocessor_matches(processor.state, manifest, fold)
         if (checkpoint["fold"] != fold or checkpoint["folds_sha256"] != manifest.fingerprint
-                or model.model_name != "imu" or model.metadata()["architecture"] != "grouped_masked_se_cnn_v3"):
+                or model.model_name != args.model or model.metadata()["architecture"] != "grouped_masked_se_cnn_v3"):
             raise ValueError("Use the original same-fold IMU checkpoint.")
         training = TrainingConfig(**{**checkpoint["training_config"], **base["training_overrides"],
                                      **settings.get("method_training_overrides", {}).get(args.method, {})})
@@ -77,13 +85,21 @@ def main():
         student_hash = hashlib.sha256(path.read_bytes()).hexdigest()
         control_summary = None
         if control is not None:
-            control_summary, _ = reuse_completed_fold(control / f"imu/fold_{fold}", processor,
-                manifest, fold, "imu", CNNConfig.from_dict(checkpoint["model_metadata"]["config"]),
-                training, SensorDropoutConfig(**checkpoint["sensor_dropout"]), metadata, model.tof_regions)
+            control_training = TrainingConfig(**{**checkpoint["training_config"], **base["training_overrides"]}) if (
+                experiment.method == "official_metric") else training
+            control_summary, _ = reuse_completed_fold(control / f"{args.model}/fold_{fold}", processor,
+                manifest, fold, args.model, CNNConfig.from_dict(checkpoint["model_metadata"]["config"]),
+                control_training, SensorDropoutConfig(**checkpoint["sensor_dropout"]), metadata, model.tof_regions)
             provenance = control_summary["posttraining"]
             if provenance["student_sha256"] != student_hash:
                 raise ValueError("Control must use identical starting weights.")
-            if experiment.trainable_scope == "full":
+            if experiment.method == "official_metric":
+                if (provenance["method"] not in ("supervised_finetuning_control", "official_metric")
+                        or control_training.eighteen_loss_weight != 1.0
+                        or {k: v for k, v in asdict(training).items() if k != "eighteen_loss_weight"}
+                        != {k: v for k, v in asdict(control_training).items() if k != "eighteen_loss_weight"}):
+                    raise ValueError("Metric control must differ only in the 18-class loss weight.")
+            elif experiment.trainable_scope == "full":
                 if provenance["method"] != "supervised_finetuning_control":
                     raise ValueError("Use the zero-KD supervised control.")
             elif RepresentationConfig(**provenance["representation"]) != RepresentationConfig(
@@ -99,9 +115,9 @@ def main():
                     np.testing.assert_array_equal(saved["phase"], phase[train])
             else:
                 np.savez_compressed(phase_path, sequence_id=arrays["sequence_id"][train], phase=phase[train])
-        directory = output / f"imu/fold_{fold}"
+        directory = output / f"{args.model}/fold_{fold}"
         if args.resume and (directory / "metrics.json").exists():
-            summary, frame = reuse_completed_fold(directory, processor, manifest, fold, "imu",
+            summary, frame = reuse_completed_fold(directory, processor, manifest, fold, args.model,
                 model.config, training, SensorDropoutConfig(**checkpoint["sensor_dropout"]), metadata, model.tof_regions)
             _, _, completed = load_cnn_checkpoint(directory / "best.pt")
             provenance = summary["posttraining"]
@@ -113,21 +129,22 @@ def main():
         else:
             summary, frame = train_posttraining_fold(arrays, processor, manifest, fold, path, directory,
                 training=training, distillation=DistillationConfig(weight=0), targets=None, eligible=None,
-                data_metadata=metadata, source_teacher={}, representation=experiment, phase_targets=phase)
+                data_metadata=metadata, source_teacher={}, representation=experiment, phase_targets=phase,
+                model_name=args.model)
         summaries.append(summary)
         reference_score = control_summary["validation"]["score"] if control_summary else summary["baseline"]["score"]
         controls.append({"fold": fold, "score": reference_score,
                          "matched_training_control": control_summary is not None,
                          "best_epoch": control_summary["best_epoch"] if control_summary else 0,
-                         "reused_from": str(control / f"imu/fold_{fold}") if control_summary else str(path),
+                         "reused_from": str(control / f"{args.model}/fold_{fold}") if control_summary else str(path),
                          "method_minus_reference": summary["validation"]["score"] - reference_score})
         frames[fold] = frame
         routed = {}
-        summary["routed_with_unchanged_model_b"] = routed_metrics(arrays, manifest, fold, frame, source,
-                                                                  prediction_sink=routed)
+        summary["routed_with_unchanged_other_branch"] = routed_metrics(arrays, manifest, fold, frame, source,
+                                                                  prediction_sink=routed, updated_model=args.model)
         for scenario, routed_frame in routed.items():
             routed_frames[scenario][fold] = routed_frame
-        result = {"method": asdict(experiment), "folds_sha256": manifest.fingerprint,
+        result = {"model": args.model, "method": asdict(experiment), "folds_sha256": manifest.fingerprint,
                   "folds": args.fold, "completed_folds": sorted(frames), "results": summaries, "control": controls,
                   "scope": "Short warm-start development CV; not full retraining, independent holdout or online score",
                   "matched_control": ("Same source, scalers, folds, seed, augmentation, LR and maximum epoch budget; new heads restore CPU RNG"
@@ -137,7 +154,7 @@ def main():
         del arrays, phase, model
     result["complete_five_fold"] = set(frames) == set(range(5))
     if result["complete_five_fold"]:
-        result["five_fold_evaluation"] = evaluate_oof_frames(manifest, frames, output / "imu/evaluation",
+        result["five_fold_evaluation"] = evaluate_oof_frames(manifest, frames, output / f"{args.model}/evaluation",
                                                            experiment_name=f"{args.name}_{args.method}")
         result["routed_five_fold_evaluation"] = {scenario: evaluate_oof_frames(manifest, predictions,
             output / "scenarios" / scenario, experiment_name=f"{args.name}_{args.method}_{scenario}")

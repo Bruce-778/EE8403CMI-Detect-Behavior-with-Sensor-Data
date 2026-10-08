@@ -37,6 +37,7 @@ class TrainingConfig:
     learning_rate: float = 0.001
     weight_decay: float = 0.001
     label_smoothing: float = 0.03
+    eighteen_loss_weight: float = 1.0
     macro_loss_weight: float = 0.0
     binary_loss_weight: float = 0.0
     early_stopping_patience: int = 10
@@ -60,9 +61,11 @@ class TrainingConfig:
                 raise ValueError(f"{name} must be positive and finite.")
         if not np.isfinite(self.weight_decay) or self.weight_decay < 0 or not 0 <= self.label_smoothing < 1:
             raise ValueError("Invalid weight_decay/label_smoothing.")
-        for name in ("macro_loss_weight", "binary_loss_weight"):
+        for name in ("eighteen_loss_weight", "macro_loss_weight", "binary_loss_weight"):
             if not np.isfinite(getattr(self, name)) or getattr(self, name) < 0:
                 raise ValueError(f"{name} must be finite and >= 0.")
+        if not (self.eighteen_loss_weight + self.macro_loss_weight + self.binary_loss_weight):
+            raise ValueError("At least one supervised loss weight must be positive.")
         if not 0 < self.lr_factor < 1 or self.lr_patience < 0 or self.min_lr > self.learning_rate:
             raise ValueError("Invalid learning rate scheduler settings.")
         if not np.isfinite(self.min_delta) or self.min_delta < 0:
@@ -107,11 +110,12 @@ class CMIHierarchicalLoss(nn.Module):
     def __init__(self, config: TrainingConfig):
         super().__init__()
         self.smoothing = config.label_smoothing
+        self.eighteen_weight = config.eighteen_loss_weight
         self.macro_weight = config.macro_loss_weight
         self.binary_weight = config.binary_loss_weight
 
     def forward(self, logits: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
-        loss = nn.functional.cross_entropy(logits, target, label_smoothing=self.smoothing)
+        loss = self.eighteen_weight * nn.functional.cross_entropy(logits, target, label_smoothing=self.smoothing)
         if self.macro_weight or self.binary_weight:
             non_target = torch.logsumexp(logits[:, 8:], dim=1, keepdim=True)
             if self.macro_weight:

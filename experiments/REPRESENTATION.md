@@ -106,3 +106,27 @@ fold 0 三轮为 0.772015、0.768724、0.773900，最终保留起点 0.775652。
 新头确实学到了辅助任务，但没有提高 gesture 验证分数，不能把它描述为模型提升。
 保存 `results/representation_adapter_pilot_v1_phase_adapter.json`。
 按预先规定停止这一短程配置，不扩展五折，也不继续扫阶段权重或对比学习温度。
+
+## R4：多传感器分支的评价目标对齐
+
+R1–R3 都没有超过第 0 折起点，说明本轮短程表示损失没有找到收益。
+转向当前实际路由主要使用的 B 分支，单独调整监督目标的相对权重。
+官方评分包含 BFRB 二分类和合并非目标子类后的 9 类 macro F1；
+原始 18 类 CE 仍要求区分十个非目标动作。本次把这项 CE 的权重从 **1 降为 0.25**，
+保留原来的 9 类 CE 权重 0.5、binary BCE 权重 0.1、label smoothing=0.03。
+保留 18 类监督及原来的 18 类 argmax 推理，避免训练为纯 9 类目标却按 18 类决策的不一致。
+这只是更接近评价目标的 surrogate loss，不能声称直接优化了离散 F1。
+
+新增 B 的普通微调控制（18 类权重=1）和目标对齐微调（0.25）；
+同起点、同 fold、同 dropout、lr=1e-4、batch=64、最多 8 epochs、patience=3。
+不新增模型参数、不改预处理或验证标签分布，也不同时加阶段监督/蒸馏/对比 loss。
+默认 18 类权重仍为 1，原有权重及推理行为保持一致。
+检查该修改只降低非目标子类惩罚，不缩放整个监督目标；实际执行 B 的两组训练/恢复路径。
+先跑固定 fold 0，只有超过配对控制才锁定这项参数进行五折。
+
+```powershell
+python -s -u scripts/train_representation.py --method metric_finetune_control --model multisensor --output-dir outputs/representation/metric_pilot_v1 --name representation_metric_pilot_v1
+python -s -u scripts/train_representation.py --method metric_finetune --model multisensor --output-dir outputs/representation/metric_pilot_v1 --name representation_metric_pilot_v1
+```
+
+配置及每轮曲线保留，完成后追加真实分数与保留决定并分别本地 commit。

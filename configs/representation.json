@@ -5,14 +5,22 @@
     "phase": {"method": "phase", "weight": 0.1, "temperature": 0.1},
     "cross_subject_supcon": {"method": "cross_subject_supcon", "weight": 0.05, "temperature": 0.1},
     "phase_adapter_control": {"method": "phase", "weight": 0.0, "temperature": 0.1, "trainable_scope": "phase_heads"},
-    "phase_adapter": {"method": "phase", "weight": 0.1, "temperature": 0.1, "trainable_scope": "phase_heads"}
+    "phase_adapter": {"method": "phase", "weight": 0.1, "temperature": 0.1, "trainable_scope": "phase_heads"},
+    "metric_finetune_control": {"method": "official_metric", "weight": 0.0},
+    "metric_finetune": {"method": "official_metric", "weight": 0.0}
   },
   "method_training_overrides": {
     "phase_adapter_control": {"learning_rate": 0.001, "min_lr": 0.00001},
-    "phase_adapter": {"learning_rate": 0.001, "min_lr": 0.00001}
+    "phase_adapter": {"learning_rate": 0.001, "min_lr": 0.00001},
+    "metric_finetune": {"eighteen_loss_weight": 0.25}
   },
   "method_control_runs": {
     "phase_adapter_control": null,
-    "phase_adapter": "outputs/representation/adapter_pilot_v1/phase_adapter_control"
+    "phase_adapter": "outputs/representation/adapter_pilot_v1/phase_adapter_control",
+    "metric_finetune_control": null,
+    "metric_finetune": {
+      "imu": "outputs/posttraining/fivefold_v1/finetune",
+      "multisensor": "outputs/representation/metric_pilot_v1/multisensor/metric_finetune_control"
+    }
   }
 }

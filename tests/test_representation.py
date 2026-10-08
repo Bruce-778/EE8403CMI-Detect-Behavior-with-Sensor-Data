@@ -12,7 +12,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from cmi_project.cnn import CMI1DCNN
-from cmi_project.cnn_training import TrainingConfig, train_cnn_fold, load_cnn_checkpoint
+from cmi_project.cnn_training import TrainingConfig, train_cnn_fold, load_cnn_checkpoint, CMIHierarchicalLoss
 from cmi_project.posttraining import DistillationConfig, train_posttraining_fold
 from cmi_project.preprocessing import SensorDropoutConfig
 from cmi_project.representation import (RepresentationConfig, RepresentationDataset, RepresentationIMUCNN,
@@ -77,6 +77,18 @@ class RepresentationTests(unittest.TestCase):
         self.assertEqual(float(zero.detach()), 0)
         single = cross_subject_contrastive_loss(embedding[:1], labels[:1], subjects[:1], .1)
         self.assertEqual(float(single.detach()), 0)
+
+    def test_metric_objective_reduces_only_subtype_penalty(self):
+        logits = torch.randn(2, 18, requires_grad=True)
+        labels_a, labels_b = torch.tensor([1, 9]), torch.tensor([1, 17])
+        old = CMIHierarchicalLoss(TrainingConfig(macro_loss_weight=.5, binary_loss_weight=.1))
+        new = CMIHierarchicalLoss(TrainingConfig(eighteen_loss_weight=.25, macro_loss_weight=.5, binary_loss_weight=.1))
+        torch.testing.assert_close(new(logits, labels_a) - new(logits, labels_b),
+                                   .25 * (old(logits, labels_a) - old(logits, labels_b)))
+        collapsed = CMIHierarchicalLoss(TrainingConfig(eighteen_loss_weight=0, macro_loss_weight=.5, binary_loss_weight=.1))
+        torch.testing.assert_close(collapsed(logits, labels_a), collapsed(logits, labels_b))
+        new(logits, labels_a).backward()
+        self.assertTrue(torch.isfinite(logits.grad).all())
 
 
 class RepresentationPipelineTests(unittest.TestCase):
@@ -145,6 +157,25 @@ class RepresentationPipelineTests(unittest.TestCase):
                 original = torch.load(path, weights_only=True)["state_dict"]
                 for key, value in original.items():
                     torch.testing.assert_close(value, saved["state_dict"][key], rtol=0, atol=0)
+        self.assertEqual(before, hashlib.sha256(path.read_bytes()).hexdigest())
+
+    def test_multisensor_metric_finetuning_uses_unchanged_architecture(self):
+        source = self.root / "multisensor"
+        train_cnn_fold(self.arrays, self.processor, self.manifest, 0, source, model_name="multisensor",
+            model_config=cnn_fixture.tiny_config(), training=TrainingConfig(epochs=1, cpu_threads=1),
+            data_metadata=self.metadata, save_plots=False)
+        path = source / "best.pt"
+        before = hashlib.sha256(path.read_bytes()).hexdigest()
+        for weight in (1., .25):
+            result, _ = train_posttraining_fold(self.arrays, self.processor, self.manifest, 0, path,
+                self.root / f"metric_{weight}", training=TrainingConfig(epochs=1, batch_size=8,
+                cpu_threads=1, learning_rate=.0001, eighteen_loss_weight=weight),
+                distillation=DistillationConfig(weight=0), targets=None, eligible=None,
+                data_metadata=self.metadata, source_teacher={}, model_name="multisensor",
+                representation=RepresentationConfig(method="official_metric", weight=0), save_plots=False)
+            self.assertEqual(result["model"], "multisensor")
+            self.assertEqual(result["model_metadata"]["architecture"], "grouped_masked_se_cnn_v3")
+            self.assertEqual(result["posttraining"]["training_annotation_sequences"], 0)
         self.assertEqual(before, hashlib.sha256(path.read_bytes()).hexdigest())
 
 

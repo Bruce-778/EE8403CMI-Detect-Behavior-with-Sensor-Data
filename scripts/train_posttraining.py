@@ -25,12 +25,16 @@ from cmi_project.validation import load_fold_manifest
 from run_winner_experiments import verify_training_data
 
 
-def routed_metrics(arrays, manifest, fold, student_frame, source_run, *, prediction_sink=None):
+def routed_metrics(arrays, manifest, fold, student_frame, source_run, *, prediction_sink=None, updated_model="imu"):
     """Reuse unchanged Model B; evaluate new A under identical missingness rules."""
-    a = _checked_predictions(manifest, fold, student_frame,
+    if updated_model not in ("imu", "multisensor"):
+        raise ValueError("Unknown updated branch.")
+    a_frame = student_frame if updated_model == "imu" else pd.read_csv(source_run / f"imu/fold_{fold}/predictions.csv")
+    b_frame = student_frame if updated_model == "multisensor" else pd.read_csv(source_run / f"multisensor/fold_{fold}/predictions.csv")
+    a = _checked_predictions(manifest, fold, a_frame,
                              require_fingerprint=True).set_index("sequence_id")
     b = _checked_predictions(manifest, fold,
-        pd.read_csv(source_run / f"multisensor/fold_{fold}/predictions.csv"),
+        b_frame,
         require_fingerprint=True).set_index("sequence_id").loc[a.index]
     a = a.astype({key: np.float64 for key in PROBABILITY_COLUMNS})
     b = b.astype({key: np.float64 for key in PROBABILITY_COLUMNS})
@@ -128,8 +132,12 @@ def main():
                 "settings": settings, "folds": folds, "folds_sha256": manifest.fingerprint,
                 "training": asdict(training)}
             config_path = directory / "run_config.json"
-            if config_path.exists() and json.loads(config_path.read_text(encoding="utf-8")) != run_config:
-                raise ValueError("Completed run settings changed; use a fresh experiment name/directory.")
+            if config_path.exists():
+                previous = json.loads(config_path.read_text(encoding="utf-8"))
+                # Older completed runs omit newly introduced default loss weights.
+                previous["training"] = asdict(TrainingConfig(**previous["training"]))
+                if previous != run_config:
+                    raise ValueError("Completed run settings changed; use a fresh experiment name/directory.")
             if not config_path.exists():
                 config_path.write_text(json.dumps(run_config, indent=2), encoding="utf-8")
             fold_directory = directory / f"imu/fold_{fold}"

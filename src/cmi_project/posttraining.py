@@ -118,7 +118,7 @@ def verify_starting_predictions(student, arrays, manifest, fold, source, device,
 def train_posttraining_fold(arrays, processor, manifest, fold, student_path, output_dir, *,
                             training: TrainingConfig, distillation: DistillationConfig,
                             targets, eligible, data_metadata, source_teacher,
-                            save_plots=True, representation=None, phase_targets=None):
+                            save_plots=True, representation=None, phase_targets=None, model_name="imu"):
     """Epoch 0 is eligible for checkpoint selection, preserving an unimproved start."""
     if training.mixup_probability:
         raise ValueError("This controlled post-training stage disables Mixup for both arms.")
@@ -129,7 +129,7 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
     seed_everything(training.seed + fold, training.cpu_threads)
     device = choose_device(training.device)
     student, source_processor, source_checkpoint = load_cnn_checkpoint(student_path, device=str(device))
-    if (student.model_name != "imu" or source_checkpoint["fold"] != fold
+    if (student.model_name != model_name or source_checkpoint["fold"] != fold
             or source_checkpoint["folds_sha256"] != manifest.fingerprint
             or not preprocessor_states_equal(source_processor.state, processor.state)):
         raise ValueError("Starting student differs from requested fold/input parameters.")
@@ -150,12 +150,15 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
                                      cross_subject_contrastive_loss)
         if distillation.weight or (representation.method == "phase" and phase_targets is None):
             raise ValueError("Test representation losses separately, with training phase targets when needed.")
-        student = RepresentationIMUCNN.from_starting_model(student, representation.method == "phase")
-        if representation.trainable_scope == "phase_heads":
-            student.imu_encoder.requires_grad_(False)
-            student.classifier.requires_grad_(False)
-        dataset = RepresentationDataset(arrays, train_indices, manifest, fold,
-            seed=training.seed + fold, dropout=dropout, phase=phase_targets)
+        if representation.method == "official_metric":
+            dataset = CNNTensorDataset(arrays, train_indices, training=True, seed=training.seed + fold, dropout=dropout)
+        else:
+            student = RepresentationIMUCNN.from_starting_model(student, representation.method == "phase")
+            if representation.trainable_scope == "phase_heads":
+                student.imu_encoder.requires_grad_(False)
+                student.classifier.requires_grad_(False)
+            dataset = RepresentationDataset(arrays, train_indices, manifest, fold,
+                seed=training.seed + fold, dropout=dropout, phase=phase_targets)
     train_loader = DataLoader(dataset, batch_size=training.batch_size, shuffle=True,
         generator=torch.Generator().manual_seed(training.seed + fold))
     val_loader = DataLoader(CNNTensorDataset(arrays, val_indices), batch_size=training.batch_size)
@@ -173,10 +176,13 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
                   "starting_probability_max_error": error}
     if representation is not None:
         provenance.update(method=representation.method, representation=asdict(representation),
-            training_annotation_sequences=len(train_indices), validation_annotation_sequences=0,
+            training_annotation_sequences=len(train_indices) if representation.method != "official_metric" else 0,
+            validation_annotation_sequences=0,
             phase_targets_sha256=(hashlib.sha256(phase_targets[train_indices].tobytes()).hexdigest()
                                   if phase_targets is not None else None),
-            new_heads_rng="restore CPU RNG after initialization; shared dropout stream matches control")
+            new_heads_rng=("no new heads; original model initialization and dropout"
+                           if representation.method == "official_metric" else
+                           "restore CPU RNG after initialization; shared dropout stream matches control"))
         for key in ("teacher_view", "teacher_bn", "distillation"):
             provenance.pop(key)
     output_dir.mkdir(parents=True)
@@ -220,7 +226,7 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
         for batch in train_loader:
             batch = {key: value.to(device) for key, value in batch.items()}
             optimizer.zero_grad(set_to_none=True)
-            if representation is None:
+            if representation is None or representation.method == "official_metric":
                 logits = student(batch)
             else:
                 logits, embedding, phase_logits, phase_mask = student.forward_outputs(batch)
@@ -229,6 +235,8 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
                 auxiliary = distillation_loss(logits, batch["teacher_logits"], batch["teacher_eligible"],
                     distillation.temperature) if distillation.weight else logits.sum() * 0
                 weight = distillation.weight
+            elif representation.method == "official_metric":
+                auxiliary, weight = logits.sum() * 0, 0
             elif representation.method == "phase":
                 input_mask = batch["imu_valid"].any(-1) & batch["time_mask"]
                 auxiliary = student.phase_loss(phase_logits, batch["training_phase"], input_mask, phase_mask)
@@ -280,7 +288,7 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
         "folds_sha256": manifest.fingerprint})
     predictions = pd.concat([predictions, pd.DataFrame(probability, columns=PROBABILITY_COLUMNS)], axis=1)
     write_fold_predictions(manifest, fold, predictions, output_dir / "predictions.csv", preprocessor_state=processor.state)
-    result = {"model": "imu", "fold": fold, "folds_sha256": manifest.fingerprint,
+    result = {"model": student.model_name, "fold": fold, "folds_sha256": manifest.fingerprint,
               "scope": "Development held-out subject fold; original source and post-training checkpoints selected on validation",
               "baseline": baseline, "validation": metrics, "best_epoch": checkpoint["best_epoch"],
               "epochs_run": len(history), "training": asdict(training), "posttraining": provenance,
