@@ -131,9 +131,13 @@ class PosttrainingPipelineTests(unittest.TestCase):
         arrays["thm_valid"][:] = False
         arrays["tof_sensor_present"][:] = False
         with patch("train_posttraining.pd.read_csv", return_value=b):
-            result = routed_metrics(arrays, self.manifest, 0, a, self.root)
+            saved = {}
+            result = routed_metrics(arrays, self.manifest, 0, a, self.root, prediction_sink=saved)
             self.assertEqual(result["observed"]["score"], expected_a["score"])
             self.assertEqual(result["observed"]["used_model_b"], 0)
+            for scenario, frame in saved.items():
+                self.assertEqual(set(frame.sequence_id), set(a.sequence_id))
+                self.assertEqual(cmi_metrics(frame.gesture, frame.predicted_gesture)["score"], result[scenario]["score"])
             arrays["thm_valid"][:] = arrays["time_mask"][..., None]
             result = routed_metrics(arrays, self.manifest, 0, a, self.root)
             self.assertEqual(result["observed"]["score"], expected_b["score"])

@@ -25,13 +25,15 @@ from cmi_project.validation import load_fold_manifest
 from run_winner_experiments import verify_training_data
 
 
-def routed_metrics(arrays, manifest, fold, student_frame, source_run):
+def routed_metrics(arrays, manifest, fold, student_frame, source_run, *, prediction_sink=None):
     """Reuse unchanged Model B; evaluate new A under identical missingness rules."""
     a = _checked_predictions(manifest, fold, student_frame,
                              require_fingerprint=True).set_index("sequence_id")
     b = _checked_predictions(manifest, fold,
         pd.read_csv(source_run / f"multisensor/fold_{fold}/predictions.csv"),
         require_fingerprint=True).set_index("sequence_id").loc[a.index]
+    a = a.astype({key: np.float64 for key in PROBABILITY_COLUMNS})
+    b = b.astype({key: np.float64 for key in PROBABILITY_COLUMNS})
     positions = pd.Series(np.arange(len(manifest.table)), index=arrays["sequence_id"]).loc[a.index].to_numpy()
     time = arrays["time_mask"][positions]
     available = ((arrays["thm_valid"][positions] & time[..., None]).any(axis=(1, 2))
@@ -44,6 +46,8 @@ def routed_metrics(arrays, manifest, fold, student_frame, source_run):
         frame.loc[use_b] = b.loc[use_b]
         result[scenario] = {**cmi_metrics(frame["gesture"], frame["predicted_gesture"]),
                             "used_model_a": int((~use_b).sum()), "used_model_b": int(use_b.sum())}
+        if prediction_sink is not None:
+            prediction_sink[scenario] = frame.reset_index()
     return result
 
 
@@ -86,6 +90,8 @@ def main():
     if distillation.weight <= 0:
         raise ValueError("Paired experiment needs a positive distillation weight.")
     summaries, predictions = {arm: [] for arm in ("finetune", "distill")}, {arm: {} for arm in ("finetune", "distill")}
+    routed_predictions = {arm: {scenario: {} for scenario in ("observed", "aux_dropout50", "imu_only")}
+                          for arm in ("baseline", "finetune", "distill")}
     for fold in folds:
         student_path = source / f"imu/fold_{fold}/best.pt"
         teacher_path = source / f"multisensor/fold_{fold}/best.pt"
@@ -142,9 +148,17 @@ def main():
                 summary, frame = train_posttraining_fold(arrays, processor, manifest, fold, student_path,
                     fold_directory, training=training, distillation=kd, targets=targets,
                     eligible=eligible, data_metadata=metadata, source_teacher=teacher_source)
-            summary["routed_with_unchanged_model_b"] = routed_metrics(arrays, manifest, fold, frame, source)
+            routed = {}
+            summary["routed_with_unchanged_model_b"] = routed_metrics(arrays, manifest, fold, frame, source,
+                                                                      prediction_sink=routed)
+            for scenario, routed_frame in routed.items():
+                routed_predictions[arm][scenario][fold] = routed_frame
             original_a = pd.read_csv(source / f"imu/fold_{fold}/predictions.csv")
-            summary["baseline_routed_with_unchanged_model_b"] = routed_metrics(arrays, manifest, fold, original_a, source)
+            baseline_routed = {}
+            summary["baseline_routed_with_unchanged_model_b"] = routed_metrics(arrays, manifest, fold, original_a, source,
+                                                                               prediction_sink=baseline_routed)
+            for scenario, routed_frame in baseline_routed.items():
+                routed_predictions["baseline"][scenario][fold] = routed_frame
             summaries[arm].append(summary)
             predictions[arm][fold] = frame
             result_root.mkdir(parents=True, exist_ok=True)
@@ -161,9 +175,14 @@ def main():
     complete = set(folds) == set(range(5))
     evaluations = {arm: evaluate_oof_frames(manifest, frames, output / arm / "imu/evaluation", experiment_name=f"{name}_{arm}")
                    for arm, frames in predictions.items()} if complete else {}
+    routed_evaluations = {arm: {scenario: evaluate_oof_frames(manifest, frames,
+        output / "scenarios" / arm / scenario, experiment_name=f"{name}_{arm}_{scenario}")
+        for scenario, frames in scenarios.items()} for arm, scenarios in routed_predictions.items()} if complete else {}
     result = {"folds_sha256": manifest.fingerprint, "folds": folds, "complete_five_fold": complete,
               "comparison": comparison, "five_fold_evaluation": evaluations,
-              "scope": "Development CV; fixed fold-0 pilot is screening, not five-fold/online improvement",
+              "routed_five_fold_evaluation": routed_evaluations,
+              "scope": ("Development CV; parameters frozen after fold-0 screening; not online scores" if complete else
+                        "Development CV; fixed fold-0 pilot is screening, not five-fold/online improvement"),
               "policy": "Same initialization, train/validation IDs, scalers, seed, augmentation and epoch budget; only KD weight differs"}
     (result_root / f"{name}_comparison.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(json.dumps(result, indent=2), flush=True)
