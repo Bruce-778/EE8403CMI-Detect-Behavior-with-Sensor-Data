@@ -1,0 +1,60 @@
+{
+  "status": "running_first_fold_base_architecture",
+  "actual_reproduction_scores": null,
+  "scope": "Adapted upstream base architectures on original fixed project fold 0; four sensor variants, 50 epochs each; not full five-fold or leaderboard reproduction",
+  "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
+  "source_manifest": "configs/second_place_source.json",
+  "design_commit": "feedb82",
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "training": {
+    "epochs": 50,
+    "batch_size": 32,
+    "folds": [
+      0
+    ],
+    "architectures": [
+      "base"
+    ],
+    "variants": [
+      "imu",
+      "imu_rot",
+      "all",
+      "all_rot"
+    ],
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "checkpoint_selection": "last",
+    "history_postprocessing": false,
+    "online_pseudo_labels": false
+  },
+  "runtime": {
+    "source": "Kaggle private notebook",
+    "title": "CMI Second Place Fixed Fold Reproduction",
+    "script_version_id": 356304653,
+    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653",
+    "accelerator": "GPU T4 x2",
+    "internet": false,
+    "status": "Running accepted; initialization/logs still pending",
+    "gpu_quota_remaining_hours_at_launch": 27
+  },
+  "notebook_sha256": "03165f139b7c13fc4f02207a50290c083b262f1590857fd9492da76061dd142d",
+  "author_reference": {
+    "final_official_private_rank": 2,
+    "team": "daiwakun",
+    "final_official_private_score": 0.878839,
+    "leaderboard_csv_sha256": "62ef57a7bee9bf75cb4380bbb332ba458ed96564706d9eef145563e16463b367",
+    "source_url": "https://www.kaggle.com/competitions/cmi-detect-behavior-with-sensor-data/leaderboard",
+    "our_current_official_private": 0.833362,
+    "score_gap": 0.04547699999999999
+  },
+  "checks": {
+    "full_suite_passed": 78,
+    "full_suite_seconds": 58.725,
+    "six_original_architectures_forward_backward": true,
+    "validation_annotation_isolation": true,
+    "train_only_joint_ontology": true,
+    "cache_immutable_under_dropout": true,
+    "notebook_embedded_sources_and_folds_match": true
+  },
+  "next": "Collect completed first-fold artifacts, verify raw data hashes and actual training subjects; compare identical validation sequences and three missingness scenarios. Expand to full five folds subject to real runtime/quota; three architecture ensemble and causal joint-label postprocessing reported separately. No push or new competition submission."
+}

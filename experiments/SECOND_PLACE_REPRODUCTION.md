@@ -130,3 +130,12 @@ fold 0、四分支各 50 epoch；关闭互联网，不连接 WandB，不读取�
 
 实际云端版本、运行状态、真正的验证分数会记入本页和
 `experiments/results/second_place_reproduction.json`；当前没有新的复现分数。
+
+### GPU 首次运行：版本 1，已被 Kaggle 接受
+
+[CMI Second Place Fixed Fold Reproduction v1 / 356304653](https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653)。
+页面明确显示 PRIVATE、Version #1 with GPU T4 x2、Running；官方 CMI
+比赛输入已挂载、Internet off。开始时 GPU 剩余额度约 27 小时。
+这里只启动 base/fold 0 的四分支各 50 epoch，尚无实际训练完成分数。
+78 项全套测试通过（58.725 秒），Notebook 嵌入源码和固定 folds 已核对。
+实现与设计本地 commit `feedb82`，不 push、不提交比赛。
