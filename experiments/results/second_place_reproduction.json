@@ -1,6 +1,7 @@
 {
   "status": "running_first_fold_base_architecture",
   "actual_reproduction_scores": null,
+  "followup_automation": {"id": "cmi", "status": "ACTIVE", "policy": "Quiet on unchanged state; collect verified results and continue fixed-fold comparison; no push or competition submission"},
   "scope": "Adapted upstream base architectures on original fixed project fold 0; four sensor variants, 50 epochs each; not full five-fold or leaderboard reproduction",
   "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
   "source_manifest": "configs/second_place_source.json",
