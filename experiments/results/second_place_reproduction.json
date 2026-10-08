@@ -1,10 +1,11 @@
 {
-  "status": "running_base_fold1_after_verified_fold0",
+  "status": "base_folds0_1_verified_pending_fold2_launch",
   "actual_reproduction_scores": {
     "scope": "partial held-out folds; not five-fold CV",
     "record": "experiments/results/second_place_base_fold0_v1.json",
     "folds": [
-      0
+      0,
+      1
     ],
     "architectures": [
       "base"
@@ -46,6 +47,41 @@
                 "macro_f1_9class": 0.8401982789169904
               }
             }
+          },
+          {
+            "fold": 1,
+            "sequences": 1632,
+            "old": {
+              "score": 0.8490669862554014,
+              "binary_f1": 0.9808165272995573,
+              "macro_f1_9class": 0.7173174452112456
+            },
+            "new": {
+              "score": 0.8945057023987806,
+              "binary_f1": 0.9960975609756098,
+              "macro_f1_9class": 0.7929138438219515
+            },
+            "delta": 0.04543871614337913,
+            "history": {
+              "42": {
+                "overflow_fallbacks": 0,
+                "score": 0.9344030107874718,
+                "binary_f1": 0.9965770171149144,
+                "macro_f1_9class": 0.8722290044600292
+              },
+              "142": {
+                "overflow_fallbacks": 0,
+                "score": 0.9272524860491747,
+                "binary_f1": 0.9965836993655441,
+                "macro_f1_9class": 0.857921272732805
+              },
+              "242": {
+                "overflow_fallbacks": 0,
+                "score": 0.9240426632295218,
+                "binary_f1": 0.9965903555772041,
+                "macro_f1_9class": 0.8514949708818395
+              }
+            }
           }
         ]
       },
@@ -85,6 +121,41 @@
                 "macro_f1_9class": 0.7885442921428795
               }
             }
+          },
+          {
+            "fold": 1,
+            "sequences": 1632,
+            "old": {
+              "score": 0.8158060057305019,
+              "binary_f1": 0.9748396645288604,
+              "macro_f1_9class": 0.6567723469321433
+            },
+            "new": {
+              "score": 0.8661173920908471,
+              "binary_f1": 0.9936554416788678,
+              "macro_f1_9class": 0.7385793425028264
+            },
+            "delta": 0.05031138636034527,
+            "history": {
+              "42": {
+                "overflow_fallbacks": 0,
+                "score": 0.9017303644695224,
+                "binary_f1": 0.9941348973607038,
+                "macro_f1_9class": 0.8093258315783409
+              },
+              "142": {
+                "overflow_fallbacks": 0,
+                "score": 0.9048222105368993,
+                "binary_f1": 0.9951171875,
+                "macro_f1_9class": 0.8145272335737986
+              },
+              "242": {
+                "overflow_fallbacks": 0,
+                "score": 0.9027338833145664,
+                "binary_f1": 0.9926793557833089,
+                "macro_f1_9class": 0.812788410845824
+              }
+            }
           }
         ]
       },
@@ -122,6 +193,41 @@
                 "score": 0.8679564439359586,
                 "binary_f1": 0.992133726647001,
                 "macro_f1_9class": 0.7437791612249163
+              }
+            }
+          },
+          {
+            "fold": 1,
+            "sequences": 1632,
+            "old": {
+              "score": 0.7858883322473339,
+              "binary_f1": 0.9728126544735541,
+              "macro_f1_9class": 0.5989640100211137
+            },
+            "new": {
+              "score": 0.838602990354265,
+              "binary_f1": 0.9916870415647921,
+              "macro_f1_9class": 0.6855189391437378
+            },
+            "delta": 0.0527146581069311,
+            "history": {
+              "42": {
+                "overflow_fallbacks": 0,
+                "score": 0.8767223020120061,
+                "binary_f1": 0.9941291585127201,
+                "macro_f1_9class": 0.759315445511292
+              },
+              "142": {
+                "overflow_fallbacks": 0,
+                "score": 0.8768312473023792,
+                "binary_f1": 0.9941348973607038,
+                "macro_f1_9class": 0.7595275972440544
+              },
+              "242": {
+                "overflow_fallbacks": 0,
+                "score": 0.8704122411696793,
+                "binary_f1": 0.9916870415647921,
+                "macro_f1_9class": 0.7491374407745666
               }
             }
           }
@@ -168,19 +274,63 @@
         "score": 0.7441089393390461,
         "binary_f1": 0.9799118079372856,
         "macro_f1_9class": 0.5083060707408065
+      },
+      {
+        "fold": 1,
+        "architecture": "base",
+        "variant": "all",
+        "sequences": 1632,
+        "joint_classes": 102,
+        "score": 0.8893648970300044,
+        "binary_f1": 0.9956118966357874,
+        "macro_f1_9class": 0.7831178974242214
+      },
+      {
+        "fold": 1,
+        "architecture": "base",
+        "variant": "all_rot",
+        "sequences": 1632,
+        "joint_classes": 102,
+        "score": 0.8364118655645959,
+        "binary_f1": 0.9907181240840254,
+        "macro_f1_9class": 0.6821056070451664
+      },
+      {
+        "fold": 1,
+        "architecture": "base",
+        "variant": "imu",
+        "sequences": 1632,
+        "joint_classes": 102,
+        "score": 0.838602990354265,
+        "binary_f1": 0.9916870415647921,
+        "macro_f1_9class": 0.6855189391437378
+      },
+      {
+        "fold": 1,
+        "architecture": "base",
+        "variant": "imu_rot",
+        "sequences": 1632,
+        "joint_classes": 102,
+        "score": 0.7381424421300085,
+        "binary_f1": 0.9784102060843964,
+        "macro_f1_9class": 0.4978746781756204
       }
     ],
     "online_score": null,
     "five_fold_mean": null,
     "five_fold_sample_std": null,
-    "online_pseudo_labels_evaluated": false
+    "online_pseudo_labels_evaluated": false,
+    "records": [
+      "experiments/results/second_place_base_fold0_v1.json",
+      "experiments/results/second_place_base_fold1_v2.json"
+    ]
   },
   "followup_automation": {
     "id": "cmi",
     "status": "ACTIVE",
     "policy": "Quiet on unchanged state; collect verified results and continue fixed-fold comparison; no push or competition submission"
   },
-  "scope": "Verified base fold0 screening, additional base fold1 training underway; not complete five-fold or author leaderboard reproduction",
+  "scope": "Verified base folds0/1; 3259 unique held-out sequences, not complete five-fold OOF or leaderboard reproduction",
   "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
   "source_manifest": "configs/second_place_source.json",
   "design_commit": "feedb82",
@@ -212,8 +362,8 @@
     "script_version_id": 356387143,
     "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356387143",
     "version": 2,
-    "status": "Running; new base fold1, all four 50-epoch variants; no duplicate fold0",
-    "last_observed_at_utc": "2026-10-08T11:35:52.525429+00:00",
+    "status": "Complete: all four base fold1 arms and routed scenarios, artifacts audited locally",
+    "last_observed_at_utc": "2026-10-08T16:25:13.819640+00:00",
     "accelerator": "GPU T4 x2",
     "internet": false,
     "actual_torch": "2.11.0+cu128",
@@ -232,7 +382,8 @@
     "estimated_remaining_base_four_fold_hours": 18.092222222222222,
     "budget_limit": "Base four remaining folds estimated to fit; three full architectures not established within remaining quota. Recheck actual available hours and measured runtime before each subsequent batch.",
     "notebook_sha256": "ead09b839b33960ea39d4a80b6bda1495edc888da957222961022a9eb1f92694",
-    "screenshot": "outputs/second_place/evidence/kaggle_v2_fold1_running.jpg"
+    "screenshot": "outputs/second_place/evidence/kaggle_v2_fold1_running.jpg",
+    "run_seconds": 17053
   },
   "notebook_sha256": "03165f139b7c13fc4f02207a50290c083b262f1590857fd9492da76061dd142d",
   "author_reference": {
@@ -268,7 +419,9 @@
     "metadata_method": "Read same-version raw CSV document through browser DOM; preserve row order, not a claim of byte-exact cloud CSV checksum",
     "import_directory": "outputs/kaggle_training/imported/second_place_base_fold0_v1_audited",
     "sequence_metadata_rows": 8151,
-    "validation_predictions_per_scenario": 1627
+    "validation_predictions_per_scenario": 1627,
+    "metadata_same_sha_in_v2_original_zip": true,
+    "metadata_crosscheck_note": "v2 ZIP metadata SHA equals v1 saved browser CSV SHA exactly; independently corroborates preserved raw row order and bytes."
   },
   "pending_artifact_audit": {
     "base_imu_fold0": {
@@ -312,7 +465,7 @@
       "log_evidence": "outputs/second_place/evidence/v1_all_completed_log.txt"
     }
   },
-  "next": "Monitor exact v2 356387143; import/audit into fresh directory, then sequentially continue uncompleted base folds2/3/4 within actual GPU quota. Preserve verified v1 fold0. Full-five-fold OOF and further architecture/pseudo-label studies remain outstanding.",
+  "next": "Launch unchanged base fold2 after verified fold1 and account quota17h53m available. Then audit each completed batch and continue folds3/4 within actual available GPU budget. No five-fold mean/std until all8151 predictions.",
   "local_audit_repair": {
     "initial_import": "outputs/kaggle_training/imported/second_place_base_fold0_v1",
     "error": "AttributeError: DataFrame has no sequence_id: unnamed logit ID Index erased the column name on reset_index",
@@ -362,5 +515,19 @@
     "output_run": "base_fold1_v2",
     "explicit_logit_ids": true,
     "small_cache_metadata_in_archive": true
-  }
+  },
+  "verified_batches": [
+    {
+      "fold": 1,
+      "record": "experiments/results/second_place_base_fold1_v2.json",
+      "import_directory": "outputs/kaggle_training/imported/second_place_base_fold1_v2_audited",
+      "archive_bytes": 75396076,
+      "archive_sha256": "d6998d43937aed624d9b1d14587872f3b9d65a4b737903d3bf535e2268212cb4",
+      "metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+      "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356387143",
+      "last_epoch_checkpoint": 50,
+      "validation_sequences": 1632
+    }
+  ],
+  "latest_quota_available_hours": 17.883333333333333
 }

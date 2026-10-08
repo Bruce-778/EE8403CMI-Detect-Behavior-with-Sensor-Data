@@ -293,3 +293,38 @@ https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproductio
 才报告五折均值、样本标准差及 8,151 条 OOF；其他架构和在线伪标签
 贡献仍未完成。页面运行证据
 `outputs/second_place/evidence/kaggle_v2_fold1_running.jpg`。
+
+
+### 固定 fold 1 结果已回收核验：2026-10-08 09:25 PDT
+
+v2 成功完成，runtime **4h44m13s**；正常浏览器下载包 75,396,076 字节，
+SHA256 `d6998d43937aed624d9b1d14587872f3b9d65a4b737903d3bf535e2268212cb4`。
+下载事件虽然超时，但 Downloads 实际完整文件存在；复制进独立 recovery_v2，
+没有把事件超时当成下载失败或重复启动导出任务。
+
+ZIP 内显式 logit IDs、8,151 行 metadata、四份最后 50 epoch checkpoint/history，
+以及三个场景的 logits/probabilities/硬决策/官方指标全部通过核验。
+实际 train 6,519 / validation 1,632；固定 subject 分组没有重叠，联合类别
+102 个仅来自训练集。ZIP 内 metadata SHA256 与 v1 从浏览器保存的 CSV
+完全一致，进一步核实首折元数据的字节和原始行顺序。
+
+| 相同 fold 1 / 1,632 条验证样本 | 冻结方案 | 第二名 base 路由 | 差值 |
+| --- | ---: | ---: | ---: |
+| 原始输入 | 0.849067 | 0.894506 | +0.045439 |
+| 固定一半辅助传感器缺失 | 0.815806 | 0.866117 | +0.050311 |
+| IMU-only | 0.785888 | 0.838603 | +0.052715 |
+
+四个独立分支 imu / imu_rot / all / all_rot：
+0.838603 / 0.738142 / 0.889365 / 0.836412。
+严格因果历史三个顺序 seed42/142/242（各fold实际arrival seed为seed+fold）：
+observed 0.934403 / 0.927252 / 0.924043；aux_dropout50
+0.901730 / 0.904822 / 0.902734；IMU-only
+0.876722 / 0.876831 / 0.870412。没有 overflow 或真验证标签/未来序列参与。
+在线伪标签权重更新仍未运行。
+
+两折共 3,259 个独立验证 sequence；仍是部分开发验证，不报五折均值/标准差，
+不当成线上或作者十折原权重精确复现。记录
+`experiments/results/second_place_base_fold1_v2.json`，导入目录
+`outputs/kaggle_training/imported/second_place_base_fold1_v2_audited`。
+下一批启动前账户明确 **17h53m available of30h**；剩余三折按 v2实测
+估计14.21小时，当前预算预计可覆盖base。三架构完整五折仍无预算保证。
