@@ -1,0 +1,20 @@
+{
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "folds": [
+    0
+  ],
+  "complete_five_fold": false,
+  "comparison": [
+    {
+      "fold": 0,
+      "baseline": 0.7756521483129168,
+      "finetune": 0.7756521483129168,
+      "distill": 0.7787646212232417,
+      "kd_minus_finetune": 0.003112472910324904,
+      "kd_minus_baseline": 0.003112472910324904
+    }
+  ],
+  "five_fold_evaluation": {},
+  "scope": "Development CV; fixed fold-0 pilot is screening, not five-fold/online improvement",
+  "policy": "Same initialization, train/validation IDs, scalers, seed, augmentation and epoch budget; only KD weight differs"
+}
