@@ -4,6 +4,9 @@
 IMU-only Model A 与 IMU + THM + ToF Model B，各训练五折，共十个 checkpoint。
 按每条输入的传感器可用性选择 A/B，再对五折概率等权平均。
 
+新的后训练实验单独使用 `configs/posttraining.json` 与 `scripts/train_posttraining.py`，
+先对比监督微调与多传感器→IMU 蒸馏。训练设计、运行命令和实验边界见 [POSTTRAINING.md](experiments/POSTTRAINING.md)；当前最佳上线方案不随单折实验自动替换。
+
 | 评价范围 | 当前成绩 |
 | --- | ---: |
 | Kaggle Public | **0.839556** |

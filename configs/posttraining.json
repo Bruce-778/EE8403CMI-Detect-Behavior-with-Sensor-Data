@@ -1,0 +1,21 @@
+{
+  "source_run": "outputs/kaggle_training/imported/winner_selected_v2/outputs/experiments/cnn_dynamics_mixup",
+  "data_dir": "data",
+  "cache_dir": "outputs/posttraining_cache",
+  "output_dir": "outputs/posttraining/pilot_v1",
+  "folds": [0],
+  "name": "posttraining_pilot_v1",
+  "distillation": {"temperature": 2.0, "weight": 0.5},
+  "training_overrides": {
+    "epochs": 8,
+    "batch_size": 64,
+    "learning_rate": 0.0001,
+    "early_stopping_patience": 3,
+    "lr_patience": 1,
+    "min_lr": 0.000001,
+    "mixup_alpha": 0.0,
+    "mixup_probability": 0.0,
+    "cpu_threads": 4,
+    "device": "cpu"
+  }
+}

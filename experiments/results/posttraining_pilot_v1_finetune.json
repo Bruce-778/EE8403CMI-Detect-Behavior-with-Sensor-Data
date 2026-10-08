@@ -1,0 +1,150 @@
+{
+  "folds": [
+    0
+  ],
+  "completed_folds": [
+    0
+  ],
+  "results": [
+    {
+      "model": "imu",
+      "fold": 0,
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "scope": "Development held-out subject fold; original source and post-training checkpoints selected on validation",
+      "baseline": {
+        "loss": 1.7526118800767594,
+        "accuracy_18class": 0.6490473263675476,
+        "score": 0.7756521483129168,
+        "binary_f1": 0.9847665847665847,
+        "macro_f1_9class": 0.566537711859249
+      },
+      "validation": {
+        "loss": 1.7526118800767594,
+        "accuracy_18class": 0.6490473263675476,
+        "score": 0.7756521483129168,
+        "binary_f1": 0.9847665847665847,
+        "macro_f1_9class": 0.566537711859249
+      },
+      "best_epoch": 0,
+      "epochs_run": 3,
+      "training": {
+        "seed": 42,
+        "epochs": 8,
+        "batch_size": 64,
+        "learning_rate": 0.0001,
+        "weight_decay": 0.0003,
+        "label_smoothing": 0.03,
+        "macro_loss_weight": 0.5,
+        "binary_loss_weight": 0.1,
+        "early_stopping_patience": 3,
+        "min_delta": 0.0001,
+        "lr_patience": 1,
+        "lr_factor": 0.5,
+        "min_lr": 1e-06,
+        "gradient_clip": 1.0,
+        "cpu_threads": 4,
+        "device": "cpu",
+        "mixup_alpha": 0.0,
+        "mixup_probability": 0.0
+      },
+      "posttraining": {
+        "method": "supervised_finetuning_control",
+        "student_sha256": "ae57a1738839ac7dc5e8e21653623a83c675a1109dfed5ad6024494e6c97baa6",
+        "teacher_sha256": "4080427ce06a92d94bce437e3285280a70fdf340226f891dfaf810fa8b63f732",
+        "teacher_fold": 0,
+        "teacher_source": "D:\\UW EE PMP\\kaggle_CMI\\project\\outputs\\kaggle_training\\imported\\winner_selected_v2\\outputs\\experiments\\cnn_dynamics_mixup\\multisensor\\fold_0\\best.pt",
+        "distillation": {
+          "temperature": 2.0,
+          "weight": 0.0
+        },
+        "teacher_target_sequences": 6524,
+        "eligible_training_sequences": 6428,
+        "teacher_validation_target_sequences": 0,
+        "teacher_view": "original observed sensors; student view has train-only sensor dropout",
+        "teacher_bn": "frozen eval; teacher targets detached",
+        "starting_probability_max_error": 1.673848953220869e-06
+      },
+      "elapsed_seconds": 85.20711149999988,
+      "device": "cpu",
+      "max_length": 127,
+      "model_metadata": {
+        "model": "imu",
+        "architecture": "grouped_masked_se_cnn_v3",
+        "config": {
+          "imu_channels": [
+            32,
+            64,
+            96
+          ],
+          "auxiliary_channels": [
+            16,
+            32,
+            48
+          ],
+          "kernel_size": 5,
+          "hidden_features": 128,
+          "dropout": 0.2,
+          "pooling": "mean_max",
+          "stage_kernel_sizes": [],
+          "encoder_style": "grouped",
+          "normalization": "masked_batch",
+          "squeeze_excitation": true,
+          "stem_channels": [
+            16,
+            32
+          ],
+          "imu_feature_count": 34
+        },
+        "tof_regions": 2,
+        "normalization": "train-fold standardization + masked_batch",
+        "parameters": 185418
+      },
+      "routed_with_unchanged_model_b": {
+        "observed": {
+          "score": 0.8432381633110184,
+          "binary_f1": 0.9837997054491899,
+          "macro_f1_9class": 0.7026766211728469,
+          "used_model_a": 0,
+          "used_model_b": 1627
+        },
+        "aux_dropout50": {
+          "score": 0.8127170475548207,
+          "binary_f1": 0.9847815414825725,
+          "macro_f1_9class": 0.6406525536270687,
+          "used_model_a": 843,
+          "used_model_b": 784
+        },
+        "imu_only": {
+          "score": 0.7756521483129168,
+          "binary_f1": 0.9847665847665847,
+          "macro_f1_9class": 0.566537711859249,
+          "used_model_a": 1627,
+          "used_model_b": 0
+        }
+      },
+      "baseline_routed_with_unchanged_model_b": {
+        "observed": {
+          "score": 0.8432381633110184,
+          "binary_f1": 0.9837997054491899,
+          "macro_f1_9class": 0.7026766211728469,
+          "used_model_a": 0,
+          "used_model_b": 1627
+        },
+        "aux_dropout50": {
+          "score": 0.8127170475548207,
+          "binary_f1": 0.9847815414825725,
+          "macro_f1_9class": 0.6406525536270687,
+          "used_model_a": 843,
+          "used_model_b": 784
+        },
+        "imu_only": {
+          "score": 0.7756521483129168,
+          "binary_f1": 0.9847665847665847,
+          "macro_f1_9class": 0.566537711859249,
+          "used_model_a": 1627,
+          "used_model_b": 0
+        }
+      }
+    }
+  ]
+}

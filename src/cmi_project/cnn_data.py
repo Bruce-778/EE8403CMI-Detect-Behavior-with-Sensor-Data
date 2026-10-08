@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+import hashlib
 import json
 from pathlib import Path
 
@@ -13,7 +14,8 @@ from torch.utils.data import Dataset, get_worker_info
 
 from .evaluation import ALL_GESTURES
 from .preprocessing import (FoldPreprocessor, PreprocessingConfig, SensorDropoutConfig,
-                            iter_csv_sequences, tof_region_pool, rotation_dependent_imu_indices)
+                            iter_csv_sequences, tof_region_pool, rotation_dependent_imu_indices,
+                            preprocessor_states_equal)
 from .validation import FoldManifest, assert_preprocessor_matches
 
 ARRAY_KEYS = ("imu", "imu_valid", "thm", "thm_valid", "thm_observed", "tof", "tof_valid",
@@ -129,6 +131,25 @@ def prepare_cnn_fold(data_dir: Path, cache_dir: Path, manifest: FoldManifest, fo
         processor.state["max_length"] = sequence_length
         processor.state["cnn_sequence_length_override"] = sequence_length
     assert_preprocessor_matches(processor.state, manifest, fold)
+    arrays = build_compact_arrays(data_dir, manifest, fold, processor, tof_regions, input_clip, chunksize)
+    if source_signature(data_dir) != identity["sources"]:
+        raise ValueError("Raw data changed during CNN cache preparation.")
+    processor.save(cache_dir / "preprocessor.json")
+    np.savez_compressed(archive, **arrays)
+    lengths = manifest.table["length"].to_numpy()
+    metadata = {"identity": identity, "max_length": processor.max_length,
+                "train_sequences": len(train), "validation_sequences": len(manifest.table) - len(train),
+                "cropped_sequences": int((lengths > processor.max_length).sum()),
+                "array_bytes": sum(a.nbytes for a in arrays.values())}
+    meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False, allow_nan=False), encoding="utf-8")
+    print(f"Saved compact cache to {cache_dir}", flush=True)
+    return arrays, processor, metadata
+
+
+def build_compact_arrays(data_dir, manifest, fold, processor, tof_regions, input_clip, chunksize):
+    """Transform raw sequences with an already train-fitted preprocessor."""
+    assert_preprocessor_matches(processor.state, manifest, fold)
+    demographics = pd.read_csv(data_dir / "train_demographics.csv", dtype={"subject": "string"})
     expected = manifest.table.set_index("sequence_id")
     positions = {sid: i for i, sid in enumerate(manifest.table["sequence_id"])}
     arrays = {key: manifest.table[key].to_numpy(dtype=str) for key in ("sequence_id", "subject")}
@@ -153,19 +174,48 @@ def prepare_cnn_fold(data_dir: Path, cache_dir: Path, manifest: FoldManifest, fo
         seen.add(sid)
         if len(seen) % 2000 == 0:
             print(f"Prepared {len(seen):,} / {len(manifest.table):,} sequences", flush=True)
-    if seen != set(positions) or source_signature(data_dir) != identity["sources"]:
-        raise ValueError("Raw data coverage changed during CNN cache preparation.")
+    if seen != set(positions):
+        raise ValueError("Raw data coverage differs from fixed folds.")
     validate_arrays(arrays, manifest, processor.max_length, tof_regions)
+    return arrays
+
+
+def prepare_frozen_cnn_fold(data_dir: Path, cache_dir: Path, manifest: FoldManifest, fold: int,
+                            processor: FoldPreprocessor, *, tof_regions=2, input_clip=8.0,
+                            chunksize=25000):
+    """Reuse saved training-fold scalers exactly; never refit for post-training."""
+    assert_preprocessor_matches(processor.state, manifest, fold)
+    data_dir, cache_dir = Path(data_dir).resolve(), Path(cache_dir).resolve()
+    if data_dir == cache_dir or data_dir in cache_dir.parents:
+        raise ValueError("Frozen cache must be outside raw data.")
+    serialized = json.dumps(processor.state, sort_keys=True, allow_nan=False)
+    identity = {"version": 1, "data_dir": str(data_dir), "sources": source_signature(data_dir),
+                "fold": fold, "folds_sha256": manifest.fingerprint,
+                "frozen_preprocessor_sha256": hashlib.sha256(serialized.encode()).hexdigest(),
+                "tof_regions": tof_regions, "input_clip": input_clip, "label_order": list(ALL_GESTURES)}
+    meta_path = cache_dir / "metadata.json"
+    if meta_path.is_file():
+        metadata = json.loads(meta_path.read_text(encoding="utf-8"))
+        saved = FoldPreprocessor.load(cache_dir / "preprocessor.json")
+        if metadata["identity"] != identity or not preprocessor_states_equal(saved.state, processor.state):
+            raise ValueError("Frozen cache settings or preprocessor changed; use a fresh directory.")
+        with np.load(cache_dir / "data.npz", allow_pickle=False) as stored:
+            arrays = {key: stored[key] for key in stored.files}
+        validate_arrays(arrays, manifest, processor.max_length, tof_regions)
+        print(f"Reused frozen fold {fold} cache", flush=True)
+        return arrays, metadata
+    if cache_dir.exists() and any(cache_dir.iterdir()):
+        raise ValueError("Use a fresh directory for the frozen cache.")
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    arrays = build_compact_arrays(data_dir, manifest, fold, processor, tof_regions, input_clip, chunksize)
+    if source_signature(data_dir) != identity["sources"]:
+        raise ValueError("Raw data changed while transforming frozen inputs.")
     processor.save(cache_dir / "preprocessor.json")
-    np.savez_compressed(archive, **arrays)
-    lengths = manifest.table["length"].to_numpy()
+    np.savez_compressed(cache_dir / "data.npz", **arrays)
     metadata = {"identity": identity, "max_length": processor.max_length,
-                "train_sequences": len(train), "validation_sequences": len(manifest.table) - len(train),
-                "cropped_sequences": int((lengths > processor.max_length).sum()),
-                "array_bytes": sum(a.nbytes for a in arrays.values())}
-    meta_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False, allow_nan=False), encoding="utf-8")
-    print(f"Saved compact cache to {cache_dir}", flush=True)
-    return arrays, processor, metadata
+                "array_bytes": sum(value.nbytes for value in arrays.values())}
+    meta_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    return arrays, metadata
 
 
 class CNNTensorDataset(Dataset):
