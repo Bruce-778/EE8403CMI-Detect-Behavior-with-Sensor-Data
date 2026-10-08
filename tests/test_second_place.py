@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 from cmi_project.second_place import (ARCHITECTURES, ReferenceDataset, build_cache, collapse_probabilities,
                                        fit_joint_labels, load_reference)
 from cmi_project.evaluation import ALL_GESTURES
+from cmi_project.second_place_evaluation import CausalJointAssignment, check_arm, read_aligned_logits
 
 
 class SecondPlaceTests(unittest.TestCase):
@@ -95,6 +96,7 @@ class SecondPlaceTests(unittest.TestCase):
             metadata = pd.DataFrame({'sequence_id': [f's{i}' for i in range(6)],
                 'subject': [f'p{i}' for i in range(6)], 'gesture': [ALL_GESTURES[i % 2] for i in range(6)],
                 'orientation': ['up'] * 6, 'initial_behavior': ['move'] * 6, 'fold': [1, 1, 1, 1, 0, 0]})
+            metadata = metadata.iloc[[0, 1, 2, 3, 5, 4]].reset_index(drop=True)
             metadata.to_csv(cache / 'metadata.csv', index=False)
             manifest = SimpleNamespace(fingerprint='fixed', path=path / 'folds.csv',
                 split=lambda fold: (metadata[metadata.fold != fold], metadata[metadata.fold == fold]))
@@ -107,6 +109,39 @@ class SecondPlaceTests(unittest.TestCase):
             self.assertEqual(checkpoint['epoch'], 1)
             self.assertFalse(set(checkpoint['provenance']['train_subjects']) & set(checkpoint['provenance']['validation_subjects']))
             self.assertEqual(json.loads((out / 'metrics.json').read_text())['validation_sequences'], 2)
+            report, ids, logits, _ = check_arm(out, manifest, metadata, self.ref.provenance, epochs=1)
+            self.assertEqual(ids.tolist(), ['s5', 's4'])  # logits are not sorted prediction CSV rows!
+            self.assertEqual(report['sequences'], 2)
+            (out / 'joint_sequence_ids.npy').unlink()
+            legacy_ids, legacy_logits = read_aligned_logits(out, metadata, 0)
+            self.assertEqual(legacy_ids.tolist(), ids.tolist())
+            np.testing.assert_array_equal(legacy_logits, logits)
+            provenance = json.loads((out / 'provenance.json').read_text())
+            provenance['train_subjects'].append('p5')
+            (out / 'provenance.json').write_text(json.dumps(provenance))
+            with self.assertRaisesRegex(ValueError, 'train_subjects'):
+                check_arm(out, manifest, metadata, self.ref.provenance, epochs=1)
+
+    def test_causal_joint_history_matches_upstream_prefixes_and_preserves_returned_decisions(self):
+        import ast
+        from scipy.optimize import linear_sum_assignment
+        tree = ast.parse((ROOT / 'outputs/reference_code/second_place/test.py').read_text(encoding='utf-8'))
+        node = next(x for x in tree.body if isinstance(x, ast.FunctionDef) and x.name == 'solve_capacity1_with_hungarian')
+        namespace = {'np': np, 'linear_sum_assignment': linear_sum_assignment}
+        exec(compile(ast.Module(body=[node], type_ignores=[]), '<verified reference decoder>', 'exec'), namespace)
+        scores = np.random.default_rng(5).normal(size=(8, 8))
+        decoder = CausalJointAssignment(8)
+        for i, vector in enumerate(scores):
+            self.assertEqual(decoder.predict_one('subject', vector), namespace[node.name](scores[:i + 1]))
+        self.assertEqual(decoder.predict_one('subject', np.arange(8)), 7)
+        self.assertEqual(decoder.overflow, 1)
+        self.assertEqual(decoder.predict_one('other', np.arange(8)), 7)
+        causal = CausalJointAssignment(2)
+        first = causal.predict_one('s', [.9, .8])
+        second = causal.predict_one('s', [100, 0])
+        self.assertEqual((first, second), (0, 0))  # latent past assignment changes, returned past label stays fixed
+        with self.assertRaises(ValueError):
+            causal.predict_one('s', [np.nan, 0])
 
     def test_raw_cache_uses_upstream_physics_and_keeps_metadata_outside_features(self):
         with tempfile.TemporaryDirectory() as temp:

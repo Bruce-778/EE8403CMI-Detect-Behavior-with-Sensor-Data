@@ -139,3 +139,39 @@ fold 0、四分支各 50 epoch；关闭互联网，不连接 WandB，不读取�
 这里只启动 base/fold 0 的四分支各 50 epoch，尚无实际训练完成分数。
 78 项全套测试通过（58.725 秒），Notebook 嵌入源码和固定 folds 已核对。
 实现与设计本地 commit `feedb82`，不 push、不提交比赛。
+
+### 运行与结果回收核验：2026-10-08 07:01 UTC
+
+GPU 日志已确认原始 train/demo 的 SHA256 与本地固定输入一致。实际环境
+为 Tesla T4、torch 2.11.0+cu128；完成全部 8,151 个 sequence 的特征缓存，
+base/IMU 已进入 50 epoch 训练。首个模型每 epoch 约 24 秒，这是局部实测，
+不据此推断 ToF 分支或三架构完整复现的总耗时。最终分数仍待完成和核验。
+页面 stdout 行重复展示，启动脚本只有一次训练调用，不能当作两次实验。
+
+新增结果核验脚本 `scripts/evaluate_second_place.py`：检查输入哈希、实际
+train/validation IDs 与 subject、仅训练集建立的联合类别、50 epoch history、
+最后 checkpoint、联合 logits 与保存的概率/决策一致性，重建四分支路由，
+对照原方法的相同 held-out sequence。五折齐全才产生均值、样本标准差和
+完整 OOF；只有首折时明确记为筛选。联合类别历史分配与上游 Hungarian
+函数逐个 prefix 等价的检查通过；仅返回新到达样本，既有返回值不回改。
+超过联合类别数时记录 baseline fallback 并保留样本，不删除困难样本。
+
+发现并处理结果文件的行顺序风险：原训练 logits 按缓存顺序保存，预测
+CSV 则排序。后续运行显式保存 `joint_sequence_ids.npy`、顺序 provenance，
+ZIP 包含小型 cache metadata/provenance，但仍排除大型特征数组。正在运行
+的 v1 嵌入的是旧脚本，以上更改不会改变其训练配置或输出。回收 v1 必须
+同时取得该版本的 `cache/metadata.csv`，按 ID 对齐并检查 logits/CSV；禁止
+假定原顺序等于排序。结果脚本缺少该文件时会拒绝评价。
+
+```powershell
+& 'D:\anaconda\envs\cmi\python.exe' -s scripts/evaluate_second_place.py `
+  --archive '<下载的 second_place_experiments.zip>' `
+  --metadata '<同版本 cache/metadata.csv>' `
+  --output-dir outputs/kaggle_training/imported/second_place_base_fold0_v1 `
+  --name second_place_base_fold0_v1 `
+  --source-url 'https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653'
+```
+
+六项第二名相关测试通过（4.982 秒），包括逆序 logits 的对齐、真实小样本
+训练/权重/概率/metric 核验、training subject 被篡改时拒绝、原始历史函数
+prefix 对照及 overflow。小样本分数不作为真实比赛复现结果。

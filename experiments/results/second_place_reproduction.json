@@ -34,7 +34,11 @@
     "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653",
     "accelerator": "GPU T4 x2",
     "internet": false,
-    "status": "Running accepted; initialization/logs still pending",
+    "status": "Running; original training input SHA256 verified, 8151-sequence cache complete, base/imu 50-epoch training in progress",
+    "last_observed_at_utc": "2026-10-08T07:01:39Z",
+    "actual_torch": "2.11.0+cu128",
+    "actual_gpu": "Tesla T4",
+    "initial_imu_epoch_seconds_approx": 24,
     "gpu_quota_remaining_hours_at_launch": 27
   },
   "notebook_sha256": "03165f139b7c13fc4f02207a50290c083b262f1590857fd9492da76061dd142d",
@@ -55,6 +59,16 @@
     "train_only_joint_ontology": true,
     "cache_immutable_under_dropout": true,
     "notebook_embedded_sources_and_folds_match": true
+  },
+  "recovery": {
+    "evaluator": "scripts/evaluate_second_place.py",
+    "focused_tests_passed": 6,
+    "focused_tests_seconds": 4.982,
+    "v1_requires_same_version_cache_metadata_csv": true,
+    "reason": "v1 joint logits use raw cache order while predictions CSV is sorted; never guess row alignment",
+    "future_run_change": "Explicit joint_sequence_ids.npy and small cache metadata included in ZIP; active v1 unaffected",
+    "history_policy": "Exact upstream prefix Hungarian on joint logits, latest return only, orders 42/142/242, explicit overflow baseline fallback; no validation annotations or future rows",
+    "status_screenshot": "outputs/second_place/evidence/kaggle_v1_running.jpg"
   },
   "next": "Collect completed first-fold artifacts, verify raw data hashes and actual training subjects; compare identical validation sequences and three missingness scenarios. Expand to full five folds subject to real runtime/quota; three architecture ensemble and causal joint-label postprocessing reported separately. No push or new competition submission."
 }

@@ -102,6 +102,8 @@ def train_one(args, fold, architecture, variant, cache, reference, manifest, met
         'train_sequence_ids': sorted(train.sequence_id), 'train_subjects': sorted(set(train.subject)),
         'validation_sequence_ids': sorted(val.sequence_id), 'validation_subjects': sorted(set(val.subject)),
         'joint_labels': labels, 'seed': 42 + fold, 'epochs': args.epochs, 'batch_size': args.batch_size,
+        'validation_logit_sequence_ids': metadata.iloc[val_indices].sequence_id.tolist(),
+        'runtime': {'torch': str(torch.__version__), 'numpy': str(np.__version__), 'device': args.device},
         'optimizer': 'Adam lr=.001 wd=.0001', 'scheduler': '10% step warmup, cosine',
         'mixup_alpha': .5, 'phase_loss_weight': 1., 'gradient_clip_norm': 1.,
         'checkpoint_selection': 'last epoch as upstream test.py; no early stopping',
@@ -140,6 +142,7 @@ def train_one(args, fold, architecture, variant, cache, reference, manifest, met
         print(f'{architecture}/{variant} fold {fold} epoch {epoch:02d}/{args.epochs}: CMI={metrics["score"]:.6f}, loss={history[-1]["loss"]:.4f}, {history[-1]["seconds"]:.1f}s', flush=True)
         torch.save({'model_state': model.state_dict(), 'provenance': provenance, 'epoch': epoch}, output / 'last.pt')
         np.save(output / 'joint_logits.npy', logits)
+        np.save(output / 'joint_sequence_ids.npy', metadata.iloc[val_indices].sequence_id.to_numpy(dtype=str))
         write_fold_predictions(manifest, fold, frame, output / 'predictions.csv')
         dump(output / 'metrics.json', {'scope': 'held-out single fold' if len(args.folds) < 5 else 'individual held-out fold',
                                       'epoch': epoch, 'validation_sequences': len(val_indices), **metrics})
@@ -169,6 +172,7 @@ def routed_evaluation(args, reference, manifest, metadata, labels, fold):
         directory = args.output / 'routed' / scenario / f'fold_{fold}'
         write_fold_predictions(manifest, fold, frame, directory / 'predictions.csv')
         np.save(directory / 'joint_logits.npy', logits)
+        np.save(directory / 'joint_sequence_ids.npy', rows.sequence_id.to_numpy(dtype=str))
         metrics = cmi_metrics(rows.gesture, frame.predicted_gesture)
         dump(directory / 'metrics.json', metrics)
         print(f'ROUTED fold {fold} {scenario}: {metrics["score"]:.6f}', flush=True)
@@ -219,7 +223,7 @@ def main():
         archive = ROOT.parent / 'second_place_experiments.zip'
         with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as bundle:
             for path in args.output.rglob('*'):
-                if path.is_file() and cache not in path.parents:
+                if path.is_file() and (cache not in path.parents or path.name in {'metadata.csv', 'provenance.json'}):
                     bundle.write(path, path.relative_to(ROOT).as_posix())
             for name in ['folds.csv', 'folds.meta.json', 'second_place_source.json', 'data_source_hashes.json']:
                 bundle.write(ROOT / 'configs' / name, f'configs/{name}')
