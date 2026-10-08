@@ -26,7 +26,8 @@ from train_posttraining import routed_metrics
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=ROOT / "configs/representation.json")
-    parser.add_argument("--method", required=True, choices=("phase", "cross_subject_supcon"))
+    parser.add_argument("--method", required=True, choices=("phase", "cross_subject_supcon",
+                                                          "phase_adapter_control", "phase_adapter"))
     parser.add_argument("--fold", type=int, nargs="+", default=[0])
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/representation/pilot_v1"))
     parser.add_argument("--name", default="representation_pilot_v1")
@@ -42,8 +43,9 @@ def main():
     source = (ROOT / base["source_run"]).resolve()
     data_dir, cache = (ROOT / base["data_dir"]).resolve(), (ROOT / base["cache_dir"]).resolve()
     output = (ROOT / args.output_dir / args.method).resolve()
-    control = (ROOT / settings["control_run"]).resolve()
-    for protected in (source, data_dir, cache, control):
+    control_setting = settings.get("method_control_runs", {}).get(args.method, settings["control_run"])
+    control = (ROOT / control_setting).resolve() if control_setting is not None else None
+    for protected in (source, data_dir, cache, *([control] if control is not None else [])):
         if output == protected or protected in output.parents or output in protected.parents:
             raise ValueError("Use a separate experiment output directory.")
     result_path = ROOT / f"experiments/results/{args.name}_{args.method}.json"
@@ -67,18 +69,27 @@ def main():
         if (checkpoint["fold"] != fold or checkpoint["folds_sha256"] != manifest.fingerprint
                 or model.model_name != "imu" or model.metadata()["architecture"] != "grouped_masked_se_cnn_v3"):
             raise ValueError("Use the original same-fold IMU checkpoint.")
-        training = TrainingConfig(**{**checkpoint["training_config"], **base["training_overrides"]})
+        training = TrainingConfig(**{**checkpoint["training_config"], **base["training_overrides"],
+                                     **settings.get("method_training_overrides", {}).get(args.method, {})})
         identity = checkpoint["data_metadata"]["identity"]
         arrays, metadata = prepare_frozen_cnn_fold(data_dir, cache / f"fold_{fold}", manifest, fold,
             processor, tof_regions=identity["tof_regions"], input_clip=identity["input_clip"])
-        control_summary, _ = reuse_completed_fold(control / f"imu/fold_{fold}", processor,
-            manifest, fold, "imu", CNNConfig.from_dict(checkpoint["model_metadata"]["config"]),
-            training, SensorDropoutConfig(**checkpoint["sensor_dropout"]), metadata, model.tof_regions)
         student_hash = hashlib.sha256(path.read_bytes()).hexdigest()
-        if (control_summary["posttraining"]["method"] != "supervised_finetuning_control"
-                or control_summary["posttraining"]["student_sha256"] != student_hash):
-            raise ValueError("Control must use identical starting weights and zero KD weight.")
-        phase = training_phase_targets(data_dir / "train.csv", arrays, manifest, fold) if args.method == "phase" else None
+        control_summary = None
+        if control is not None:
+            control_summary, _ = reuse_completed_fold(control / f"imu/fold_{fold}", processor,
+                manifest, fold, "imu", CNNConfig.from_dict(checkpoint["model_metadata"]["config"]),
+                training, SensorDropoutConfig(**checkpoint["sensor_dropout"]), metadata, model.tof_regions)
+            provenance = control_summary["posttraining"]
+            if provenance["student_sha256"] != student_hash:
+                raise ValueError("Control must use identical starting weights.")
+            if experiment.trainable_scope == "full":
+                if provenance["method"] != "supervised_finetuning_control":
+                    raise ValueError("Use the zero-KD supervised control.")
+            elif RepresentationConfig(**provenance["representation"]) != RepresentationConfig(
+                    **{**asdict(experiment), "weight": 0.0}):
+                raise ValueError("Adapter control must differ only in phase auxiliary weight.")
+        phase = training_phase_targets(data_dir / "train.csv", arrays, manifest, fold) if experiment.method == "phase" else None
         if phase is not None:
             train = manifest.table.fold.to_numpy() != fold
             phase_path = output / f"phase_targets_fold_{fold}.npz"
@@ -104,9 +115,12 @@ def main():
                 training=training, distillation=DistillationConfig(weight=0), targets=None, eligible=None,
                 data_metadata=metadata, source_teacher={}, representation=experiment, phase_targets=phase)
         summaries.append(summary)
-        controls.append({"fold": fold, "score": control_summary["validation"]["score"],
-                         "best_epoch": control_summary["best_epoch"], "reused_from": str(control / f"imu/fold_{fold}"),
-                         "method_minus_control": summary["validation"]["score"] - control_summary["validation"]["score"]})
+        reference_score = control_summary["validation"]["score"] if control_summary else summary["baseline"]["score"]
+        controls.append({"fold": fold, "score": reference_score,
+                         "matched_training_control": control_summary is not None,
+                         "best_epoch": control_summary["best_epoch"] if control_summary else 0,
+                         "reused_from": str(control / f"imu/fold_{fold}") if control_summary else str(path),
+                         "method_minus_reference": summary["validation"]["score"] - reference_score})
         frames[fold] = frame
         routed = {}
         summary["routed_with_unchanged_model_b"] = routed_metrics(arrays, manifest, fold, frame, source,
@@ -116,7 +130,8 @@ def main():
         result = {"method": asdict(experiment), "folds_sha256": manifest.fingerprint,
                   "folds": args.fold, "completed_folds": sorted(frames), "results": summaries, "control": controls,
                   "scope": "Short warm-start development CV; not full retraining, independent holdout or online score",
-                  "matched_control": "Same source, scalers, folds, seed, augmentation, LR and maximum epoch budget; new heads restore CPU RNG"}
+                  "matched_control": ("Same source, scalers, folds, seed, augmentation, LR and maximum epoch budget; new heads restore CPU RNG"
+                    if control is not None else "This is the adapter control arm; comparison here is only against pretrained epoch 0")}
         result_path.write_text(json.dumps(result, indent=2, allow_nan=False), encoding="utf-8")
         print(f"COMPLETED {args.method} fold {fold}: {summary['validation']['score']:.6f}", flush=True)
         del arrays, phase, model

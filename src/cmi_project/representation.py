@@ -19,14 +19,17 @@ class RepresentationConfig:
     method: str = "phase"
     weight: float = 0.1
     temperature: float = 0.1
+    trainable_scope: str = "full"
 
     def __post_init__(self):
         if self.method not in ("phase", "cross_subject_supcon"):
             raise ValueError("Unknown representation method.")
-        if not np.isfinite(self.weight) or self.weight <= 0:
-            raise ValueError("Auxiliary weight must be finite and positive.")
+        if not np.isfinite(self.weight) or self.weight < 0:
+            raise ValueError("Auxiliary weight must be finite and nonnegative.")
         if not np.isfinite(self.temperature) or self.temperature <= 0:
             raise ValueError("Contrastive temperature must be finite and positive.")
+        if self.trainable_scope not in ("full", "phase_heads") or (self.trainable_scope == "phase_heads" and self.method != "phase"):
+            raise ValueError("Frozen-head adaptation requires the phase method.")
 
 
 class RepresentationIMUCNN(CMI1DCNN):

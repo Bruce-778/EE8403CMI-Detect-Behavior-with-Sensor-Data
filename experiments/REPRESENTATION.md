@@ -90,3 +90,7 @@ python -s -u scripts/train_representation.py --method phase_adapter --output-dir
 
 实际结果待完成后追加。R1/R2 的原始配置及实现已分别保存在当次 Git commit，
 后续新增的配置字段不覆盖它们的既有 JSON 和训练目录。
+
+R3 实现检查完成：新增冻结范围与权重为 0 的配对控制，经 5 项表示学习检查通过；
+其中实际跑过 full phase、SupCon、frozen control、frozen phase 四种训练/恢复路径，
+冻结两组都精确核对 encoder/classifier 参数和 BN buffers，原始文件哈希保持不变。

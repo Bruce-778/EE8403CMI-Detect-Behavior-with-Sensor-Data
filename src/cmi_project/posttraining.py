@@ -151,6 +151,9 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
         if distillation.weight or (representation.method == "phase" and phase_targets is None):
             raise ValueError("Test representation losses separately, with training phase targets when needed.")
         student = RepresentationIMUCNN.from_starting_model(student, representation.method == "phase")
+        if representation.trainable_scope == "phase_heads":
+            student.imu_encoder.requires_grad_(False)
+            student.classifier.requires_grad_(False)
         dataset = RepresentationDataset(arrays, train_indices, manifest, fold,
             seed=training.seed + fold, dropout=dropout, phase=phase_targets)
     train_loader = DataLoader(dataset, batch_size=training.batch_size, shuffle=True,
@@ -179,7 +182,14 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
     output_dir.mkdir(parents=True)
     processor.save(output_dir / "preprocessor.json")
 
+    def verify_frozen_backbone():
+        if representation is not None and representation.trainable_scope == "phase_heads":
+            for key, value in student.state_dict().items():
+                if key.startswith(("imu_encoder.", "classifier.")):
+                    torch.testing.assert_close(value.cpu(), source_checkpoint["state_dict"][key].cpu(), rtol=0, atol=0)
+
     def save_checkpoint(epoch, metrics):
+        verify_frozen_backbone()
         torch.save({"version": 1, "state_dict": student.state_dict(), "label_order": list(ALL_GESTURES),
             "model_metadata": student.metadata(), "preprocessor": processor.state,
             "fold": fold, "folds_sha256": manifest.fingerprint, "best_epoch": epoch,
@@ -190,7 +200,8 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
     save_checkpoint(0, baseline)
     stopping = EarlyStopping(training.early_stopping_patience, training.min_delta)
     stopping.update(baseline["score"], 0)
-    optimizer = torch.optim.AdamW(student.parameters(), lr=training.learning_rate, weight_decay=training.weight_decay)
+    optimizer = torch.optim.AdamW((p for p in student.parameters() if p.requires_grad),
+                                 lr=training.learning_rate, weight_decay=training.weight_decay)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="max",
         factor=training.lr_factor, patience=training.lr_patience, threshold=training.min_delta,
         threshold_mode="abs", min_lr=training.min_lr)
@@ -199,6 +210,10 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
     print(f"POSTTRAIN {method} fold {fold}: baseline={baseline['score']:.6f}", flush=True)
     for epoch in range(1, training.epochs + 1):
         student.train()
+        if representation is not None and representation.trainable_scope == "phase_heads":
+            # Frozen parameters alone do not freeze batch-norm moments or dropout.
+            student.imu_encoder.eval()
+            student.classifier.eval()
         totals, count, positive_anchors, total_anchors = np.zeros(3), 0, 0, 0
         used_lr = optimizer.param_groups[0]["lr"]
         epoch_start = time.perf_counter()
@@ -256,6 +271,7 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
               f"{row['seconds']:.1f}s{' *' if improved else ''}", flush=True)
         if stop:
             break
+    verify_frozen_backbone()
     restored, _, checkpoint = load_cnn_checkpoint(output_dir / "best.pt", device=str(device))
     metrics, probability = evaluate_model(restored, val_loader, criterion, device)
     np.testing.assert_allclose(metrics["score"], checkpoint["validation_metrics"]["score"], rtol=0, atol=1e-12)
@@ -269,6 +285,7 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
               "baseline": baseline, "validation": metrics, "best_epoch": checkpoint["best_epoch"],
               "epochs_run": len(history), "training": asdict(training), "posttraining": provenance,
               "elapsed_seconds": time.perf_counter() - started, "device": str(device),
+              "trainable_parameters": sum(p.numel() for p in student.parameters() if p.requires_grad),
               "max_length": processor.max_length, "model_metadata": restored.metadata()}
     (output_dir / "metrics.json").write_text(json.dumps(result, indent=2, allow_nan=False), encoding="utf-8")
     if save_plots:

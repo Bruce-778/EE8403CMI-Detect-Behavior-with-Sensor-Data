@@ -125,18 +125,26 @@ class RepresentationPipelineTests(unittest.TestCase):
         train = self.manifest.table.fold.to_numpy() != 0
         phase = np.full(self.arrays["time_mask"].shape, -100, dtype=np.int64)
         phase[train] = np.where(self.arrays["time_mask"][train], 2, -100)
-        for method in ("phase", "cross_subject_supcon"):
+        attempts = [("phase", "phase", "full", .1),
+                    ("cross_subject_supcon", "cross_subject_supcon", "full", .1),
+                    ("frozen_control", "phase", "phase_heads", 0.),
+                    ("frozen_phase", "phase", "phase_heads", .1)]
+        for name, method, scope, weight in attempts:
             result, prediction = train_posttraining_fold(self.arrays, self.processor, self.manifest,
-                0, path, self.root / method, training=TrainingConfig(epochs=1, batch_size=8,
+                0, path, self.root / name, training=TrainingConfig(epochs=1, batch_size=8,
                 cpu_threads=1, learning_rate=.0001), distillation=DistillationConfig(weight=0),
                 targets=None, eligible=None, data_metadata=self.metadata, source_teacher={},
-                representation=RepresentationConfig(method=method),
+                representation=RepresentationConfig(method=method, trainable_scope=scope, weight=weight),
                 phase_targets=phase if method == "phase" else None, save_plots=False)
             self.assertGreaterEqual(result["validation"]["score"], result["baseline"]["score"])
-            restored, _, saved = load_cnn_checkpoint(self.root / method / "best.pt")
+            restored, _, saved = load_cnn_checkpoint(self.root / name / "best.pt")
             self.assertEqual(restored.metadata(), saved["model_metadata"])
             self.assertEqual(result["posttraining"]["validation_annotation_sequences"], 0)
             self.assertEqual(len(prediction), int((~train).sum()))
+            if scope == "phase_heads":
+                original = torch.load(path, weights_only=True)["state_dict"]
+                for key, value in original.items():
+                    torch.testing.assert_close(value, saved["state_dict"][key], rtol=0, atol=0)
         self.assertEqual(before, hashlib.sha256(path.read_bytes()).hexdigest())
 
 
