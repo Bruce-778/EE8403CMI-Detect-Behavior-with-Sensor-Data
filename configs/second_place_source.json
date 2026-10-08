@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/Yamato-Arai/kaggle-cmi-detect-behavior-2nd-place-solution",
+  "commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
+  "files": {
+    "model.py": "dd3be2715d7751947617a0dddf0da135306cacb205b8bca3546363360cab5bfc",
+    "masked_batchnorm.py": "3e7f8f7d53dde62a71a779f453b8c0d5adc1b4f1b3d934993a1bb8c610090412",
+    "utils.py": "d73827b1e43111c387547cd391f8840cf99455b8577bc1d0810aafc17124b764",
+    "train.py": "af634654a1aaa3ca0ae0217ad886f82483944217dc8131418537ff7745376f8b",
+    "test.py": "ae57a3bca57e7a58483c4313891cd3b3a98c10662480c0623ef26486799de05d",
+    "README.md": "944b549cd9a4e5fe50cb747bda75dd0e316ac9279d8f0d0b87ee10af977e7c61",
+    "requirements.txt": "d6629abdb1f35e9af92686e3afabb0a355b125ba02d93a5e74a0a394f0a80ef7"
+  },
+  "hash_policy": "SHA256 of UTF-8 source bytes with CRLF normalized to LF"
+}

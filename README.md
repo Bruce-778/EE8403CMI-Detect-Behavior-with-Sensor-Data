@@ -117,4 +117,5 @@ python -s -m unittest discover -s tests -v
 正式消融汇总见 [ABLATION_STUDY.md](experiments/ABLATION_STUDY.md)，区分完整五折与单折筛选；
 前五名公开方案核对、OOF 瓶颈及下一轮设计见 [TOP_SOLUTIONS_REVIEW.md](experiments/TOP_SOLUTIONS_REVIEW.md)。
 因果 subject 历史后处理的独立协议实验见 [HISTORY_POSTPROCESSING.md](experiments/HISTORY_POSTPROCESSING.md)，尚未接入线上推理。
+第二名公开原始模型的复现、代码/说明差异及公平比较协议见 [SECOND_PLACE_REPRODUCTION.md](experiments/SECOND_PLACE_REPRODUCTION.md)。
 推理 Notebook 需挂载比赛输入和冻结权重，关闭互联网；本地导出、检查不会自动创建比赛提交。
