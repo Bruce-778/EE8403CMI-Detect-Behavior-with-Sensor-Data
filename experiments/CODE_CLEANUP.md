@@ -12,6 +12,11 @@
 当前已评分权重的官方 Public 为 **0.839556**，Private 为 **0.833362**，来源版本为 356204022。
 固定五折开发 CV 为 **0.852029 ± 0.008719**，采用样本标准差；线上成绩和开发 CV 分别保存，清理后的代码没有获得新的线上评分。
 
-已执行清理后的项目测试和真实权重推理检查。十个冻结 checkpoint 可加载；每折一条真实 held-out sequence 的概率与原 GPU OOF 对齐，最大绝对误差为 `3.56e-7`。
+已执行清理后的 55 项项目测试和真实权重推理检查，全部通过；另对最终训练 Notebook 导出执行了两项针对性检查。
+39 份既有结果 JSON 未改动，十二份旧配置原样归档，历史文档原文完整保留。
+十个冻结 checkpoint 的 2,160 个权重/状态张量与原已评分包逐个完全一致，预处理参数一致。
+每折一条真实 held-out sequence 的概率与原 GPU OOF 对齐，最大绝对误差为 `3.56e-7`。
 标签字段不影响推理，两个公开无标签示例及强制辅助模态全缺失输入通过。公开示例用于接口检查，没有测试标签或测试分数。
-验证明细将在 `experiments/results/code_cleanup_verified.json` 中保存。
+最终离线训练 Notebook 与推理 Notebook 的语法、训练源码载荷、推理包源码一致性和 ZIP 完整性检查通过。
+清理后的推理包保存在 `outputs/kaggle_submission_current/`；原已评分包继续保留。
+验证明细见 [`results/code_cleanup_verified.json`](results/code_cleanup_verified.json)。

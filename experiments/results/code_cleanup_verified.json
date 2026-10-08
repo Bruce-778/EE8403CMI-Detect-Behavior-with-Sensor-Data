@@ -1,0 +1,99 @@
+{
+  "status": "passed",
+  "date_local": "2026-10-07",
+  "source_git_commit": "7120814046432035998c2e578ec6275ef8c8d5a7",
+  "reference_git_commit": "70c9e7b",
+  "unit_tests": {
+    "passed": 55,
+    "follow_up_export_tests_passed": 2,
+    "full_run_seconds": 34.517,
+    "command": "python -s -m unittest discover -s tests -v"
+  },
+  "preserved_result_json_count": 39,
+  "preserved_experiment_documents": [
+    "experiments/KAGGLE.md",
+    "experiments/KAGGLE_WINNER_STATUS.md",
+    "experiments/README.md",
+    "experiments/RESULTS.md",
+    "experiments/WINNER_INSPIRED.md",
+    "experiments/WINNER_RESULTS.md",
+    "experiments/WINNER_RUN_STATUS.md"
+  ],
+  "archived_configurations": [
+    "experiments/configs/baseline.json",
+    "experiments/configs/baseline_xgboost.json",
+    "experiments/configs/cnn_attention.json",
+    "experiments/configs/cnn_grouped_gru.json",
+    "experiments/configs/cnn_grouped_mixup.json",
+    "experiments/configs/cnn_grouped_se.json",
+    "experiments/configs/cnn_hierarchical.json",
+    "experiments/configs/cnn_large_kernel.json",
+    "experiments/configs/cnn_multisensor_hier_v1train.json",
+    "experiments/configs/cnn_tuned.json",
+    "experiments/configs/cnn_v1.json",
+    "experiments/configs/preprocessing.json"
+  ],
+  "original_readme_preserved": true,
+  "fixed_folds_and_physical_preprocessing_unchanged": true,
+  "selected_hyperparameters_unchanged": true,
+  "default_training_folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "unchanged_checkpoint_count": 10,
+  "exactly_equal_weight_tensors": 2160,
+  "original_scored_archive_sha256": "e7af6cd296b54d75cdd9c135f36d78b7dd684dee4437975401722548b8720e19",
+  "local_inference": {
+    "status": "passed",
+    "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+    "heldout_checks": [
+      {
+        "fold": 1,
+        "sequence_id": "SEQ_000007",
+        "max_probability_error": 3.5574111934000285e-07
+      },
+      {
+        "fold": 0,
+        "sequence_id": "SEQ_000008",
+        "max_probability_error": 1.6385816192787672e-07
+      },
+      {
+        "fold": 3,
+        "sequence_id": "SEQ_000016",
+        "max_probability_error": 1.745857238777404e-07
+      },
+      {
+        "fold": 2,
+        "sequence_id": "SEQ_000022",
+        "max_probability_error": 7.87162780513384e-08
+      },
+      {
+        "fold": 4,
+        "sequence_id": "SEQ_000091",
+        "max_probability_error": 6.527862550509411e-08
+      }
+    ],
+    "public_test_examples": [
+      {
+        "sequence_id": "SEQ_000001",
+        "prediction": "Neck - scratch",
+        "forced_imu_prediction": "Eyebrow - pull hair"
+      },
+      {
+        "sequence_id": "SEQ_000011",
+        "prediction": "Eyelash - pull hair",
+        "forced_imu_prediction": "Eyelash - pull hair"
+      }
+    ],
+    "note": "Public examples have no labels; this is inference verification, not a test score."
+  },
+  "clean_bundle_sha256": "b73171e61c5a179c2fe0054ea5793ba77fd4dcae4fbdfad4c11864f3b5822fe6",
+  "clean_bundle_source_matches_repository": true,
+  "notebook_syntax_and_training_payload": "passed",
+  "largest_outgoing_blob_bytes": 38475,
+  "no_training_data_or_output_blobs_in_outgoing_history": true,
+  "note": "Code cleanup only. Frozen weights and preprocessing are identical to the scored version. Five held-out sequences and unlabeled public examples verify inference; no new training or online submission."
+}
