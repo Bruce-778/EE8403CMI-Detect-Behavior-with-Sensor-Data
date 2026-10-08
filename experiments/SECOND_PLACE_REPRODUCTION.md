@@ -175,3 +175,18 @@ ZIP 包含小型 cache metadata/provenance，但仍排除大型特征数组。�
 六项第二名相关测试通过（4.982 秒），包括逆序 logits 的对齐、真实小样本
 训练/权重/概率/metric 核验、training subject 被篡改时拒绝、原始历史函数
 prefix 对照及 overflow。小样本分数不作为真实比赛复现结果。
+
+### 首个完整训练分支日志：2026-10-08 00:19 PDT
+
+v1 仍为 Running。base/imu fold 0 已训练到 50/50，日志显示最后 epoch 的
+CMI **0.832582**、loss 1.7911，训练 6,524 / 验证 1,627 个 sequence，联合
+类别 102、参数 3,459,948。使用最后 epoch，不能用更高的 epoch 49 分数
+替代原始 checkpoint 规则。base/imu_rot 正在训练，其余两个 ToF 分支尚未
+开始。运行过程没有重新启动、修改训练或提交比赛。
+
+重新读取冻结原方法 IMU 的相同 fold 0 OOF，官方指标为
+**0.7756521483129168**，因此相对上述六位小数日志的初步差为约 **+0.05693**。
+这只是单折日志提示，训练结果 ZIP、真实训练 subject 与 OOF 尚未下载
+核验，不能确认完整五折提升，不能称为线上分数。此项保存于 JSON 的
+`pending_artifact_audit`；正式 `actual_reproduction_scores` 仍为 null。
+日志证据存于 `outputs/second_place/evidence/v1_imu_completed_log.txt`。

@@ -35,8 +35,8 @@
     "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653",
     "accelerator": "GPU T4 x2",
     "internet": false,
-    "status": "Running; original training input SHA256 verified, 8151-sequence cache complete, base/imu 50-epoch training in progress",
-    "last_observed_at_utc": "2026-10-08T07:01:39Z",
+    "status": "Running; base/imu fold0 completed 50 epochs; base/imu_rot is training; all/all_rot still pending",
+    "last_observed_at_utc": "2026-10-08T07:19:56Z",
     "actual_torch": "2.11.0+cu128",
     "actual_gpu": "Tesla T4",
     "initial_imu_epoch_seconds_approx": 24,
@@ -70,6 +70,22 @@
     "future_run_change": "Explicit joint_sequence_ids.npy and small cache metadata included in ZIP; active v1 unaffected",
     "history_policy": "Exact upstream prefix Hungarian on joint logits, latest return only, orders 42/142/242, explicit overflow baseline fallback; no validation annotations or future rows",
     "status_screenshot": "outputs/second_place/evidence/kaggle_v1_running.jpg"
+  },
+  "pending_artifact_audit": {
+    "base_imu_fold0": {
+      "status": "50 epochs complete in cloud log; checkpoint and OOF download/audit pending",
+      "epoch": 50,
+      "logged_score_6dp": 0.832582,
+      "logged_training_loss_4dp": 1.7911,
+      "logged_train_sequences": 6524,
+      "logged_validation_sequences": 1627,
+      "logged_joint_classes": 102,
+      "logged_parameters": 3459948,
+      "frozen_original_imu_same_fold_score": 0.7756521483129168,
+      "approximate_logged_delta": 0.0569298516870832,
+      "comparison_scope": "Single fixed fold; rounded cloud log only; not full CV, verified artifact result, or online score",
+      "log_evidence": "outputs/second_place/evidence/v1_imu_completed_log.txt"
+    }
   },
   "next": "Collect completed first-fold artifacts, verify raw data hashes and actual training subjects; compare identical validation sequences and three missingness scenarios. Expand to full five folds subject to real runtime/quota; three architecture ensemble and causal joint-label postprocessing reported separately. No push or new competition submission."
 }
