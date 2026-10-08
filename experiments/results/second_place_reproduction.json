@@ -1,5 +1,5 @@
 {
-  "status": "base_folds0_1_2_verified_awaiting_fold3",
+  "status": "base_folds0_1_2_verified_base_fold3_running",
   "actual_reproduction_scores": {
     "scope": "partial held-out folds; not five-fold CV",
     "record": "experiments/results/second_place_base_fold0_v1.json",
@@ -507,36 +507,32 @@
   "runtime": {
     "source": "Kaggle private notebook",
     "title": "CMI Second Place Fixed Fold Reproduction",
-    "script_version_id": 356470282,
-    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356470282",
-    "version": 3,
-    "status": "Complete: all four base fold2 arms and routed scenarios, artifacts audited locally",
-    "last_observed_at_utc": "2026-10-08T21:39:00Z",
+    "script_version_id": 356543991,
+    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356543991",
+    "version": 4,
+    "status": "Running: CUDA and fixed folds verified; raw training input checksum/cache setup in progress, no complete fold result",
+    "last_observed_at_utc": "2026-10-08T21:41:10Z",
     "accelerator": "GPU T4 x2",
     "internet": false,
-    "environment": "Pin to original environment (2026-10-02), same selected environment as completed v2",
+    "environment": "Editor selected Pin to original environment (2026-10-02), same as completed v3; log torch2.11.0+cu128/Tesla T4",
     "folds": [
-      2
+      3
     ],
     "architectures": [
       "base"
     ],
     "epochs": 50,
     "batch_size": 32,
-    "output_run": "base_fold2_v3",
-    "gpu_quota_available_at_launch_hours": 17.883333333333333,
-    "quota_evidence": "Account menu: GPU17h53m available of30h. EditorQuota12:06 denotes used.",
-    "estimated_remaining_base_three_fold_hours": 14.210833333333333,
-    "budget_limit": "Base three remaining folds estimated14.21h; recheck actual available quota and runtime before each batch. Three full architectures not established within budget.",
-    "notebook_sha256": "10b291363d3ef73d281107a762fdb7087d091bc5456409e81346d7a63b6a1880",
-    "screenshot": "outputs/second_place/evidence/kaggle_v3_fold2_started.jpg",
+    "output_run": "base_fold3_v4",
+    "gpu_quota_available_at_launch_hours": 13.133333333333333,
+    "quota_evidence": "Account menu GPU13h8m available of30h. EditorQuota16:51 is used.",
+    "estimated_remaining_base_two_fold_hours": 9.489444444444445,
+    "budget_limit": "Two base folds estimated9.489h within available13.133h; recheck actual available before fold4. Three complete architectures not established within budget.",
+    "notebook_sha256": "0414988b1cdef225d8b790b03fcb436bb3b090c2aa62a589de975f65632a950b",
+    "screenshot": "outputs/second_place/evidence/kaggle_v4_fold3_started.jpg",
     "actual_torch": "2.11.0+cu128",
     "actual_gpu": "Tesla T4",
-    "training_input_hashes_verified_in_log": true,
-    "logged_train_sequences": 6520,
-    "logged_validation_sequences": 1631,
-    "logged_joint_classes": 102,
-    "run_seconds": 17081
+    "training_input_hashes_verified_in_log": false
   },
   "notebook_sha256": "03165f139b7c13fc4f02207a50290c083b262f1590857fd9492da76061dd142d",
   "author_reference": {
@@ -649,7 +645,7 @@
     "epochs": 50,
     "batch_size": 32,
     "folds": [
-      2
+      3
     ],
     "architectures": [
       "base"
@@ -665,7 +661,7 @@
     "checkpoint_selection": "last",
     "history_postprocessing": false,
     "online_pseudo_labels": false,
-    "output_run": "base_fold2_v3",
+    "output_run": "base_fold3_v4",
     "explicit_logit_ids": true,
     "small_cache_metadata_in_archive": true
   },
@@ -757,5 +753,5 @@
     "logged_joint_classes": 102,
     "run_seconds": 17081
   },
-  "next_action": "Start only uncompleted base fold3 after checked available quota13h8m; keep original50epochs. Fold4 thereafter; do not repeat verified folds0/1/2."
+  "next_action": "Monitor exact v4 only; audit fresh artifact then continue remaining base fold4 if actual available GPU budget permits. Do not repeat completed folds0/1/2."
 }

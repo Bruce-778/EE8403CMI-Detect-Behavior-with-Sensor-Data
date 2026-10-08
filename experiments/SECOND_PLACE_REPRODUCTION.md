@@ -383,3 +383,20 @@ SHA、固定 folds、实际 train 6,520 / val 1,631 subjects/IDs、train-only 10
 下一批前账户明确 **GPU13h8m available of30h**；剩余base两折按v3实测
 约9.489h，预计在额度内；simple/deep完整五折没有预算保证。
 保留已完成三折，不push、不比赛提交、不替换生产权重。
+
+
+### 固定 fold3 启动：2026-10-08 14:41 PDT
+
+私有v4 **scriptVersionId356543991** 已进入Running，T4x2、互联网关闭，
+编辑器Pin to original environment(2026-10-02)与v3一致；日志实际
+torch2.11.0+cu128/Tesla T4、固定fold文件SHA已核实。原始输入SHA/cache
+仍在启动检查阶段，尚不声称它们已完成。只训练base fold3四分支各50epoch，
+bs32与原始超参不变，最后权重，输出`base_fold3_v4`。
+Notebook code cells编译及嵌入训练脚本/folds/source/inputhash配置字节核验通过，
+SHA256 `0414988b1cdef225d8b790b03fcb436bb3b090c2aa62a589de975f65632a950b`。
+
+https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356543991
+
+启动前明确GPU13h8m available，剩余两折按v3实测估计9.489h。
+不重训已核验fold0/1/2，无比赛提交/push/生产权重替换。页面证据
+`outputs/second_place/evidence/kaggle_v4_fold3_started.jpg`，自动跟进更新到v4。
