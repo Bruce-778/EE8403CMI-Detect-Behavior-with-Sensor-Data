@@ -28,4 +28,6 @@ aux_dropout50 为标签无关的固定缺失压力测试。上述标准差为五
 
 模型和 checkpoint 选择使用 validation，以上提升不能保证线上提升。本轮没有新的比赛提交。
 
+本地比较完成后，用户另行授权了一次线上评分，现已成功返回 Public 0.839556、Private 0.833362，两项均超过旧方案。实际线上结果另记于 `KAGGLE.md` 和 `experiments/results/kaggle_winner_cnn.json`，不替代本页固定五折评价。
+
 新推理包：`outputs/kaggle_winner_submission_v2/cmi-cnn-selected.zip`，十个冻结权重，五折等权。导出 Notebook 为同目录的 `cmi-cnn-selected.ipynb`。本机检查每折一条真实 held-out sequence，与 GPU OOF 概率的最大绝对误差为 `3.56e-7`；修改标签不影响结果，两个公开无标签示例及强制辅助模态全缺失输入正常。ZIP CRC / 内容、打包源码一致性及 Notebook 语法通过。完整证据见 `experiments/results/cnn_winner_inference_verified.json`。公开示例没有标签，这不是测试集分数；没有执行新线上提交。

@@ -1,6 +1,24 @@
 # Kaggle 线上提交记录
 
-日期：2026-10-07。已对锁定的 CNN 方案完成 Late Submission，Kaggle 返回真实 Public / Private 分数。
+日期：2026-10-07（America/Los_Angeles）。两次冻结 CNN 方案均完成 Late Submission，Kaggle 返回真实 Public / Private 分数。
+
+## 最新：运动特征与 Mixup 的固定五折 CNN
+
+| 方案 | Public | Private |
+| --- | ---: | ---: |
+| 原始 / 分层 CNN 固定融合（旧方案） | 0.806408 | 0.796378 |
+| `cnn_dynamics_mixup`（新方案） | **0.839556** | **0.833362** |
+| 新方案变化 | **+0.033148** | **+0.036984** |
+
+[官方评分页](https://www.kaggle.com/competitions/cmi-detect-behavior-with-sensor-data/submissions) 对 [CMI Winner Inspired CNN Inference v1](https://www.kaggle.com/code/mingweiwei03/cmi-winner-inspired-cnn-inference?scriptVersionId=356204022) 返回 `Succeeded (after deadline)`。新 [权重数据集](https://www.kaggle.com/datasets/mingweiwei03/cmi-winner-cnn-weights-20261007) 和 Notebook 保持私有；旧版本不变。公开示例 Notebook 用时 38.2 秒，随后 Kaggle 用隐藏测试重跑评分；上述数值来自最终 Private / Public 列，不是 Notebook 描述中的本地 CV。
+
+新方案有十个 checkpoint：IMU-only / 多传感器各五折，固定输入可用性路由和五折等权概率。使用与旧方案相同的 subject-wise folds 和官方指标。本地开发 CV 为 0.852029 ± 0.008719，固定约半数辅助模态额外缺失为 0.821455 ± 0.011675；没有根据隐藏测试拟合、选择模型或调整权重。
+
+按同一份[官方最终 Private 榜单](https://www.kaggle.com/competitions/cmi-detect-behavior-with-sensor-data/leaderboard)估算：排除 Rank 0 的 benchmark 后，2,657 支队伍中有 124 支高于新 Private 分数，插入位置约第 **125 名**，比旧方案约第 1,363 名明显提升。这是约在前 4.7% 的成绩参考，Late Submission 没有正式最终名次。冠军分数 0.886193，当前差距 0.052831；新方案已提升，但距离前排最高分仍有差距。
+
+完整线上记录为 `experiments/results/kaggle_winner_cnn.json`，上传与评分过程为 `KAGGLE_WINNER_STATUS.md`，实际分数截图为 `outputs/kaggle_winner_submission_v2/online_scores_verified.png`。成绩和榜单来源校验值均保留；成功结果本地 Git commit，未 push。线上跟进自动化 `cmi-cnn` 已删除。
+
+## 首次提交：保留原始结果
 
 | 评价 | 官方线上分数 |
 | --- | ---: |
