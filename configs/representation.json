@@ -1,0 +1,8 @@
+{
+  "base_config": "configs/posttraining.json",
+  "control_run": "outputs/posttraining/fivefold_v1/finetune",
+  "methods": {
+    "phase": {"method": "phase", "weight": 0.1, "temperature": 0.1},
+    "cross_subject_supcon": {"method": "cross_subject_supcon", "weight": 0.05, "temperature": 0.1}
+  }
+}

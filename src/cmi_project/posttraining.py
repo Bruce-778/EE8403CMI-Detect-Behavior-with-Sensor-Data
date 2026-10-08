@@ -118,7 +118,7 @@ def verify_starting_predictions(student, arrays, manifest, fold, source, device,
 def train_posttraining_fold(arrays, processor, manifest, fold, student_path, output_dir, *,
                             training: TrainingConfig, distillation: DistillationConfig,
                             targets, eligible, data_metadata, source_teacher,
-                            save_plots=True):
+                            save_plots=True, representation=None, phase_targets=None):
     """Epoch 0 is eligible for checkpoint selection, preserving an unimproved start."""
     if training.mixup_probability:
         raise ValueError("This controlled post-training stage disables Mixup for both arms.")
@@ -136,14 +136,24 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
     validate_arrays(arrays, manifest, processor.max_length, student.tof_regions)
     train_indices = np.flatnonzero(manifest.table["fold"].to_numpy() != fold)
     val_indices = np.flatnonzero(manifest.table["fold"].to_numpy() == fold)
-    if (source_teacher.get("teacher_fold") != fold
+    if representation is None and (source_teacher.get("teacher_fold") != fold
             or targets.shape != (len(manifest.table), len(ALL_GESTURES))
             or eligible.shape != (len(manifest.table),)
             or not np.isnan(targets[val_indices]).all() or eligible[val_indices].any()):
         raise ValueError("Teacher targets must come from this fold and exclude validation sequences.")
     dropout = SensorDropoutConfig(**source_checkpoint["sensor_dropout"])
-    train_loader = DataLoader(DistillationDataset(arrays, train_indices, targets, eligible,
-        seed=training.seed + fold, dropout=dropout), batch_size=training.batch_size, shuffle=True,
+    if representation is None:
+        dataset = DistillationDataset(arrays, train_indices, targets, eligible,
+                                      seed=training.seed + fold, dropout=dropout)
+    else:
+        from .representation import (RepresentationDataset, RepresentationIMUCNN,
+                                     cross_subject_contrastive_loss)
+        if distillation.weight or (representation.method == "phase" and phase_targets is None):
+            raise ValueError("Test representation losses separately, with training phase targets when needed.")
+        student = RepresentationIMUCNN.from_starting_model(student, representation.method == "phase")
+        dataset = RepresentationDataset(arrays, train_indices, manifest, fold,
+            seed=training.seed + fold, dropout=dropout, phase=phase_targets)
+    train_loader = DataLoader(dataset, batch_size=training.batch_size, shuffle=True,
         generator=torch.Generator().manual_seed(training.seed + fold))
     val_loader = DataLoader(CNNTensorDataset(arrays, val_indices), batch_size=training.batch_size)
     criterion = CMIHierarchicalLoss(training)
@@ -152,12 +162,20 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
     provenance = {"method": "multisensor_to_imu_kd" if distillation.weight else "supervised_finetuning_control",
                   "student_sha256": hashlib.sha256(Path(student_path).read_bytes()).hexdigest(),
                   **source_teacher, "distillation": asdict(distillation),
-                  "teacher_target_sequences": len(train_indices),
-                  "eligible_training_sequences": int(eligible[train_indices].sum()),
+                  "teacher_target_sequences": len(train_indices) if representation is None else 0,
+                  "eligible_training_sequences": int(eligible[train_indices].sum()) if representation is None else 0,
                   "teacher_validation_target_sequences": 0,
                   "teacher_view": "original observed sensors; student view has train-only sensor dropout",
                   "teacher_bn": "frozen eval; teacher targets detached",
                   "starting_probability_max_error": error}
+    if representation is not None:
+        provenance.update(method=representation.method, representation=asdict(representation),
+            training_annotation_sequences=len(train_indices), validation_annotation_sequences=0,
+            phase_targets_sha256=(hashlib.sha256(phase_targets[train_indices].tobytes()).hexdigest()
+                                  if phase_targets is not None else None),
+            new_heads_rng="restore CPU RNG after initialization; shared dropout stream matches control")
+        for key in ("teacher_view", "teacher_bn", "distillation"):
+            provenance.pop(key)
     output_dir.mkdir(parents=True)
     processor.save(output_dir / "preprocessor.json")
 
@@ -177,27 +195,45 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
         factor=training.lr_factor, patience=training.lr_patience, threshold=training.min_delta,
         threshold_mode="abs", min_lr=training.min_lr)
     history, started = [], time.perf_counter()
-    print(f"POSTTRAIN fold {fold}: KD weight={distillation.weight}, baseline={baseline['score']:.6f}", flush=True)
+    method = provenance["method"]
+    print(f"POSTTRAIN {method} fold {fold}: baseline={baseline['score']:.6f}", flush=True)
     for epoch in range(1, training.epochs + 1):
         student.train()
-        totals, count = np.zeros(3), 0
+        totals, count, positive_anchors, total_anchors = np.zeros(3), 0, 0, 0
         used_lr = optimizer.param_groups[0]["lr"]
         epoch_start = time.perf_counter()
         for batch in train_loader:
             batch = {key: value.to(device) for key, value in batch.items()}
             optimizer.zero_grad(set_to_none=True)
-            logits = student(batch)
+            if representation is None:
+                logits = student(batch)
+            else:
+                logits, embedding, phase_logits, phase_mask = student.forward_outputs(batch)
             supervised = criterion(logits, batch["label"])
-            kd = distillation_loss(logits, batch["teacher_logits"], batch["teacher_eligible"],
-                                   distillation.temperature) if distillation.weight else logits.sum() * 0
-            loss = supervised + distillation.weight * kd
+            if representation is None:
+                auxiliary = distillation_loss(logits, batch["teacher_logits"], batch["teacher_eligible"],
+                    distillation.temperature) if distillation.weight else logits.sum() * 0
+                weight = distillation.weight
+            elif representation.method == "phase":
+                input_mask = batch["imu_valid"].any(-1) & batch["time_mask"]
+                auxiliary = student.phase_loss(phase_logits, batch["training_phase"], input_mask, phase_mask)
+                weight = representation.weight
+            else:
+                auxiliary = cross_subject_contrastive_loss(embedding, batch["label"],
+                    batch["training_subject"], representation.temperature)
+                positives = ((batch["label"][:, None] == batch["label"][None]) &
+                             (batch["training_subject"][:, None] != batch["training_subject"][None]))
+                positive_anchors += int(positives.any(1).sum())
+                total_anchors += len(batch["label"])
+                weight = representation.weight
+            loss = supervised + weight * auxiliary
             if not torch.isfinite(loss):
                 raise ValueError("Non-finite post-training loss.")
             loss.backward()
             nn.utils.clip_grad_norm_(student.parameters(), training.gradient_clip, error_if_nonfinite=True)
             optimizer.step()
             size = len(batch["label"])
-            totals += np.array([float(loss.detach()), float(supervised.detach()), float(kd.detach())]) * size
+            totals += np.array([float(loss.detach()), float(supervised.detach()), float(auxiliary.detach())]) * size
             count += size
         metrics, _ = evaluate_model(student, val_loader, criterion, device)
         improved, stop = stopping.update(metrics["score"], epoch)
@@ -209,10 +245,14 @@ def train_posttraining_fold(arrays, processor, manifest, fold, student_path, out
                **{key: value for key, value in metrics.items() if key != "loss"},
                "learning_rate": used_lr, "seconds": time.perf_counter() - epoch_start,
                "best_checkpoint": improved}
+        if representation is not None:
+            row["representation_loss"] = row.pop("distillation_loss")
+            if total_anchors:
+                row["positive_anchor_fraction"] = positive_anchors / total_anchors
         history.append(row)
         pd.DataFrame(history).to_csv(output_dir / "history.csv", index=False)
-        print(f"KD={distillation.weight} fold {fold} epoch {epoch}: CMI={metrics['score']:.6f}, "
-              f"macro={metrics['macro_f1_9class']:.6f}, KDloss={row['distillation_loss']:.4f}, "
+        print(f"{method} fold {fold} epoch {epoch}: CMI={metrics['score']:.6f}, "
+              f"macro={metrics['macro_f1_9class']:.6f}, auxloss={totals[2] / count:.4f}, "
               f"{row['seconds']:.1f}s{' *' if improved else ''}", flush=True)
         if stop:
             break

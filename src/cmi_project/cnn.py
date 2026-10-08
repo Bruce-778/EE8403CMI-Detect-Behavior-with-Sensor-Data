@@ -174,6 +174,10 @@ class GroupedIMUEncoder(nn.Module):
         self.output_features = self.fusion.output_features
 
     def forward(self, values: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        out, available = self.encode_sequence(values, mask)
+        return self.fusion.pool_sequence(out, available)
+
+    def encode_sequence(self, values: torch.Tensor, mask: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         parts, masks = [], []
         for stem, group in zip(self.stems, self.groups):
             valid_indices = [self.feature_count + i for i in group]
@@ -183,7 +187,7 @@ class GroupedIMUEncoder(nn.Module):
             parts.append(out)
             masks.append(available)
         merged_mask = torch.stack(masks).any(0)
-        return self.fusion(torch.cat(parts, dim=1).transpose(1, 2), merged_mask)
+        return self.fusion.encode_sequence(torch.cat(parts, dim=1).transpose(1, 2), merged_mask)
 
 
 class CMI1DCNN(nn.Module):

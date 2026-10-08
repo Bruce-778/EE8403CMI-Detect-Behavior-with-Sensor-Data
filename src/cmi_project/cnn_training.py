@@ -207,8 +207,15 @@ def load_cnn_checkpoint(path: Path, *, device: str = "cpu") -> tuple[CMI1DCNN, F
     if checkpoint.get("version") != 1 or checkpoint.get("label_order") != list(ALL_GESTURES):
         raise ValueError("Incompatible CNN checkpoint/class order.")
     metadata = checkpoint["model_metadata"]
-    model = CMI1DCNN(metadata["model"], tof_regions=metadata["tof_regions"],
-                     config=CNNConfig.from_dict(metadata["config"])).to(device)
+    if metadata.get("architecture") == "phase_residual_grouped_cnn_v1":
+        from .representation import RepresentationIMUCNN
+        model = RepresentationIMUCNN(metadata["model"], phase_enabled=True,
+            tof_regions=metadata["tof_regions"], config=CNNConfig.from_dict(metadata["config"])).to(device)
+    elif metadata.get("architecture") == "grouped_masked_se_cnn_v3":
+        model = CMI1DCNN(metadata["model"], tof_regions=metadata["tof_regions"],
+                         config=CNNConfig.from_dict(metadata["config"])).to(device)
+    else:
+        raise ValueError("Unsupported checkpoint architecture.")
     model.load_state_dict(checkpoint["state_dict"])
     model.eval()
     processor = FoldPreprocessor(PreprocessingConfig.from_dict(checkpoint["preprocessor"]["config"]))

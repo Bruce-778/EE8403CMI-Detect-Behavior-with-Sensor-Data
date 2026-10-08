@@ -108,4 +108,10 @@ python -s -m unittest discover -s tests -v
 `--output-dir` 可选择新的导出位置；对应检查须指定 `--directory` 和匹配的 `--oof-path`。
 导出要求 A/B 各五折和匹配的场景评价报告，检查每折真实 held-out 输入与保存 OOF 概率、标签字段隔离、公开无标签示例及辅助模态全缺失推理。
 公开示例没有标签，只用于验证推理接口。
+
+## 后续优化实验
+
+已完成的蒸馏与普通微调对照见 [experiments/POSTTRAINING.md](experiments/POSTTRAINING.md)。
+动作阶段与跨 subject 对比学习的逐步方法、参数、检查及结果见
+[experiments/REPRESENTATION.md](experiments/REPRESENTATION.md)。这些开发实验不自动替换已上线权重。
 推理 Notebook 需挂载比赛输入和冻结权重，关闭互联网；本地导出、检查不会自动创建比赛提交。
