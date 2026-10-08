@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 
 
 spec = importlib.util.spec_from_file_location("winner_pipeline", Path(__file__).resolve().parents[1] / "scripts/run_winner_experiments.py")
@@ -12,7 +13,33 @@ pipeline = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pipeline)
 
 
-class WinnerContinuationTests(unittest.TestCase):
+class WinnerPipelineTests(unittest.TestCase):
+    def test_exported_training_cell_runs_without_old_pilot_state(self):
+        exporter_spec = importlib.util.spec_from_file_location(
+            "winner_exporter", pipeline.ROOT / "scripts/export_kaggle_training.py")
+        exporter = importlib.util.module_from_spec(exporter_spec)
+        exporter_spec.loader.exec_module(exporter)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "configs").mkdir()
+            for name in ("folds.csv", "folds.meta.json", "data_source_hashes.json",
+                         "preprocessing_dynamics.json", "cnn_dynamics_mixup.json"):
+                (root / "configs" / name).write_bytes((pipeline.ROOT / "configs" / name).read_bytes())
+            with patch.object(exporter, "ROOT", root), patch("sys.argv", ["export_kaggle_training.py"]):
+                exporter.main()
+            notebook = json.loads((root / "outputs/kaggle_training/cmi-winner-training.ipynb").read_text())
+            code = ["".join(cell["source"]) for cell in notebook["cells"] if cell["cell_type"] == "code"]
+            for source in code:
+                compile(source, "exported training notebook", "exec")
+            with patch("subprocess.run") as run:
+                exec(code[-1], {"project": root, "data_dir": root / "data",
+                               "sys": SimpleNamespace(executable="python"),
+                               "subprocess": SimpleNamespace(run=run)})
+            run.assert_called_once()
+            command = run.call_args.args[0]
+            self.assertEqual(command[2], str(root / "scripts/run_winner_experiments.py"))
+            self.assertNotIn("--continue-from", command)
+
     def test_training_data_hash_rejects_changed_bytes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -29,42 +56,6 @@ class WinnerContinuationTests(unittest.TestCase):
                 (data / "train.csv").write_bytes(b"different bytes\n")
                 with self.assertRaisesRegex(ValueError, "differs"):
                     pipeline.verify_training_data(data)
-
-    def test_frozen_selection_preserves_pilots_without_active_cache_or_weights(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root, source = Path(directory) / "new", Path(directory) / "old"
-            for workspace in (root, source):
-                (workspace / "configs").mkdir(parents=True)
-                (workspace / "configs/folds.csv").write_text("immutable folds")
-            rows = []
-            for i, name in enumerate(pipeline.DESIGNS):
-                config = {"output_dir": f"outputs/experiments/{name}", "seed": 42}
-                for workspace in (root, source):
-                    (workspace / "configs" / f"{name}.json").write_text(json.dumps(config))
-                row = {"name": name, "fold": 0, "score": 0.7 + i * 0.01, "best_epoch": 1, "epochs_run": 2}
-                rows.append(row)
-                fold = source / config["output_dir"] / "imu/fold_0"
-                fold.mkdir(parents=True)
-                (fold / "metrics.json").write_text(json.dumps({"fold": 0, "model": "imu", "validation": {"score": row["score"]}, "best_epoch": 1, "epochs_run": 2}))
-                (fold / "best.pt").write_bytes(b"saved pilot evidence")
-                summary = source / "experiments/results" / f"{name}_gpu_pilot.json"
-                summary.parent.mkdir(parents=True, exist_ok=True)
-                summary.write_text(json.dumps(row))
-            selection = {"designs": rows, "selected": rows[-1]["name"], "selection_fold": 0}
-            (source / "selection.json").write_text(json.dumps(selection))
-            (source / "outputs/cnn_cache").mkdir()
-            with patch.object(pipeline, "ROOT", root):
-                bad = dict(selection, selected=rows[0]["name"])
-                (source / "selection.json").write_text(json.dumps(bad))
-                with self.assertRaisesRegex(ValueError, "selection"):
-                    pipeline.recover_frozen_pilots(source)
-                self.assertFalse((root / "outputs").exists())
-                (source / "selection.json").write_text(json.dumps(selection))
-                self.assertEqual(pipeline.recover_frozen_pilots(source), rows)
-                self.assertFalse((root / "outputs/cnn_cache").exists())
-                self.assertFalse((root / "outputs/experiments").exists())
-                self.assertEqual((root / "outputs/pilot_artifacts" / rows[-1]["name"] / "imu/fold_0/best.pt").read_bytes(), b"saved pilot evidence")
-                self.assertTrue((source / "outputs/cnn_cache").exists())
 
 
 if __name__ == "__main__":

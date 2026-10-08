@@ -18,9 +18,9 @@ from cmi_project.validation import load_fold_manifest
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--directory", type=Path, default=Path("outputs/kaggle_submission"))
+    parser.add_argument("--directory", type=Path, default=Path("outputs/kaggle_submission_current"))
     parser.add_argument("--oof-path", type=Path, default=Path(
-        "outputs/experiments/cnn_hierarchical/scenarios/cnn_final_selected/routed/observed/oof_predictions.csv"))
+        "outputs/experiments/cnn_dynamics_mixup/scenarios/cnn_winner_selected/routed/observed/oof_predictions.csv"))
     args = parser.parse_args()
     directory = ROOT / args.directory
     predictor = RoutedCNNPredictor(directory / "bundle")

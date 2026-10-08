@@ -1,4 +1,4 @@
-"""V1 temporal CNNs: IMU only, or three independently encoded modalities."""
+"""Selected grouped, masked SE CNN: IMU-only and multisensor branches."""
 
 from __future__ import annotations
 
@@ -20,11 +20,11 @@ class CNNConfig:
     dropout: float = 0.2
     pooling: str = "mean_max"
     stage_kernel_sizes: tuple[int, ...] = ()
-    encoder_style: str = "joint"
-    normalization: str = "token_layer"
-    squeeze_excitation: bool = False
+    encoder_style: str = "grouped"
+    normalization: str = "masked_batch"
+    squeeze_excitation: bool = True
     stem_channels: tuple[int, ...] = (16, 32)
-    imu_feature_count: int = 15
+    imu_feature_count: int = 34
 
     def __post_init__(self):
         for widths in (self.imu_channels, self.auxiliary_channels):
@@ -34,20 +34,15 @@ class CNNConfig:
             raise ValueError("kernel_size must be a positive odd integer.")
         if self.hidden_features < 2 or not 0 <= self.dropout < 1:
             raise ValueError("Invalid hidden_features/dropout.")
-        if self.pooling not in ("mean_max", "attention_max", "gru_mean"):
-            raise ValueError("pooling must be mean_max, attention_max or gru_mean.")
-        if self.encoder_style not in ("joint", "grouped"):
-            raise ValueError("encoder_style must be joint or grouped.")
-        if self.normalization not in ("token_layer", "masked_batch"):
-            raise ValueError("normalization must be token_layer or masked_batch.")
+        # Retain serialized fields so the scored checkpoints load unchanged.
+        if (self.pooling != "mean_max" or self.encoder_style != "grouped"
+                or self.normalization != "masked_batch" or not self.squeeze_excitation
+                or self.stage_kernel_sizes):
+            raise ValueError("Use grouped masked SE CNN with mean/max pooling and a shared kernel.")
         if self.imu_feature_count not in (15, 34):
             raise ValueError("imu_feature_count must be 15 or 34.")
         if not self.stem_channels or any(not isinstance(c, int) or c < 2 for c in self.stem_channels):
             raise ValueError("stem_channels must contain integers >= 2.")
-        if self.stage_kernel_sizes and (len(self.stage_kernel_sizes) != len(self.imu_channels)
-                or len(self.stage_kernel_sizes) != len(self.auxiliary_channels)
-                or any(not isinstance(k, int) or k < 1 or k % 2 != 1 for k in self.stage_kernel_sizes)):
-            raise ValueError("stage_kernel_sizes needs one positive odd kernel per encoder stage.")
 
     @classmethod
     def from_dict(cls, values: dict) -> "CNNConfig":
@@ -56,17 +51,6 @@ class CNNConfig:
             if key in values:
                 values[key] = tuple(values[key])
         return cls(**values)
-
-
-class TokenChannelNorm1d(nn.Module):
-    """LayerNorm across channels at each time step, excluding other tokens."""
-
-    def __init__(self, channels: int):
-        super().__init__()
-        self.norm = nn.LayerNorm(channels)
-
-    def forward(self, values: torch.Tensor, mask: torch.Tensor | None = None) -> torch.Tensor:
-        return self.norm(values.transpose(1, 2)).transpose(1, 2)
 
 
 class MaskedBatchNorm1d(nn.Module):
@@ -117,17 +101,15 @@ class MaskedSqueezeExcitation(nn.Module):
 
 
 class MaskedResidualBlock(nn.Module):
-    def __init__(self, inputs: int, outputs: int, kernel_size: int, stride: int, dropout: float,
-                 normalization: str = "token_layer", squeeze_excitation: bool = False):
+    def __init__(self, inputs: int, outputs: int, kernel_size: int, stride: int, dropout: float):
         super().__init__()
         self.kernel_size, self.stride = kernel_size, stride
         self.conv1 = nn.Conv1d(inputs, outputs, kernel_size, stride, kernel_size // 2, bias=False)
         self.conv2 = nn.Conv1d(outputs, outputs, 3, padding=1, bias=False)
-        norm = MaskedBatchNorm1d if normalization == "masked_batch" else TokenChannelNorm1d
-        self.norm1, self.norm2 = norm(outputs), norm(outputs)
+        self.norm1, self.norm2 = MaskedBatchNorm1d(outputs), MaskedBatchNorm1d(outputs)
         self.skip = nn.Conv1d(inputs, outputs, 1, stride=stride, bias=False)
         self.dropout = nn.Dropout1d(dropout)
-        self.se = MaskedSqueezeExcitation(outputs) if squeeze_excitation else None
+        self.se = MaskedSqueezeExcitation(outputs)
 
     def forward(self, values: torch.Tensor, mask: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         values = torch.where(mask[:, None], values, 0)
@@ -139,32 +121,22 @@ class MaskedResidualBlock(nn.Module):
         out = self.conv2(out)
         final_mask = downsample_time_mask(first_mask, 3, padding=1)
         out = self.norm2(out, final_mask)
-        if self.se is not None:
-            out = self.se(out, final_mask)
+        out = self.se(out, final_mask)
         out = F.gelu(out + residual)
         return torch.where(final_mask[:, None], out, 0), final_mask
 
 
 class TemporalCNNEncoder(nn.Module):
     def __init__(self, inputs: int, channels: tuple[int, ...], kernel_size: int = 5,
-                 dropout: float = 0.2, pooling: str = "mean_max", stage_kernel_sizes: tuple[int, ...] = (),
-                 normalization: str = "token_layer", squeeze_excitation: bool = False,
-                 downsample: bool = True):
+                 dropout: float = 0.2, *, downsample: bool = True):
         super().__init__()
         blocks = []
         for i, output in enumerate(channels):
-            kernel = stage_kernel_sizes[i] if stage_kernel_sizes else kernel_size
-            blocks.append(MaskedResidualBlock(inputs, output, kernel, 1 if i == 0 or not downsample else 2,
-                dropout, normalization, squeeze_excitation))
+            blocks.append(MaskedResidualBlock(inputs, output, kernel_size,
+                1 if i == 0 or not downsample else 2, dropout))
             inputs = output
         self.blocks = nn.ModuleList(blocks)
         self.output_features = 2 * channels[-1]
-        self.gru = None
-        if pooling == "gru_mean":
-            self.gru = nn.GRU(channels[-1], channels[-1] // 2, batch_first=True, bidirectional=True)
-            self.output_features = 4 * (channels[-1] // 2)
-        self.attention = (nn.Sequential(nn.Conv1d(channels[-1], max(4, channels[-1] // 4), 1),
-            nn.Tanh(), nn.Conv1d(max(4, channels[-1] // 4), 1, 1)) if pooling == "attention_max" else None)
 
     def forward(self, values: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         out, mask = self.encode_sequence(values, mask)
@@ -177,33 +149,7 @@ class TemporalCNNEncoder(nn.Module):
         return out, mask
 
     def pool_sequence(self, out: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-        if self.gru is not None:
-            # Pack real CNN tokens in their original order. Left padding and
-            # wholly unavailable modalities must never enter the recurrence.
-            values = out.transpose(1, 2)
-            length = mask.sum(1)
-            position = torch.arange(mask.shape[1], device=mask.device)[None].expand_as(mask)
-            order = torch.where(mask, position, position + mask.shape[1]).argsort(1)
-            compact = values.gather(1, order[..., None].expand(-1, -1, values.shape[-1]))
-            compact_mask = position < length[:, None]
-            compact = torch.where(compact_mask[..., None], compact, 0)
-            packed = nn.utils.rnn.pack_padded_sequence(compact, length.clamp_min(1).cpu(),
-                batch_first=True, enforce_sorted=False)
-            encoded, hidden = self.gru(packed)
-            encoded, _ = nn.utils.rnn.pad_packed_sequence(encoded, batch_first=True, total_length=values.shape[1])
-            mean = masked_mean_time(encoded, compact_mask)
-            last = torch.cat([hidden[-2], hidden[-1]], dim=1)
-            combined = torch.cat([mean, last], dim=1)
-            return torch.where(length[:, None] > 0, combined, 0)
-        if self.attention is None:
-            mean = masked_mean_time(out.transpose(1, 2), mask)
-        else:
-            scores = self.attention(out).squeeze(1).masked_fill(~mask, -torch.inf)
-            # Empty modalities must have zero weights, finite gradients, and
-            # zero embeddings. Softmax of an all-negative-infinity row is NaN.
-            scores = torch.where(mask.any(dim=1, keepdim=True), scores, 0)
-            weights = scores.softmax(dim=1) * mask
-            mean = (out * weights[:, None]).sum(dim=2)
+        mean = masked_mean_time(out.transpose(1, 2), mask)
         maximum = out.masked_fill(~mask[:, None], -torch.inf).amax(dim=2)
         maximum = torch.where(mask.any(dim=1, keepdim=True), maximum, 0)
         return torch.cat([mean, maximum], dim=1)
@@ -221,12 +167,10 @@ class GroupedIMUEncoder(nn.Module):
             self.groups[2] += [21]
             self.groups[3] += list(range(22, 28)) + list(range(31, 34))
         self.stems = nn.ModuleList([TemporalCNNEncoder(2 * len(indices), config.stem_channels,
-            config.kernel_size, config.dropout, normalization=config.normalization,
-            squeeze_excitation=config.squeeze_excitation, downsample=False)
+            config.kernel_size, config.dropout, downsample=False)
             for indices in self.groups])
         self.fusion = TemporalCNNEncoder(4 * config.stem_channels[-1], config.imu_channels,
-            config.kernel_size, config.dropout, config.pooling, config.stage_kernel_sizes,
-            config.normalization, config.squeeze_excitation)
+            config.kernel_size, config.dropout)
         self.output_features = self.fusion.output_features
 
     def forward(self, values: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
@@ -258,18 +202,13 @@ class CMI1DCNN(nn.Module):
             raise ValueError("num_classes must be >= 2.")
         self.model_name, self.tof_regions = model_name, tof_regions
         self.config = config or CNNConfig()
-        self.imu_encoder = (GroupedIMUEncoder(self.config) if self.config.encoder_style == "grouped"
-            else TemporalCNNEncoder(2 * self.config.imu_feature_count, self.config.imu_channels, self.config.kernel_size,
-                self.config.dropout, self.config.pooling, self.config.stage_kernel_sizes,
-                self.config.normalization, self.config.squeeze_excitation))
+        self.imu_encoder = GroupedIMUEncoder(self.config)
         features = self.imu_encoder.output_features + 1
         if model_name == "multisensor":
             self.thm_encoder = TemporalCNNEncoder(15, self.config.auxiliary_channels,
-                self.config.kernel_size, self.config.dropout, self.config.pooling, self.config.stage_kernel_sizes,
-                self.config.normalization, self.config.squeeze_excitation)
+                self.config.kernel_size, self.config.dropout)
             self.tof_encoder = TemporalCNNEncoder(10 * tof_regions**2 + 5, self.config.auxiliary_channels,
-                self.config.kernel_size, self.config.dropout, self.config.pooling, self.config.stage_kernel_sizes,
-                self.config.normalization, self.config.squeeze_excitation)
+                self.config.kernel_size, self.config.dropout)
             features += self.thm_encoder.output_features + self.tof_encoder.output_features + 2
         self.classifier = nn.Sequential(
             nn.Linear(features, self.config.hidden_features), nn.LayerNorm(self.config.hidden_features),
@@ -277,12 +216,7 @@ class CMI1DCNN(nn.Module):
         )
 
     def metadata(self) -> dict:
-        architecture = ("masked_residual_1d_cnn_v2" if self.config.pooling != "mean_max"
-                        or self.config.stage_kernel_sizes else "masked_residual_1d_cnn_v1")
-        if self.config.encoder_style == "grouped" or self.config.normalization != "token_layer" or self.config.squeeze_excitation:
-            architecture = "grouped_masked_se_cnn_v3"
-        if self.config.pooling == "gru_mean":
-            architecture = "masked_cnn_gru_v4"
+        architecture = "grouped_masked_se_cnn_v3"
         return {"model": self.model_name, "architecture": architecture,
                 "config": asdict(self.config), "tof_regions": self.tof_regions,
                 "normalization": f"train-fold standardization + {self.config.normalization}",

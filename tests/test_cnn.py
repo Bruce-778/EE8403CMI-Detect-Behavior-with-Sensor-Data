@@ -39,7 +39,7 @@ def toy_batch():
 
 
 def tiny_config():
-    return CNNConfig(imu_channels=(4, 8), auxiliary_channels=(4, 8), hidden_features=8, dropout=0.1)
+    return CNNConfig(imu_feature_count=15, imu_channels=(4, 8), auxiliary_channels=(4, 8), hidden_features=8, dropout=0.1)
 
 
 class CNNModelTests(unittest.TestCase):

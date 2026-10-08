@@ -1,4 +1,4 @@
-"""Reproducible v1 CNN training and held-out-subject evaluation."""
+"""Reproducible selected CNN training and held-out-subject evaluation."""
 
 from __future__ import annotations
 
@@ -247,18 +247,8 @@ def write_comparison_report(output_dir: Path, summaries: list[dict], manifest: F
     rows = [{"model": "CNN A (IMU)" if s["model"] == "imu" else "CNN B (IMU + THM + ToF)",
              "fold": s["fold"], **{k: s["validation"][k] for k in ("score", "binary_f1", "macro_f1_9class")},
              "best_epoch": s["best_epoch"], "epochs_run": s["epochs_run"]} for s in summaries]
-    for name in ("lightgbm_imu", "xgboost_imu"):
-        directory = PROJECT_DIR / "outputs/baseline" / name / "evaluation"
-        if not (directory / "metrics.json").is_file() or not (directory / "fold_scores.csv").is_file():
-            continue
-        metadata = json.loads((directory / "metrics.json").read_text(encoding="utf-8"))
-        if metadata.get("folds_sha256") != manifest.fingerprint:
-            continue
-        scores = pd.read_csv(directory / "fold_scores.csv")
-        for row in scores[scores["fold"].isin(folds)].to_dict("records"):
-            rows.append({"model": name, **{k: row[k] for k in ("fold", "score", "binary_f1", "macro_f1_9class")}})
     table = pd.DataFrame(rows)
-    table.to_csv(output_dir / "baseline_comparison.csv", index=False)
+    table.to_csv(output_dir / "model_comparison.csv", index=False)
     metrics = ["score", "binary_f1", "macro_f1_9class"]
     grouped = table.groupby("model", sort=False)[metrics].mean()
     figure, axis = plt.subplots(figsize=(10, 4.6))
@@ -274,13 +264,13 @@ def write_comparison_report(output_dir: Path, summaries: list[dict], manifest: F
     figure.savefig(output_dir / "comparison.png", dpi=160)
     plt.close(figure)
     complete = len(folds) == manifest.n_splits
-    scope = "完整五折 OOF；表格逐折列出，图表为折均值。" if complete else f"第一版预览：仅 folds {folds}，不是完整五折结果。"
+    scope = "完整五折 OOF；表格逐折列出，图表为折均值。" if complete else f"部分验证：仅 folds {folds}，不是完整五折结果。"
     parts = ["<!doctype html><html lang='zh-CN'><meta charset='utf-8'>",
         "<meta name='viewport' content='width=device-width,initial-scale=1'>",
         "<title>CMI 1D CNN results</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1100px;margin:32px auto;padding:0 20px;color:#17212b}"
         "table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid #dce2e8;padding:8px;text-align:right}"
         "th:first-child,td:first-child{text-align:left}img{max-width:100%}code{background:#eef2f6;padding:2px 5px}</style>",
-        "<h1>CMI 主实验 v1：1D CNN</h1>", f"<p>{html.escape(scope)}</p>",
+        "<h1>CMI 运动特征与 Mixup：分组 SE CNN</h1>", f"<p>{html.escape(scope)}</p>",
         "<p>固定 subject folds，标准化和长度分位数仅由训练 subjects 拟合。CNN 的验证分数同时用于选择 checkpoint 和 early stopping；这是开发阶段验证结果。</p>",
         "<p>Model A：IMU encoder → masked pooling → FC。Model B：IMU / THM / ToF 独立 encoder → concatenate → FC。ToF 使用有效像素区域均值和有效像素比例后沿时间做 1D CNN。不同损失函数的 loss 数值不能直接横向比较。</p>",
         "<img src='comparison.png' alt='Matching-fold model comparison'>",
@@ -444,10 +434,10 @@ def reuse_completed_fold(output_dir: Path, processor: FoldPreprocessor, manifest
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Main experiment v1: IMU-only and multisensor temporal CNNs.")
-    parser.add_argument("--config", type=Path, default=PROJECT_DIR / "configs/cnn_v1.json")
+    parser = argparse.ArgumentParser(description="Selected grouped CNN: IMU-only and multisensor, fixed subject folds.")
+    parser.add_argument("--config", type=Path, default=PROJECT_DIR / "configs/cnn_dynamics_mixup.json")
     parser.add_argument("--model", choices=("imu", "multisensor", "both"), default="both")
-    parser.add_argument("--fold", type=int, nargs="+", help="Defaults to config folds (v1 preview: fold 0).")
+    parser.add_argument("--fold", type=int, nargs="+", help="Defaults to all five fixed folds in the selected config.")
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--cache-dir", type=Path)
     parser.add_argument("--epochs", type=int)
@@ -480,7 +470,7 @@ def main() -> int:
         if output_dir == cache_root or output_dir in cache_root.parents or cache_root in output_dir.parents:
             raise ValueError("Use separate, non-nested output and cache directories.")
         manifest = load_fold_manifest(PROJECT_DIR / settings.get("folds_path", "configs/folds.csv"))
-        folds = args.fold if args.fold is not None else settings.get("folds", [0])
+        folds = args.fold if args.fold is not None else settings.get("folds", list(range(manifest.n_splits)))
         if not folds or len(set(folds)) != len(folds) or any(f not in range(manifest.n_splits) for f in folds):
             raise ValueError("Invalid CNN fold selection.")
         names = ["imu", "multisensor"] if args.model == "both" else [args.model]
@@ -498,7 +488,7 @@ def main() -> int:
                         ("data_dir", "folds_path", "preprocessing_config", "length_quantile", "tof_regions", "input_clip"))):
                     raise ValueError("Resume settings differ; choose a fresh output directory.")
             output_dir.mkdir(parents=True, exist_ok=True)
-        input_settings = json.loads((PROJECT_DIR / settings.get("preprocessing_config", "configs/preprocessing.json")).read_text(encoding="utf-8"))
+        input_settings = json.loads((PROJECT_DIR / settings.get("preprocessing_config", "configs/preprocessing_dynamics.json")).read_text(encoding="utf-8"))
         preprocessing = PreprocessingConfig.from_dict(input_settings.get("preprocessing", {}))
         sensor_dropout = SensorDropoutConfig(**input_settings.get("sensor_dropout", {}))
         if "length_quantile" in settings:
@@ -540,7 +530,7 @@ def main() -> int:
                 evaluate_oof_frames(manifest, predictions[name], output_dir / name / "evaluation",
                     experiment_name=f"{output_dir.name}_{name}", experiment_config={"training": asdict(training),
                         "model_config": asdict(model_config), "checkpoint_selection": "held-out fold CMI score"})
-        (output_dir / "summary.json").write_text(json.dumps({"version": "v1", "folds": folds,
+        (output_dir / "summary.json").write_text(json.dumps({"version": "grouped_masked_se_cnn_v3", "folds": folds,
             "complete_oof": complete, "evaluation_scope": "5-fold OOF" if complete else "held-out fold preview",
             "folds_sha256": manifest.fingerprint, "results": summaries}, indent=2, ensure_ascii=False, allow_nan=False), encoding="utf-8")
         print(f"Comparison: {output_dir / 'comparison.csv'}; complete five-fold OOF={complete}", flush=True)

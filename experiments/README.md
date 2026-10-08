@@ -1,3 +1,5 @@
+> 实验档案说明（2026-10-07 清理）：本页保留当时的结果、决策与命令。当前运行方案为 `cnn_dynamics_mixup`，Public 0.839556 / Private 0.833362；请以[当前项目入口](../README.md)为准。旧配置原样存于 `experiments/configs/`，旧运行代码可从 Git 历史恢复。
+
 # 主实验记录
 
 仅研究 Model A（IMU-only 1D CNN）与 Model B（IMU + THM + ToF，多分支 1D CNN）。已有树模型 baseline 保持原样。

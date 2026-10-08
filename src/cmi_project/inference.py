@@ -29,7 +29,7 @@ def as_pandas(frame) -> pd.DataFrame:
 class RoutedCNNPredictor:
     """Average the five frozen folds, routing A/B independently within each fold.
 
-    Each branch averages one or more explicitly selected CNN probabilities.
+    Each fold has one frozen IMU model and one frozen multisensor model.
     Test inputs never fit normalization, change weights or select checkpoints.
     """
 
@@ -43,9 +43,9 @@ class RoutedCNNPredictor:
         if manifest.get("folds") != list(range(5)):
             raise ValueError("Submission requires all five frozen folds.")
         self.folds_sha256 = manifest["folds_sha256"]
-        member_count = manifest.get("members_per_branch", 2)
-        if not isinstance(member_count, int) or member_count < 1:
-            raise ValueError("Invalid members_per_branch.")
+        member_count = manifest.get("members_per_branch", 1)
+        if member_count != 1 or len(manifest["members"]) != 10:
+            raise ValueError("Selected inference requires exactly ten A/B fold checkpoints.")
         self.members = defaultdict(lambda: defaultdict(list))
         self.processors, self.inputs = {}, {}
         for member in manifest["members"]:
@@ -75,6 +75,8 @@ class RoutedCNNPredictor:
                 processor.state = state
                 self.processors[fold], self.inputs[fold] = processor, inputs
             self.members[fold][name].append(model)
+        if set(self.members) != set(range(5)):
+            raise ValueError("Checkpoint folds must be exactly 0 through 4.")
         for fold in range(5):
             if set(self.members[fold]) != {"imu", "multisensor"}:
                 raise ValueError("Each fold requires Model A and Model B.")

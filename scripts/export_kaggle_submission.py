@@ -21,10 +21,9 @@ from cmi_project.validation import assert_preprocessor_matches, load_fold_manife
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=Path("outputs/kaggle_submission"))
-    parser.add_argument("--runs", type=Path, nargs="+", default=[Path("outputs/experiments/cnn_v1"),
-                        Path("outputs/experiments/cnn_hierarchical")])
-    parser.add_argument("--validation-report", type=Path, default=Path("experiments/results/cnn_final_selected_scenarios.json"))
+    parser.add_argument("--output-dir", type=Path, default=Path("outputs/kaggle_submission_current"))
+    parser.add_argument("--runs", type=Path, nargs="+", default=[Path("outputs/experiments/cnn_dynamics_mixup")])
+    parser.add_argument("--validation-report", type=Path, default=Path("experiments/results/cnn_winner_selected_scenarios.json"))
     args = parser.parse_args()
     output = ROOT / args.output_dir
     if output.exists() and any(output.iterdir()):
@@ -34,8 +33,8 @@ def main():
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     members = []
     runs = [(ROOT / path).resolve() for path in args.runs]
-    if not runs or len(set(path.name for path in runs)) != len(runs):
-        raise ValueError("Choose distinct complete experiment directories.")
+    if len(runs) != 1:
+        raise ValueError("Export the selected run with five IMU and five multisensor checkpoints.")
     for run_directory in runs:
         run = run_directory.name
         for name in ("imu", "multisensor"):
@@ -68,14 +67,9 @@ def main():
     selected = json.loads((ROOT / args.validation_report).read_text(encoding="utf-8"))
     sources = selected["source_runs"]
     primary = Path(sources["primary"]).name
-    declared_a = {Path(sources.get("imu_override") or sources["primary"]).name}
-    declared_b = {primary}
-    if sources.get("imu_equal_blend"):
-        declared_a.add(Path(sources["imu_equal_blend"]).name)
-    if sources.get("multisensor_equal_blend"):
-        declared_b.add(Path(sources["multisensor_equal_blend"]).name)
-    if declared_a != declared_b or declared_a != {path.name for path in runs}:
-        raise ValueError("Validation report does not describe the selected A/B ensemble sources.")
+    if (primary != runs[0].name or any(sources.get(key) for key in
+            ("imu_override", "imu_equal_blend", "multisensor_equal_blend"))):
+        raise ValueError("Validation report must describe the selected single A/B run.")
     evaluation = selected["five_fold_evaluation"]["routed/observed"]
     if evaluation["folds_sha256"] != manifest.fingerprint or evaluation["oof_sequences"] != len(manifest.table):
         raise ValueError("Selected local results do not match the exported folds.")

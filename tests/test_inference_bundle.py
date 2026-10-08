@@ -29,7 +29,7 @@ class InferenceBundleTests(unittest.TestCase):
         state = json.loads(json.dumps(processor.state))
         state.pop("train_subjects")
         state.pop("train_sequence_ids")
-        config = CNNConfig(imu_channels=(4, 8), auxiliary_channels=(4, 8), hidden_features=8)
+        config = CNNConfig(imu_feature_count=15, imu_channels=(4, 8), auxiliary_channels=(4, 8), hidden_features=8)
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             members, expected_a, expected_b = [], [], []

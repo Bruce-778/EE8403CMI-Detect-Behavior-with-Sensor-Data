@@ -11,5 +11,3 @@ dependencies:
       - scikit-learn==1.6.1
       - scipy==1.15.3
       - torch==2.8.0
-      - lightgbm==4.6.0
-      - xgboost==3.0.5

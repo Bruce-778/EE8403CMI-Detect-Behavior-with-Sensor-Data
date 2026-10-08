@@ -1,203 +1,108 @@
-# CMI 项目框架
+# CMI：运动特征 + Mixup 分组 CNN
 
-这是用于 CMI 传感器手势分类实验的 Python 项目，包含数据检查、按 subject fold 拟合的预处理和固定的五折验证。
+当前代码保留已通过固定五折验证和 Kaggle 线上评分的 `cnn_dynamics_mixup` 方案：
+IMU-only Model A 与 IMU + THM + ToF Model B，各训练五折，共十个 checkpoint。
+按每条输入的传感器可用性选择 A/B，再对五折概率等权平均。
 
-## 目录结构
+| 评价范围 | 当前成绩 |
+| --- | ---: |
+| Kaggle Public | **0.839556** |
+| Kaggle Private | **0.833362** |
+| 固定五折开发 CV，原始输入路由 | **0.852029 ± 0.008719** |
+| 固定五折开发 CV，额外约半数辅助模态缺失 | 0.821455 ± 0.011675 |
+| 固定五折开发 CV，辅助模态全部缺失 | 0.787194 ± 0.014102 |
+
+线上结果来自 [推理 Notebook v1 / 356204022](https://www.kaggle.com/code/mingweiwei03/cmi-winner-inspired-cnn-inference?scriptVersionId=356204022)，状态 `Succeeded (after deadline)`。
+这是 Late Submission，没有正式最终名次。CV 标准差为五折样本标准差（ddof=1）；fold 0 参与过设计选择，validation 参与 early stopping，因此是开发 CV。
+线上来源、权重哈希和旧方案对照保存在 [评分记录](experiments/results/kaggle_winner_cnn.json)，逐折结果见 [固定验证比较](experiments/WINNER_RESULTS.md)。
+
+## 代码与实验档案
 
 ```text
-project/
-├── configs/
-│   ├── dataset_analysis.json       # 数据路径、分块大小与类别数量
-│   ├── preprocessing.json          # fold、坐标、归一化及 dropout 配置
-│   ├── validation.json             # 五折验证配置
-│   ├── baseline.json               # IMU-only LightGBM 配置
-│   ├── baseline_xgboost.json       # IMU-only XGBoost 配置
-│   ├── folds.csv                   # 所有实验共用的 sequence 划分
-│   └── folds.meta.json             # 划分参数与指纹
-├── data/                           # 原始数据；不纳入 Git
-├── scripts/
-│   ├── analyze_dataset.py          # Step 1 入口
-│   ├── preprocess_data.py          # Step 2 入口
-│   ├── create_folds.py             # Step 3 划分与检查入口
-│   ├── evaluate_oof.py             # 统一评分和 OOF 汇总
-│   └── train_baseline.py           # IMU-only baseline 训练
-├── src/
-│   └── cmi_project/
-│       ├── __init__.py
-│       ├── dataset_analysis.py     # 可复用的数据分析逻辑
-│       ├── preprocessing.py        # 物理特征、mask 和 fold 参数
-│       ├── preprocess_cli.py       # 读取固定划分和流式导出
-│       ├── torch_inputs.py         # Dataset、3D CNN 和时间 mask
-│       ├── validation.py           # sequence 索引、subject 划分及检查
-│       ├── evaluation.py           # CMI 指标和 OOF 预测导出
-│       └── baseline.py             # IMU 统计特征和两种树模型
-├── tests/
-│   ├── test_dataset_analysis.py
-│   ├── test_preprocessing.py
-│   ├── test_torch_inputs.py
-│   ├── test_validation.py
-│   └── test_baseline.py
-├── .gitignore
-├── environment.yml                # cmi Conda 环境与已验证的依赖版本
-├── requirements.txt
-└── README.md
+configs/                     # 当前配置、不可变 folds、原始训练数据 SHA256
+src/cmi_project/
+  preprocessing.py           # 坐标、物理特征、缺失 mask、训练 fold 标准化
+  cnn.py                     # 分组残差 1D CNN、masked BatchNorm、SE、mean/max pooling
+  cnn_data.py                # 训练 fold 缓存、ToF 有效区域聚合、训练传感器 dropout
+  cnn_training.py            # Mixup、分层损失、early stopping、checkpoint 校验
+  inference.py               # 十个冻结模型的可用性路由与五折概率平均
+  validation.py              # sequence 索引、subject folds 和一致性检查
+  evaluation.py              # 官方指标及 OOF 汇总
+scripts/                     # 数据审计、训练、评价、结果导入、离线 Notebook 导出
+tests/                       # padding、缺失、泄漏隔离、损失与推理检查
+experiments/                 # 全部历史实验记录和当前结果
+  configs/                   # 原样存档的旧实验配置，不是当前默认入口
+data/                        # 原始比赛数据，Git 忽略
+outputs/                     # 缓存、权重、完整 OOF、Notebook 与证据，Git 忽略
 ```
 
-`src/` 负责实现，`scripts/` 负责运行，`configs/` 管理参数，`outputs/` 保存结果。
+旧 baseline、attention/GRU、旧模型融合和 pilot 续跑代码已从当前运行路径移除。
+**全部实验文档、成功/失败记录、旧结果 JSON 和旧配置保留**；旧实现仍能从 Git 历史恢复。
+实验档案中的旧命令用于说明当时的尝试，运行当前方案请使用下方入口。
+清理前项目说明另存为 [PROJECT_HISTORY.md](experiments/PROJECT_HISTORY.md)。
 
-## Python 环境
+## 环境和数据
 
-项目使用 Conda 环境 `cmi`。本机解释器路径为 `D:\anaconda\envs\cmi\python.exe`，在项目根目录的 PowerShell 中运行：
-
-```powershell
-conda activate cmi
-python -c "import sys; print(sys.executable)"
-```
-
-输出应为 `D:\anaconda\envs\cmi\python.exe`。下文的 `python` 命令均在这个环境中执行，也可以使用 `conda run -n cmi python ...`，或直接使用 `& 'D:\anaconda\envs\cmi\python.exe' -s ...`。
-
-首次配置或在其他机器上恢复依赖时运行：
+在项目根目录运行：
 
 ```powershell
-conda env update -n cmi -f environment.yml
+conda env create -f environment.yml
 conda activate cmi
 ```
 
-`environment.yml` 固定了迁移时使用的核心包版本；`requirements.txt` 保留项目的一般依赖要求。工作区 `.vscode/settings.json` 已将默认 Python 解释器设为 `cmi`。如果编辑器此前已选择 `.venv`，需通过 `Python: Select Interpreter` 选择上述解释器，并新建终端。
+已存在 `cmi` 环境时用 `conda env update -n cmi -f environment.yml`。
+本机解释器为 `D:\anaconda\envs\cmi\python.exe`；直接调用时加 `-s`，环境已设 `PYTHONNOUSERSITE=1`。
+将官方 `train.csv`、`train_demographics.csv`、`test.csv` 和 `test_demographics.csv` 放入 `data/`。
+数据和模型权重不随 Git 上传；已有线上权重保存在 [私有 Kaggle 数据集 v1](https://www.kaggle.com/datasets/mingweiwei03/cmi-winner-cnn-weights-20261007)，访问需要账号权限。
 
-`cmi` 设置了 `PYTHONNOUSERSITE=1`，避免加载 Windows 用户目录下其他项目的 Python 包。环境设置变更后需重新激活；直接调用解释器时使用 `-s` 保持同样的隔离。
+## 固定验证与模型
 
-## 1. Dataset Analysis：数据读取与检查
+所有模型和 ablation 复用 `configs/folds.csv`：每个 sequence 一行，gesture 分层、subject 分组，
+`StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)`。全部 8,151 条 sequence 各验证一次，81 个 subjects。
+每折训练和验证 subject 不重叠；标准化、长度阈值只由该训练 fold 拟合。
+统一官方 CMI 指标：binary F1 与九类 macro F1 的平均。报告逐折分数、五折均值/样本标准差及完整 OOF。
 
-将 `train.csv` 和 `train_demographics.csv` 放入 `data/`，在项目根目录（README 所在目录）运行：
+IMU 共 34 个通道，包含原始加速度、6D 旋转、角速度、去重力加速度和 sequence 内运动变化特征。
+加速度、旋转、角速度、去重力加速度分别经过 CNN stem，再融合；THM 和 ToF 分别有独立 encoder。
+ToF 使用每个传感器 2×2 有效区域距离、有效像素比例及硬件存在标记，沿时间做 1D CNN。
+残差块使用 masked BatchNorm 和 SE，聚合使用有效时间 mean/max pooling。
+长度取训练 fold 的 95% 分位数，保留尾部、左侧 padding；无效位置与 padding 排除在统计和聚合外。
+训练使用传感器 dropout、Mixup、`CE18 + 0.5 CE9 + 0.1 BCE2` 和 early stopping。
 
-```powershell
-python scripts/analyze_dataset.py
-```
-
-运行后，结果保存在 `outputs/dataset_analysis/`：
-
-- `tables/basic_statistics.csv`：基础数据统计表，包含 sequence、subject、gesture 数量和 sequence 长度摘要；其余 CSV 提供类别分布、传感器缺失值及标签一致性检查。
-- `figures/`：6 张 PNG，展示 gesture 样本分布、sequence 长度分布、subject 样本数量、传感器缺失情况和 ToF 像素不可用比例。
-- `dataset_analysis.html`：汇总统计表与图表的报告，可直接用浏览器打开，用于后续实验和报告中的 Dataset Analysis。
-
-类别样本按 sequence 计数；ToF 的 `-1` 无效值与 NaN 分开统计。数据路径和分块大小可在 `configs/dataset_analysis.json` 中调整。`outputs/` 为本地生成目录，不纳入 Git。
-
-## 2. 数据预处理
-
-预处理读取 `configs/folds.csv`，首次运行先执行下一节的 `create_folds.py` 生成固定划分。
+## 运行当前方案
 
 ```powershell
-python scripts/preprocess_data.py --fold 0
+# 审计并复用已有固定划分，不覆盖它。
+python -s scripts/create_folds.py
+
+# 一次训练 A/B 全五折；原始输入 SHA256 必须匹配已记录的数据。
+python -s -u scripts/run_winner_experiments.py --data-dir data --device cuda
+# 无 GPU 时可使用 --device cpu；同一工作区复用已完成且校验一致的 folds 可加 --resume。
+
+# 也可分别使用训练、汇总和场景评价入口。
+python -s -u scripts/train_cnn.py --config configs/cnn_dynamics_mixup.json --model both
+python -s scripts/summarize_cnn_experiment.py outputs/experiments/cnn_dynamics_mixup --name cnn_winner_selected
+python -s -u scripts/evaluate_cnn_scenarios.py outputs/experiments/cnn_dynamics_mixup --name cnn_winner_selected
+
+# 生成离线 GPU 训练 Notebook；本命令只导出，不启动云端训练。
+python -s scripts/export_kaggle_training.py
 ```
 
-实现左右手统一、15 维 IMU 物理特征、THM 段内填充、ToF 距离/validity map、左侧 padding 与尾部裁剪。标准化参数和长度阈值只由训练 subject 拟合，验证和 test 复用保存的参数。训练缓存读取时可加入传感器 dropout。
+训练结果位于 `outputs/experiments/cnn_dynamics_mixup/`，各分支 `fold_0` 至 `fold_4` 保存权重、训练预处理参数、逐折预测和指标。
+场景评价保存完整 OOF，并使用相同序列、相同固定遮挡规则对比原始输入、全部辅助模态缺失和约半数辅助模态缺失。
+GPU 输出 `winner_experiments.zip` 可用 `scripts/import_winner_experiments.py --help` 查看导入参数；导入检查原始数据哈希、固定 folds、训练 subjects、十个模型和逐折指标。
+重训练存在硬件和运行库数值差异，已记录的官方成绩属于上面的冻结权重版本。
 
-默认输出 `outputs/preprocessing/fold_0/` 中的参数、样本 NPZ 和 manifest；`--fit-only` 可只拟合参数。多个 fold 使用 `--fold 0 1 2 3 4`。
-
-fold 可以理解为一组用来轮流做验证的数据。
-我们的代码把所有 subject（参与者）分成 5 组：
-
-- fold 0：第 0 组做验证集，其余 4 组做训练集。
-- fold 1：第 1 组做验证集，其余 4 组做训练集。
-- 依此类推，共可以进行 5 轮训练和验证。
-
-这里按 人 分组，同一个人的所有 sequence 都在同一组，避免模型在训练时见过这个人，导致验证结果过于乐观。
-因此，--fold 0 表示只准备第 0 轮的数据
-
-配置位于 `configs/preprocessing.json`。没有确认采样间隔时角速度为 rad/采样步；实际间隔可通过 `sample_period_seconds` 设置。
-
-## 3. 建立正确的验证方式
-
-**推荐：5-fold StratifiedGroupKFold，`group = subject`，分层标签为 `gesture`。** 每个 sequence 作为一个样本，同一个 subject 的所有 sequence 分到同一折，避免模型记住个人动作习惯而使验证分数虚高。分层用于尽量平衡各折的类别比例。
-
-在项目根目录运行一次：
+## 导出和检查推理
 
 ```powershell
-python scripts/create_folds.py
-```
-```powershell
-python scripts/evaluate_oof.py --prediction-dir outputs/experiments/baseline/predictions --output-dir outputs/experiments/baseline/evaluation --experiment-name baseline
-```
-
-输出 `fold_scores.csv`、`metrics.json` 和 `oof_predictions.csv`，包含每折分数、五折均值与样本标准差（`ddof=1`），以及合并 OOF 的分数。统一使用 [CMI 官方指标](https://www.kaggle.com/competitions/cmi-detect-behavior-with-sensor-data/overview/evaluation)：target/non-target 的 Binary F1 与合并 non-target 后的 9 类 Macro F1 的平均值。每条 OOF 预测必须来自没有训练过该 subject 的模型。
-
-参考：[CMI 第一名方案](https://www.kaggle.com/competitions/cmi-detect-behavior-with-sensor-data/writeups/cmi-1st-place-solution)采用按 subject 分组的五折验证；[scikit-learn 文档](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedGroupKFold.html)说明了分组隔离与类别分层的行为。当前环境的 scikit-learn 1.6.1 存在 shuffle 时分组计数映射问题，`validation.py` 根据[上游修复](https://github.com/scikit-learn/scikit-learn/pull/32540)做了小型兼容处理，并保留上述配置。
-
-## 4. IMU-only Baseline
-
-LightGBM 与 XGBoost 使用相同的 108 个 sequence 统计特征、`configs/folds.csv` 和官方 CMI 指标。统计包括 mean、std、min、max、range、向量模长及有效读数比例；缺失读数排除后，无法计算的统计量保留为 NaN。两种模型默认均训练 300 轮，随机种子为 42。
-
-在已安装项目依赖的环境中运行：
-
-```powershell
-python scripts/train_baseline.py
-python scripts/train_baseline.py --config configs/baseline_xgboost.json
+python -s scripts/export_kaggle_submission.py
+python -s scripts/check_kaggle_submission.py
+python -s -m unittest discover -s tests -v
 ```
 
-在 `cmi` Conda 环境中执行上述命令。每个实验只输出 `outputs/baseline/<模型名>_imu/evaluation/fold_scores.csv` 和 `metrics.json`，包含每折分数、五折均值与标准差及合并 OOF 分数；OOF 预测仅在内存中计算。再次训练可使用 `--output-dir` 指定新目录。
-
-XGBoost 使用 CPU `hist` 和 `multi:softprob` 输出类别概率，参数见 [官方文档](https://xgboost.readthedocs.io/en/release_3.0.0/parameter.html)。
-
-当前固定配置的五折官方分数：LightGBM **0.70368 ± 0.00752**，XGBoost **0.69480 ± 0.00725**；标准差使用 `ddof=1`。两次实验使用完全相同的 IMU 特征与 folds。
-
-## 5. 主实验 v1：1D CNN
-
-入口是 `scripts/train_cnn.py`，参数在 `configs/cnn_v1.json`。两个模型共用固定 subject folds 和每个训练折专属的数据缓存：
-
-- **Model A (`imu`)**：15 个 IMU 物理特征及其有效性 mask → residual 1D CNN → masked mean/max pooling → 全连接分类。
-- **Model B (`multisensor`)**：IMU、THM、ToF 分别经过独立的 residual 1D CNN encoder；池化后的特征 concatenate，再通过全连接层预测 18 个 gesture。
-- ToF 默认将每个传感器的 8×8 图划为 2×2 区域，只对有效像素求均值，同时输入区域有效像素比例和硬件存在 mask。1D 卷积沿时间轴计算。`tof_regions` 可选 1、2、4、8；8 表示保留全部像素。
-- IMU / THM / ToF 逐通道标准化只在训练 subjects 上拟合；标准化后默认截断到 ±8。每个卷积层使用按时间 token 的 channel LayerNorm，padding 不参与其他 token 的 normalization；每层传播 mask，池化忽略不可用位置。缺失模态的 encoder 输出保持为零。
-
-v1 默认以训练序列长度的 95% 分位数确定长度，左侧 padding、保留序列末尾；可以通过 `sequence_length` 或 `--sequence-length` 指定固定长度。默认 AdamW、learning rate `1e-3`、batch size `64`、dropout `0.2`、weight decay `1e-3` 和 label smoothing `0.03`。训练读取时应用传感器 dropout；验证时关闭 augmentation 和 dropout。连续 10 个 epoch 的官方 CMI 分数没有超过 `min_delta=1e-4` 的提升时 early stop，分数停滞时自动降低 learning rate；最终评估恢复最高验证分数的 checkpoint。
-
-在项目根目录运行，默认先在 fold 0 比较两个模型：
-
-```powershell
-& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py
-```
-
-默认输出在 `outputs/experiments/cnn_v1/`：`report.html`、模型对照表和图，每个模型的 `best.pt`、`history.csv`、训练曲线、逐类指标、混淆矩阵和验证预测概率。checkpoint 包含权重、全局 class order、preprocessor、输入配置和训练配置；可以用 `cmi_project.cnn_training.load_cnn_checkpoint()` 恢复。共享缓存位于 `outputs/cnn_cache/v1/`，参数或原始数据变化后需指定新的 `--cache-dir`；再次训练需使用新的 `--output-dir`，避免覆盖已有实验。
-
-```powershell
-# 完整五折；两模型全部训练后才汇总完整 OOF、折均值和标准差。
-& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --fold 0 1 2 3 4 --output-dir outputs/experiments/cnn_v1_5fold
-
-# 示例：单模型的新实验，修改 learning rate、batch size 和 dropout。
-& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/train_cnn.py --model imu --learning-rate 0.0005 --batch-size 32 --dropout 0.3 --output-dir outputs/experiments/cnn_v1_imu_lr0005
-```
-
-单折预览只与相同 fold 的 baseline 比较，不与 baseline 五折均值直接比较。验证数据用于 early stopping / checkpoint 选择，所以这些是开发阶段结果；调参后应锁定配置再运行五折。
-
-v1 首次 CPU 训练的 **fold 0 预览**（6,524 条训练序列 / 1,627 条验证序列，长度 127，seed 42）：
-
-| 模型 | 官方 CMI 分数 | Binary F1 | 9 类 Macro F1 | 最佳 epoch |
-| --- | ---: | ---: | ---: | ---: |
-| LightGBM IMU baseline | 0.71012 | 0.96303 | 0.45720 | — |
-| XGBoost IMU baseline | 0.69535 | 0.95985 | 0.43086 | — |
-| Model A：IMU-only 1D CNN | 0.72278 | 0.96711 | 0.47845 | 28 |
-| Model B：多传感器 1D CNN | **0.81152** | **0.97935** | **0.64370** | 38 |
-
-Model A 在第 38 轮 early stop；Model B 运行到 45 轮上限，最终都恢复最佳 checkpoint。Model B 相比 Model A 的 CMI 分数提高 0.08875，主要来自目标手势细分类改善。结果和曲线见 `outputs/experiments/cnn_v1/report.html`。上述配置是 v1 首轮配置，并非搜索得到的全局最优超参数。
-
-运行全部检查：
-
-```powershell
-& 'D:\anaconda\envs\cmi\python.exe' -s -m unittest discover -s tests -v
-```
-
-## 6. Kaggle 线上提交
-
-CMI 要求通过官方 `CMIInferenceServer` 对单个 sequence 推理；本地 OOF 文件不能用作隐藏测试集提交。比赛结束后的评分通过 Late Submission 入口进行。
-
-```powershell
-& 'D:\anaconda\envs\cmi\python.exe' -s scripts/export_kaggle_submission.py
-& 'D:\anaconda\envs\cmi\python.exe' -s -u scripts/check_kaggle_submission.py
-```
-
-导出需要已完成的 `cnn_v1` 和 `cnn_hierarchical` 全部 A/B 五折。输出 `outputs/kaggle_submission/cmi-cnn-selected.zip` 和 `cmi-cnn-selected.ipynb`；已有非空导出目录不会覆盖，可用 `--output-dir` 指定新位置。检查脚本用每折的 held-out 原始序列核对路由 OOF，并检查公开 test 样例和辅助模态全缺失输入；公开样例没有标签，因此这个检查不产生测试分数。
-
-Notebook 关联比赛数据及上传的模型权重，关闭 Internet 后 Save & Run All，再选择成功版本提交。每种模态分支内两种 CNN 的概率各 50%，五个 fold 的概率各 20%；THM、ToF 都不可用时使用 A，其余使用 B。沿用每折训练时的 normalization、长度与 mask，不在 test 上拟合。上传包只包含权重、推理代码和必要预处理参数。
-
-线上比较记录 Public / Private 分数、Notebook 版本、提交状态和最终排行榜参考；Late Submission 的分数不改变比赛已结束时的正式名次。详细本地实验见 [主实验汇总](experiments/RESULTS.md)。
+默认导出到全新的 `outputs/kaggle_submission_current/`。`--runs` 可指定已导入的 `cnn_dynamics_mixup` 目录，
+`--output-dir` 可选择新的导出位置；对应检查须指定 `--directory` 和匹配的 `--oof-path`。
+导出要求 A/B 各五折和匹配的场景评价报告，检查每折真实 held-out 输入与保存 OOF 概率、标签字段隔离、公开无标签示例及辅助模态全缺失推理。
+公开示例没有标签，只用于验证推理接口。
+推理 Notebook 需挂载比赛输入和冻结权重，关闭互联网；本地导出、检查不会自动创建比赛提交。

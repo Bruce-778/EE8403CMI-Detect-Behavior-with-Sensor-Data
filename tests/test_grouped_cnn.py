@@ -38,7 +38,7 @@ class GroupedCNNTests(unittest.TestCase):
         self.assertTrue(all(torch.isfinite(p.grad).all() for p in second.parameters()))
 
     def test_grouped_encoders_ignore_missing_values_and_roundtrip(self):
-        config = CNNConfig(imu_channels=(4, 8), auxiliary_channels=(4, 8),
+        config = CNNConfig(imu_feature_count=15, imu_channels=(4, 8), auxiliary_channels=(4, 8),
             stem_channels=(4,), hidden_features=8, encoder_style="grouped",
             normalization="masked_batch", squeeze_excitation=True)
         batch = toy_batch()
@@ -73,34 +73,6 @@ class GroupedCNNTests(unittest.TestCase):
         loss = 0.7 * criterion(logits, batch["label"]) + 0.3 * criterion(logits, batch["label"][permutation])
         loss.backward()
         self.assertTrue(torch.isfinite(logits.grad).all())
-
-    def test_gru_pooling_excludes_padding_and_empty_modalities(self):
-        from cmi_project.cnn import TemporalCNNEncoder
-        encoder = TemporalCNNEncoder(5, (4, 8), pooling="gru_mean").eval()
-        values = torch.full((2, 12, 5), float("nan"))
-        mask = torch.zeros(2, 12, dtype=torch.bool)
-        output = encoder(values, mask)
-        torch.testing.assert_close(output, torch.zeros_like(output))
-        output.sum().backward()
-        self.assertTrue(all(torch.isfinite(p.grad).all() for p in encoder.parameters() if p.grad is not None))
-        tokens = torch.randn(2, 8, 7)
-        gapped = torch.tensor([[False, True, False, True, True, False, False],
-                              [False, False, True, True, True, True, False]])
-        pooled = encoder.pool_sequence(tokens, gapped)
-        for i in range(2):
-            compact = tokens[i:i+1, :, gapped[i]]
-            expected = encoder.pool_sequence(compact, torch.ones(1, compact.shape[-1], dtype=torch.bool))
-            torch.testing.assert_close(pooled[i:i+1], expected)
-        config = CNNConfig(imu_channels=(4, 8), auxiliary_channels=(4, 8), stem_channels=(4,),
-            hidden_features=8, encoder_style="grouped", pooling="gru_mean", normalization="masked_batch")
-        model = CMI1DCNN("multisensor", config=config).eval()
-        batch = toy_batch()
-        changed = {key: value.clone() for key, value in batch.items()}
-        changed["imu"][~batch["imu_valid"]] = float("nan")
-        torch.testing.assert_close(model(batch), model(changed))
-        restored = CMI1DCNN("multisensor", config=CNNConfig.from_dict(model.metadata()["config"])).eval()
-        restored.load_state_dict(model.state_dict())
-        torch.testing.assert_close(model(batch), restored(batch))
 
 
 if __name__ == "__main__":

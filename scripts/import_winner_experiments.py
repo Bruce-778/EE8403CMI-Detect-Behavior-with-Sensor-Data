@@ -49,11 +49,15 @@ def main():
         raise ValueError("GPU training inputs disagree with fixed local training data.")
     manifest = load_fold_manifest(ROOT / "configs/folds.csv")
     selection = json.loads((destination / "selection.json").read_text(encoding="utf-8"))
-    design_names = {row["name"] for row in selection["designs"]}
-    if (design_names != {"cnn_grouped_se", "cnn_grouped_mixup", "cnn_dynamics_mixup"}
-            or selection["selection_fold"] != 0
-            or selection["selected"] != max(selection["designs"], key=lambda row: row["score"])["name"]):
-        raise ValueError("Unexpected experiment selection policy.")
+    if selection.get("selected") != "cnn_dynamics_mixup":
+        raise ValueError("Archive does not contain the frozen selected design.")
+    # Original scored artifacts also retain their historical fold-0 selection.
+    if "designs" in selection:
+        rows = selection["designs"]
+        if (not rows or selection.get("selection_fold") != 0
+                or any(row["fold"] != 0 or not np.isfinite(row["score"]) for row in rows)
+                or selection["selected"] != max(rows, key=lambda row: row["score"])["name"]):
+            raise ValueError("Invalid original design-selection evidence.")
     checked = []
     directory = destination / "outputs/experiments" / selection["selected"]
     for name in ("imu", "multisensor"):

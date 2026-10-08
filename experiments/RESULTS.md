@@ -1,3 +1,5 @@
+> 实验档案说明（2026-10-07 清理）：本页保留当时的结果、决策与命令。当前运行方案为 `cnn_dynamics_mixup`，Public 0.839556 / Private 0.833362；请以[当前项目入口](../README.md)为准。旧配置原样存于 `experiments/configs/`，旧运行代码可从 Git 历史恢复。
+
 # 主实验结果
 
 所有数值使用相同 subject folds 和官方 CMI 指标。单折筛选与 early stopping 使用 validation，结果属于开发 CV，不能代替独立测试集成绩。

@@ -1,3 +1,5 @@
+> 实验档案说明（2026-10-07 清理）：本页保留当时的结果、决策与命令。当前运行方案为 `cnn_dynamics_mixup`，Public 0.839556 / Private 0.833362；请以[当前项目入口](../README.md)为准。旧配置原样存于 `experiments/configs/`，旧运行代码可从 Git 历史恢复。
+
 # 当前实验与结果回收
 
 用户要求按固定本地验证协议判断优化效果，每项完成后本地 Git commit，不 push。该验证阶段没有新增线上比赛提交；其后用户授权的一次线上评分已完成，Public 0.839556、Private 0.833362，详见 `KAGGLE.md` 和 `KAGGLE_WINNER_STATUS.md`。

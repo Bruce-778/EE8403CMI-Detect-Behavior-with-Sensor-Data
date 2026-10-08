@@ -130,7 +130,7 @@ def prepare_folds(data_dir: Path, output_dir: Path, *, config: PreprocessingConf
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="CMI Step 2: train-fold-only preprocessing, masks and NPZ caches.")
-    parser.add_argument("--config", type=Path, default=PROJECT_DIR / "configs" / "preprocessing.json")
+    parser.add_argument("--config", type=Path, default=PROJECT_DIR / "configs" / "preprocessing_dynamics.json")
     parser.add_argument("--data-dir", type=Path)
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--folds-path", type=Path, help="Existing canonical folds CSV; never regenerate during preprocessing.")
