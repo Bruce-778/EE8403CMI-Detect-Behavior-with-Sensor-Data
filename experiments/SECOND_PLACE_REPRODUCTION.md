@@ -328,3 +328,22 @@ observed 0.934403 / 0.927252 / 0.924043；aux_dropout50
 `outputs/kaggle_training/imported/second_place_base_fold1_v2_audited`。
 下一批启动前账户明确 **17h53m available of30h**；剩余三折按 v2实测
 估计14.21小时，当前预算预计可覆盖base。三架构完整五折仍无预算保证。
+
+
+### 固定 fold 2 新版本已接受：2026-10-08 09:27 PDT
+
+私有 Notebook **v3 scriptVersionId356470282** 已接受并显示 Queued。
+T4x2、互联网关闭、Pin to original environment (2026-10-02) 保持与 v2 一致。
+只训练未完成的 **base fold2** 四个原始分支各50epoch，最后checkpoint，
+不重训fold0/1，不改变原训练超参。新输出 `base_fold2_v3`；显式logit IDs
+和小metadata包含在ZIP，不需下载多GB缓存。Notebook各code cell编译通过，
+嵌入训练脚本、folds、原作者source manifest、输入SHA配置与本地字节一致。
+Notebook SHA256
+`10b291363d3ef73d281107a762fdb7087d091bc5456409e81346d7a63b6a1880`。
+
+精确运行链接：
+https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356470282
+
+启动前明确available额度17h53m；cmi跟进已更新到v3。排队尚不能当作
+训练完成或成功分数，后续只监控这一次已接受的运行。完成后先核验再
+继续未完成fold3/4，所有结果单独保留，本地commit，不push或比赛提交。
