@@ -62,3 +62,31 @@ checkpoint 恢复和原始推理兼容性。真实 fold 0 输入的两个 CSV SH
 入口：`scripts/train_representation.py --method cross_subject_supcon`。
 检查：正负对定义、梯度、无正对 batch、训练/验证隔离、实际训练和原始推理兼容性。
 实际结果与保留决定将在运行完成后追加。
+
+**R2 实际结果：无收益，不扩展五折。** 第 0 折 epoch 1/2/3 分数为
+0.771072、0.772720、0.773296，仍低于原始及普通微调对照 0.775652，最终选择 epoch 0。
+跨 subject 正对的 anchor 占比在前两轮为 95.55%/95.37%，对比 loss 2.9433→2.9339。
+优化正常、有足够的正对，但该短程目标没有提高 held-out subject 分类；不将 loss 下降当作效果提升。
+保存 `results/representation_pilot_v1_cross_subject_supcon.json` 和该目录下全部逐轮曲线/预测；
+单独本地 commit，当前模型不替换。本次没有尝试新的采样器或改动温度/权重扫参。
+
+## R3：冻结原始编码器的阶段适配（根据 R1 调整）
+
+R1 同时更新已有表示与随机新头，短程 low-LR 训练没有超过起点。下一步把已有 IMU
+编码器和分类器完全冻结（包括 BN moments、dropout），仅训练阶段预测、注意力和残差适配层。
+新头 lr=1e-3，最多 8 epochs、patience=3；保留 train-only sensor dropout 和原始 epoch 0 选择。
+与 R1 相比，训练范围与学习率都改变，不能把两者差异单独归因于阶段监督。
+
+因此新增**配对对照**：相同阶段注意力结构、同一初始化/随机流/预算，阶段辅助权重分别为
+0（`phase_adapter_control`）与 0.1（`phase_adapter`）。对照仍有阶段形状的注意力，
+但没有 behavior 辅助监督；这能区分残差适配本身与真实阶段监督的作用。
+每次 checkpoint 与训练结束都精确核对原始 encoder/classifier 全部参数和 buffers 未改变。
+只有该阶段适配超过配对对照才按原协议扩展五折；此时仍与原始、普通微调及上一轮蒸馏比较。
+
+```powershell
+python -s -u scripts/train_representation.py --method phase_adapter_control --output-dir outputs/representation/adapter_pilot_v1 --name representation_adapter_pilot_v1
+python -s -u scripts/train_representation.py --method phase_adapter --output-dir outputs/representation/adapter_pilot_v1 --name representation_adapter_pilot_v1
+```
+
+实际结果待完成后追加。R1/R2 的原始配置及实现已分别保存在当次 Git commit，
+后续新增的配置字段不覆盖它们的既有 JSON 和训练目录。
