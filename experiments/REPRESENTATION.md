@@ -100,3 +100,9 @@ fold 0 三轮为 0.772015、0.768724、0.773900，最终保留起点 0.775652。
 实际只训练 56,070 个新增参数，原始参数和 buffers 在训练过程中保持精确一致。
 保存 `results/representation_adapter_pilot_v1_phase_adapter_control.json`；配对阶段臂继续使用相同结构、
 预算和初始化，仅将阶段 CE 权重设为 0.1。对照完成后单独本地 commit。
+
+**R3 阶段臂已完成：仍无分类收益。** fold 0 三轮为 0.770883、0.767808、0.773354，
+与对照一样保留原始 0.775652。阶段 loss 从 0.9180 降到 0.6289；
+新头确实学到了辅助任务，但没有提高 gesture 验证分数，不能把它描述为模型提升。
+保存 `results/representation_adapter_pilot_v1_phase_adapter.json`。
+按预先规定停止这一短程配置，不扩展五折，也不继续扫阶段权重或对比学习温度。
