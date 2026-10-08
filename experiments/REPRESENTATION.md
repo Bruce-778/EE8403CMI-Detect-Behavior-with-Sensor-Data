@@ -130,3 +130,8 @@ python -s -u scripts/train_representation.py --method metric_finetune --model mu
 ```
 
 配置及每轮曲线保留，完成后追加真实分数与保留决定并分别本地 commit。
+
+**R4 B 普通微调控制已完成：** 源 fold 0 为 0.843238，三轮 0.840210、0.831558、0.834640，
+最终仍保留 epoch 0。对应起点概率、原始数据 SHA256、冻结预处理和固定验证序列已核对。
+记录：`results/representation_metric_pilot_v1_multisensor_metric_finetune_control.json`。
+该结果仅是 B 的第 0 折对照，不能与 0.852029 的五折路由均值直接比较。
