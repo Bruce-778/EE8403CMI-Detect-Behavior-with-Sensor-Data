@@ -80,6 +80,43 @@ fold 0 完成后锁定参数，以相同 CPU 环境复用该折完整结果，�
 
 紧凑证据保存于 `results/posttraining_fivefold_v1_finetune.json`；完整 8,151 条 IMU OOF、每折分数和均值/样本标准差保存于 `outputs/posttraining/fivefold_v1/finetune/imu/evaluation/`，场景 OOF 位于该实验的 `scenarios/finetune/`。
 
+## 五折蒸馏结果与决策
+
+| Fold | 原始 IMU | 监督微调 | 蒸馏 | 蒸馏 − 原始 |
+| --- | ---: | ---: | ---: | ---: |
+| 0 | 0.775652 | 0.775652 | 0.778765 | +0.003112 |
+| 1 | 0.785888 | 0.786080 | 0.785949 | +0.000061 |
+| 2 | 0.785455 | 0.785455 | 0.785455 | 0 |
+| 3 | 0.811088 | 0.811088 | 0.811088 | 0 |
+| 4 | 0.777887 | 0.781670 | 0.785820 | +0.007933 |
+
+| 固定验证场景 | 原始均值 ± 样本标准差 | 微调均值 ± 样本标准差 | 蒸馏均值 ± 样本标准差 |
+| --- | ---: | ---: | ---: |
+| IMU-only / 辅助模态全部缺失 | 0.787194 ± 0.014102 | 0.787989 ± 0.013563 | **0.789415 ± 0.012488** |
+| 固定约半数序列移除辅助模态，再路由 | 0.821455 ± 0.011675 | 0.821164 ± 0.011785 | **0.822557 ± 0.011082** |
+| 原始传感器输入，再路由 | 0.852029 ± 0.008719 | 0.852029 ± 0.008719 | 0.852029 ± 0.008719 |
+
+IMU 蒸馏均值较原始提升 0.002221，较监督微调提升 0.001426；固定半数缺失场景较原始提升 0.001102。
+本数据中的 96 条自然辅助模态全缺失 validation 序列均在 fold 2；该折蒸馏保留原始 IMU 权重。因此原始输入路由 OOF 类别预测与分数没有变化。
+固定半数缺失只是压力测试，不等于隐藏测试的缺失分布。
+
+每个完整场景 OOF 都覆盖全部 8,151 条序列，指标由保存的预测重算，标准差使用 ddof=1。两组 A 分支的完整 OOF 另外保存于 `finetune/imu/evaluation/`、`distill/imu/evaluation/`。
+检查了十个已完成的训练 fold、老师目标与 train IDs 一致且无 validation IDs、训练和验证 subjects 不重叠、全部源权重哈希不变，以及未提高的 epoch 0 checkpoint 与原始张量精确相等。
+
+**决策：保留为离线候选，当前上线模型不变。** 收益小且主要集中在 folds 0、4，fold 1 蒸馏略低于监督微调；该配置没有证据支持“稳定或显著提升”的结论。源模型及后训练 epoch 都在开发 validation 上选择，本轮没有新的线上成绩，也没有独立 holdout 证据。当前实验锁定 T=2、KD weight=0.5、lr=1e-4 等参数，没有根据后四折继续调参。
+
+候选只替换 A 分支，B 使用原始冻结权重。已用现有导出脚本在 `outputs/posttraining/fivefold_v1/inference_candidate/` 生成离线 ZIP 和 Notebook，没有上传、没有比赛提交。
+导出的十个权重共 2,160 个张量与所选完整 checkpoint 精确一致；每折各取一个真实 held-out 输入，分别核对原始路由和强制 IMU-only 概率与相应 OOF，强制 IMU 最大误差 6.557e-7。两个无标签公开样例通过常规与全部辅助缺失推理接口检查；这些是接口验证，不是测试分数。
+候选 ZIP 为 8,692,715 字节，SHA256 `c844c4f1ad73a6496df68f40b0234ea436f043545c549ebbd1b46affc955c4b0`。
+
+实际 CPU 五折入口如下；`--resume` 用于本次复用已核验并复制到新目录的 fold 0 完整结果。首次运行新实验可以去掉 `--resume`，但必须使用新的输出目录与结果名。
+
+```powershell
+python -s -u scripts/train_posttraining.py --fold 0 1 2 3 4 --device cpu --output-dir outputs/posttraining/fivefold_v1 --name posttraining_fivefold_v1 --resume
+```
+
+完整紧凑记录：`results/posttraining_fivefold_v1_distill.json` 和 `results/posttraining_fivefold_v1_comparison.json`。本轮实验及对照分别本地 Git commit，不 push；后续实验仍沿用同一 fold 文件和官方指标。
+
 ## 实验边界
 
 源设计和 checkpoint 曾使用 validation 选择；后训练也由同一 validation early stopping，所以这是开发 CV。

@@ -1,0 +1,365 @@
+{
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "complete_five_fold": true,
+  "comparison": [
+    {
+      "fold": 0,
+      "baseline": 0.7756521483129168,
+      "finetune": 0.7756521483129168,
+      "distill": 0.7787646212232417,
+      "kd_minus_finetune": 0.003112472910324904,
+      "kd_minus_baseline": 0.003112472910324904
+    },
+    {
+      "fold": 1,
+      "baseline": 0.7858883322473339,
+      "finetune": 0.7860796640454895,
+      "distill": 0.7859491627043163,
+      "kd_minus_finetune": -0.0001305013411732059,
+      "kd_minus_baseline": 6.0830456982352565e-05
+    },
+    {
+      "fold": 2,
+      "baseline": 0.7854549869180467,
+      "finetune": 0.7854549869180467,
+      "distill": 0.7854549869180467,
+      "kd_minus_finetune": 0.0,
+      "kd_minus_baseline": 0.0
+    },
+    {
+      "fold": 3,
+      "baseline": 0.8110881820473532,
+      "finetune": 0.8110881820473532,
+      "distill": 0.8110881820473532,
+      "kd_minus_finetune": 0.0,
+      "kd_minus_baseline": 0.0
+    },
+    {
+      "fold": 4,
+      "baseline": 0.7778869672472511,
+      "finetune": 0.7816696157039409,
+      "distill": 0.7858197252518451,
+      "kd_minus_finetune": 0.004150109547904179,
+      "kd_minus_baseline": 0.00793275800459392
+    }
+  ],
+  "five_fold_evaluation": {
+    "finetune": {
+      "experiment_name": "posttraining_fivefold_v1_finetune",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7879889194055494,
+        "binary_f1": 0.9802218641324014,
+        "macro_f1_9class": 0.5957559746786977
+      },
+      "fold_std": {
+        "score": 0.013562554375387312,
+        "binary_f1": 0.006550406160670819,
+        "macro_f1_9class": 0.025957676457597858
+      },
+      "oof": {
+        "score": 0.7883871749225011,
+        "binary_f1": 0.9802301563883151,
+        "macro_f1_9class": 0.5965441934566871
+      }
+    },
+    "distill": {
+      "experiment_name": "posttraining_fivefold_v1_distill",
+      "metric": "cmi_binary_f1_macro_f1_9class_v1",
+      "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+      "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+      "n_splits": 5,
+      "oof_sequences": 8151,
+      "std_ddof": 1,
+      "fold_mean": {
+        "score": 0.7894153356289607,
+        "binary_f1": 0.9802306786341255,
+        "macro_f1_9class": 0.5985999926237956
+      },
+      "fold_std": {
+        "score": 0.012487765211067758,
+        "binary_f1": 0.0060888192278191105,
+        "macro_f1_9class": 0.022637842671600166
+      },
+      "oof": {
+        "score": 0.7899179536182177,
+        "binary_f1": 0.9802379313735129,
+        "macro_f1_9class": 0.5995979758629225
+      }
+    }
+  },
+  "routed_five_fold_evaluation": {
+    "baseline": {
+      "observed": {
+        "experiment_name": "posttraining_fivefold_v1_baseline_observed",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8520287872641525,
+          "binary_f1": 0.9872411250048525,
+          "macro_f1_9class": 0.7168164495234526
+        },
+        "fold_std": {
+          "score": 0.008718663967811539,
+          "binary_f1": 0.004827736615349934,
+          "macro_f1_9class": 0.014342624840866923
+        },
+        "oof": {
+          "score": 0.8522023681112654,
+          "binary_f1": 0.9872448979591837,
+          "macro_f1_9class": 0.7171598382633471
+        }
+      },
+      "aux_dropout50": {
+        "experiment_name": "posttraining_fivefold_v1_baseline_aux_dropout50",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8214550540966442,
+          "binary_f1": 0.984661433331142,
+          "macro_f1_9class": 0.6582486748621464
+        },
+        "fold_std": {
+          "score": 0.011674976819305785,
+          "binary_f1": 0.006390086324718739,
+          "macro_f1_9class": 0.019846477550397725
+        },
+        "oof": {
+          "score": 0.8215828472988969,
+          "binary_f1": 0.9846667977196776,
+          "macro_f1_9class": 0.6584988968781161
+        }
+      },
+      "imu_only": {
+        "experiment_name": "posttraining_fivefold_v1_baseline_imu_only",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.7871941233545804,
+          "binary_f1": 0.9803190079186714,
+          "macro_f1_9class": 0.5940692387904893
+        },
+        "fold_std": {
+          "score": 0.014102269936457891,
+          "binary_f1": 0.005973396108311792,
+          "macro_f1_9class": 0.026969188278173052
+        },
+        "oof": {
+          "score": 0.7877327390265136,
+          "binary_f1": 0.9803227075954348,
+          "macro_f1_9class": 0.5951427704575926
+        }
+      }
+    },
+    "finetune": {
+      "observed": {
+        "experiment_name": "posttraining_fivefold_v1_finetune_observed",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8520287872641525,
+          "binary_f1": 0.9872411250048525,
+          "macro_f1_9class": 0.7168164495234526
+        },
+        "fold_std": {
+          "score": 0.008718663967811539,
+          "binary_f1": 0.004827736615349934,
+          "macro_f1_9class": 0.014342624840866923
+        },
+        "oof": {
+          "score": 0.8522023681112654,
+          "binary_f1": 0.9872448979591837,
+          "macro_f1_9class": 0.7171598382633471
+        }
+      },
+      "aux_dropout50": {
+        "experiment_name": "posttraining_fivefold_v1_finetune_aux_dropout50",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8211635395684516,
+          "binary_f1": 0.9842659087964742,
+          "macro_f1_9class": 0.6580611703404288
+        },
+        "fold_std": {
+          "score": 0.011784525507362658,
+          "binary_f1": 0.006642239462136873,
+          "macro_f1_9class": 0.019968781525615674
+        },
+        "oof": {
+          "score": 0.8212610679740665,
+          "binary_f1": 0.9842736386868488,
+          "macro_f1_9class": 0.6582484972612842
+        }
+      },
+      "imu_only": {
+        "experiment_name": "posttraining_fivefold_v1_finetune_imu_only",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.7879889194055494,
+          "binary_f1": 0.9802218641324014,
+          "macro_f1_9class": 0.5957559746786977
+        },
+        "fold_std": {
+          "score": 0.013562554375387312,
+          "binary_f1": 0.006550406160670819,
+          "macro_f1_9class": 0.025957676457597858
+        },
+        "oof": {
+          "score": 0.7883871749225011,
+          "binary_f1": 0.9802301563883151,
+          "macro_f1_9class": 0.5965441934566871
+        }
+      }
+    },
+    "distill": {
+      "observed": {
+        "experiment_name": "posttraining_fivefold_v1_distill_observed",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8520287872641525,
+          "binary_f1": 0.9872411250048525,
+          "macro_f1_9class": 0.7168164495234526
+        },
+        "fold_std": {
+          "score": 0.008718663967811539,
+          "binary_f1": 0.004827736615349934,
+          "macro_f1_9class": 0.014342624840866923
+        },
+        "oof": {
+          "score": 0.8522023681112654,
+          "binary_f1": 0.9872448979591837,
+          "macro_f1_9class": 0.7171598382633471
+        }
+      },
+      "aux_dropout50": {
+        "experiment_name": "posttraining_fivefold_v1_distill_aux_dropout50",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.8225569480252302,
+          "binary_f1": 0.9845669977219302,
+          "macro_f1_9class": 0.6605468983285301
+        },
+        "fold_std": {
+          "score": 0.011081554720272235,
+          "binary_f1": 0.006486226117176567,
+          "macro_f1_9class": 0.017863871107261287
+        },
+        "oof": {
+          "score": 0.82269713320848,
+          "binary_f1": 0.984573056892994,
+          "macro_f1_9class": 0.660821209523966
+        }
+      },
+      "imu_only": {
+        "experiment_name": "posttraining_fivefold_v1_distill_imu_only",
+        "metric": "cmi_binary_f1_macro_f1_9class_v1",
+        "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+        "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+        "n_splits": 5,
+        "oof_sequences": 8151,
+        "std_ddof": 1,
+        "fold_mean": {
+          "score": 0.7894153356289607,
+          "binary_f1": 0.9802306786341255,
+          "macro_f1_9class": 0.5985999926237956
+        },
+        "fold_std": {
+          "score": 0.012487765211067758,
+          "binary_f1": 0.0060888192278191105,
+          "macro_f1_9class": 0.022637842671600166
+        },
+        "oof": {
+          "score": 0.7899179536182177,
+          "binary_f1": 0.9802379313735129,
+          "macro_f1_9class": 0.5995979758629225
+        }
+      }
+    }
+  },
+  "scope": "Development CV; parameters frozen after fold-0 screening; not online scores",
+  "policy": "Same initialization, train/validation IDs, scalers, seed, augmentation and epoch budget; only KD weight differs",
+  "verification": {
+    "completed_arm_folds": 10,
+    "complete_scenario_oofs": 9,
+    "oof_sequences_per_scenario": 8151,
+    "training_teacher_targets_exclude_validation": true,
+    "source_hashes_unchanged": true,
+    "original_official_bundle_unchanged": true,
+    "full_test_suite": {
+      "passed": 61
+    },
+    "posttraining_regression_tests_after_oof_extension": {
+      "passed": 6
+    },
+    "prediction_metric_recalculation": "passed",
+    "sample_std_ddof": 1
+  },
+  "offline_candidate": {
+    "directory": "outputs/posttraining/fivefold_v1/inference_candidate",
+    "archive_bytes": 8692715,
+    "archive_sha256": "c844c4f1ad73a6496df68f40b0234ea436f043545c549ebbd1b46affc955c4b0",
+    "checkpoint_tensors_exact": 2160,
+    "observed_heldout_samples_checked": 5,
+    "forced_imu_heldout_samples_checked": 5,
+    "forced_imu_max_probability_error": 6.556510925292969e-07,
+    "public_unlabelled_interface_examples": 2,
+    "competition_submitted": false,
+    "online_score": null
+  },
+  "decision": {
+    "status": "keep_as_offline_candidate; deployed model unchanged",
+    "imu_gain_over_baseline": 0.002221212274380324,
+    "imu_gain_over_finetuning": 0.001426416223411331,
+    "fixed_aux_dropout50_gain_over_baseline": 0.0011018939285859508,
+    "observed_routing_gain": 0.0,
+    "limits": "Gain is small and concentrated in folds 0 and 4; source/epoch selection uses development validation; no new leaderboard score or independent holdout evidence."
+  }
+}
