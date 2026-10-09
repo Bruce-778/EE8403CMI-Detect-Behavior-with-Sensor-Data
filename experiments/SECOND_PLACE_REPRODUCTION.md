@@ -400,3 +400,47 @@ https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproductio
 启动前明确GPU13h8m available，剩余两折按v3实测估计9.489h。
 不重训已核验fold0/1/2，无比赛提交/push/生产权重替换。页面证据
 `outputs/second_place/evidence/kaggle_v4_fold3_started.jpg`，自动跟进更新到v4。
+
+
+### 固定 fold3 回收核验：2026-10-08 19:24 PDT
+
+
+v4(356543991) runtime **4h29m54s**，ZIP75,461,764bytes。
+
+SHA256 `cb9f65ce7f02528b0d2b1ea8b612f1bb7c98b644fbcbe174c6686e7bea5002f4`。
+
+正常UI下载事件超时，但Downloads实际文件完整；独立recovery_v4/全新import保留原产物。
+
+原始CSV字节SHA、固定folds、train6,525/validation1,626 subject及ID无交集、train-only102联合类别、四分支最后50epoch checkpoint/history、显式logitID与排序预测CSV、概率/硬决策/官方指标均通过核验。metadata与前三批SHA一致。
+
+紧凑记录 `experiments/results/second_place_base_fold3_v4.json`。
+
+导入 `outputs/kaggle_training/imported/second_place_base_fold3_v4_audited`。
+
+
+| 相同fold3 / 1,626验证sequence | 冻结方案 | 第二名base路由 | 差值 |
+
+| --- | ---: | ---: | ---: |
+
+| observed | 0.863590 | 0.910194 | +0.046604 |
+
+| aux_dropout50 | 0.841888 | 0.881276 | +0.039388 |
+
+| imu_only | 0.811088 | 0.850673 | +0.039585 |
+
+
+四分支imu/imu_rot/all/all_rot：0.850673/0.750770/0.910194/0.855958。
+
+因果联合历史 observed 顺序42/142/242(实际seed+fold)：0.930622 / 0.932885 / 0.934955。
+
+因果联合历史 aux_dropout50 顺序42/142/242(实际seed+fold)：0.907147 / 0.910684 / 0.912970。
+
+因果联合历史 imu_only 顺序42/142/242(实际seed+fold)：0.881420 / 0.881057 / 0.885188。
+
+无overflow、真验证标签/未来样本输入、回改既有返回或挑选最佳顺序；在线伪标签未运行。
+
+四折共6,516序列，仍是部分开发验证，不报五折均值/标准差或线上成绩。
+
+下一批前账户明确**GPU8h38m available of30h**，最后base fold4按实测4.498h预计可覆盖；simple/deep完整五折无预算保证。
+
+分别本地commit，不push、不比赛提交、不替换生产权重。
