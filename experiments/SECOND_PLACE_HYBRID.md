@@ -76,4 +76,25 @@ environment; no competition submission, push or frozen production replacement.
 
 Normal browser Save & Run All accepted on2026-10-09T08:17:10Z. The unique private notebook is Running: https://www.kaggle.com/code/mingweiwei03/cmi-second-place-hybrid-imu-fixed-folds?scriptVersionId=356690453. Official CMI competition input attached, T4x2, internet off, editor Pin to original environment. Logs label the container Latest Container Image, but actual torch2.11.0+cu128/TeslaT4 matches the completed base controls; this display difference is recorded rather than hidden. Fixed-fold byte SHA and both raw CSV byte SHAs passed in actual startup logs. Cache generation is still in progress; no CV result is claimed.
 
-All ten IMU models retain50epochs. After completion download second_place_hybrid_experiments.zip via normalUI into a new recovery/import directory, audit each arm and new-loss provenance, then preserve and merge the original ten all/all_rot arms with identical per-fold joint axes/trainIDs/seed. Report all8151 sequence OOF, eachfold/mean/sampleSD, three missing-sensor scenarios and all three fixed causal history orders. A dedicated strict hybrid merge helper still needs implementation. The existing CPU online PID2040 remains running and its source is unchanged.
+All ten IMU models retain50epochs. After completion download second_place_hybrid_experiments.zip via normalUI into a new recovery/import directory, audit each arm and new-loss provenance, then preserve and merge the original ten all/all_rot arms with identical per-fold joint axes/trainIDs/seed. Report all8151 sequence OOF, eachfold/mean/sampleSD, three missing-sensor scenarios and all three fixed causal history orders. The existing CPU online PID2040 remains running and its source is unchanged.
+
+## Hybrid result importer prepared (real archive still pending)
+
+`scripts/evaluate_second_place_hybrid.py` checks the exact registered sourceURL,
+all ten new IMU arms and their auxiliary-loss/unchanged hyperparameter
+provenance, then rechecks every original copied file SHA and all20 original
+models before copying the unchanged ToF arms into a fresh package. It rejects
+joint-axis, train/validation identity, source and seed drift. Rebuilt routes
+include explicit sequenceIDs. The existing strict auditor then verifies the
+20-arm package and all OOF/history predictions; a final matched base replay
+recomputes original independent and three-history mean/sampleSD controls.
+The separate routing-audit record precedes the final hybrid comparison, so a
+post-audit failure cannot masquerade as a completed comparison.
+
+Two protocol/identity/axis guard tests passed. `--help` loads the importer.
+These are implementation checks; the real download and full importer have not
+yet run. Preserve all source files and use a new name if import fails.
+
+```powershell
+& 'D:\anaconda\envs\cmi\python.exe' -s scripts/evaluate_second_place_hybrid.py --archive <new-recovered-ZIP> --work-dir outputs/second_place/hybrid_import_v1 --output-dir outputs/kaggle_training/imported/second_place_hybrid_imu_group_loss_v1 --name second_place_hybrid_imu_group_loss_v1 --source-url 'https://www.kaggle.com/code/mingweiwei03/cmi-second-place-hybrid-imu-fixed-folds?scriptVersionId=356690453'
+```
