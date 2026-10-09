@@ -51,7 +51,7 @@
     "folds_bytes_sha256": "b30dc50594963357bfe70677b2f90822e8ff6008fd023e8b114573db921b924a",
     "train_csv_sha256": "f67c9c0066bc1cdba1884909a5eac1e8edd4b108b508ba68f18acff88ffff7e9",
     "train_demographics_sha256": "e763685faa85415d12ebd948c1fe810df8835a738cd34bfc23fff5d66c1d73e2",
-    "feature_cache": "still building at startup check"
+    "feature_cache": "completed; first base/imu fold0 training epoch14/50 observed in normal UI"
   },
   "evidence": "outputs/second_place/evidence/kaggle_hybrid_v1_running.jpg",
   "preflight_record": "experiments/results/second_place_hybrid_notebook_check_v1.json",
@@ -62,5 +62,15 @@
     "src/cmi_project/second_place_hybrid.py": "6a9a99ba3cda7a1e4583ac5be3108bf06f38b87f2dedccb34a65607234509073",
     "outputs/second_place/notebooks/cmi-second-place-hybrid-imu.ipynb": "657830a909252855a8b8f15bd5511b74e3fbf9e07af7846a99992ebf653e2581"
   },
-  "online_competition_score": null
+  "online_competition_score": null,
+  "latest_observation": {
+    "fold": 0,
+    "variant": "imu",
+    "epoch": 14,
+    "epochs": 50,
+    "run_seconds": 542.8,
+    "epoch_seconds": 23.1,
+    "status": "running",
+    "interpretation": "Training is advancing; intermediate epoch scores are not final CV."
+  }
 }
