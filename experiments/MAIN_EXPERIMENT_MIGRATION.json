@@ -341,8 +341,18 @@
     }
   },
   "publication": {
+    "status": "code_and_pre_cleanup_snapshot_pushed_and_remote_verified",
+    "verified_at_utc": "2026-10-09T16:14:23.964719+00:00",
     "remote": "origin",
+    "url": "https://github.com/Bruce-778/EE8403CMI-Detect-Behavior-with-Sensor-Data",
     "branch": "main",
-    "status": "pending_commit_and_push"
+    "cleanup_code_commit": "c30642c5c301e334e3bc93e77bb4cae917c0e1c4",
+    "remote_refs": {
+      "refs/heads/main": "c30642c5c301e334e3bc93e77bb4cae917c0e1c4",
+      "refs/tags/pre-hybrid-main-cleanup-20261009": "b23bd6a5b576e8143038862c4a73dcaf304553d9",
+      "refs/tags/pre-hybrid-main-cleanup-20261009^{}": "b4de17554c6655bdb97a255f30dbb04827695e8a"
+    },
+    "push": "git push --atomic origin main refs/tags/pre-hybrid-main-cleanup-20261009",
+    "scope": "All previously local experiment commits, cleaned primary research code and pre-cleanup snapshot. Data/output artifacts remain local."
   }
 }
