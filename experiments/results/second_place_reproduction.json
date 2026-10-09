@@ -1,5 +1,5 @@
 {
-  "status": "base_five_fold_oof_verified_remaining_components_pending",
+  "status": "base_five_fold_verified_online_cpu_pilot_completed_padding_diagnosis_pending",
   "actual_reproduction_scores": {
     "scope": "full fixed five-fold development OOF",
     "record": "experiments\\results\\second_place_base_five_fold_merged_v1.json",
@@ -1728,7 +1728,7 @@
     "logged_joint_classes": 102,
     "run_seconds": 17081
   },
-  "next_action": "Base five-fold complete. No further Kaggle model training: GPU3h59m remaining is not a demonstrated budget for simple/deep full fivefold. Review upstream pseudo-label code, implement strictly causal same-subject-only adapted updates and CPU timing pilot before arranging evaluation. No val labels in inference/update; reset fold/scenario/order; report source adaptation separately.",
+  "next_action": "Finish padding/numerical probe for CPU single-sequence vs cloud validation batch32; score a matched CPU independent/history control before attributing pseudo-label effects. Then run full5fold3scenarios3orders if CPU time/resources feasible; no new Kaggle model training.",
   "completed_fold3_runtime": {
     "source": "Kaggle private notebook",
     "title": "CMI Second Place Fixed Fold Reproduction",
@@ -1794,7 +1794,14 @@
   "latest_quota_evidence": "Account menu: GPU3h59m available of30h after v5 completion; screenshot outputs/second_place/evidence/kaggle_v5_complete_quota.jpg",
   "remaining_components": {
     "simple_deep_full_five_fold": "not run; remaining3h59m insufficient demonstrated budget; no shortened experiments",
-    "online_pseudo_label": "not implemented or evaluated; same-subject causal adaptation and CPU feasibility pilot required",
+    "online_pseudo_label": "Implemented subject-isolated adapter;40-arrival real-input pilot completed. Full CV not run; pre-update CPU single sequence differs from exported cloud batch32 outputs, padding/numerical diagnosis required.",
     "author_original_ten_fold_weights": "not reproduced"
+  },
+  "online_cpu_pilot": {
+    "record": "experiments/results/second_place_online_cpu_pilot_v1.json",
+    "cache": "outputs/second_place/online_cache_cpu_v1",
+    "cache_check": "experiments/results/second_place_online_cache_cpu_v1.json",
+    "tests": "2 passed: other-subject interleaving cannot alter prefix/update, immutable frozen state, future invariance and state reset",
+    "adaptation": "Subject-isolated models/buffers/RNG, Adam5e-5 one step at32, train-mode BN, no truth in prediction/update"
   }
 }

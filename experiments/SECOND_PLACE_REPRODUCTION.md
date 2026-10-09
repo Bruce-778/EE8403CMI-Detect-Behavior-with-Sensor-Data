@@ -507,3 +507,11 @@ scripts/merge_second_place_batches.py重新校验五个原ZIP字节SHA并解包�
 因果联合历史额外增加原始输入均值0.028360–0.030222，是我们冻结方法没有使用的另一项可测增益，不归因于独立序列网络。逐目标动作F1保存在合并JSON diagnostics中。
 
 剩余GPU3h59m，simple/deep仍采用相同昂贵ToF空间CNN；没有完整五折预算证据，不再启动架构训练或缩短50epoch。在线伪标签未实现/运行；后续先实现仅同subject已到达样本的受控版本并进行CPU耗时试验。原test.py使用跨subject全局伪标签buffer，与本任务更严格的同subject限制有差异，需明确记录适配，不称作者十折原权重精确复现。
+
+
+## CPU在线伪标签真实输入pilot（非CV）
+
+本机原始train/demo字节SHA再次通过，完整8151特征缓存127.98秒完成；features760656488bytes SHA8995432a23389e892d48dbc80491ea4da06da6de3c8d12f071624c8c2823ad32。原始行顺序及metadata逐字段与云端一致；metadata本地格式字节不同，记录双方SHA，不假装字节相同。预测侧只读取ID/subject/fold/缺失标记与features/offsets，完全不打开phase.npy或验证真gesture/orientation。
+src/cmi_project/second_place_online.py按subject隔离模型/缓冲/Hungarian/RNG，以固定seed每32条已到达伪标签做新Adam5e-5单步，保留train-mode BN更新，当前joint决策先固定后更新；原源代码跨subject全局缓冲/权重与本任务限制不同，这不是逐字上游实现。两项因果测试通过，包括改变其他subject交错到达不影响本subject的预测/更新、未来输入不改既有返回、冻结base状态不变、fresh状态复位。
+fold0固定排序首个subject、固定顺序42的40条真实到达pilot完成，四个分支各发生一次32条更新。单条all预测中位0.0598秒，imu/imu_rot/all/all_rot单步约3.36/0.96/8.09/7.90秒。冻结权重文件SHA保持不变；结果second_place_online_cpu_pilot_v1.json，仅CPU耗时/因果功能试验，不报告CV。
+数值比较发现更新前32条单序列预测对云端batch32 logits最大差0.375684、joint argmax一致31/32。因此先排查批量padding与CPU/GPU运行库差异，完整适配必须使用匹配CPU独立/历史对照，不能将推理差异归为伪标签提升。未启动新的Kaggle训练、未比赛提交/push或替换冻结权重。

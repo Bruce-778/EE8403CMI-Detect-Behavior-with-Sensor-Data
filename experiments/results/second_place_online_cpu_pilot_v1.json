@@ -1,0 +1,760 @@
+{
+  "status": "completed",
+  "scope": "CPU feasibility pilot only; no CV score",
+  "fold": 0,
+  "orders": [
+    42
+  ],
+  "scenario": "observed",
+  "runtime": {
+    "torch": "2.8.0+cpu",
+    "threads": 2
+  },
+  "protocol": "Only same-subject arrived sensors/pseudo decisions. Fresh Adam5e-5 at32; BN train. No validation gesture/orientation/phase in inference/update. Subject-isolated model/buffer/RNG differs from upstream global buffers.",
+  "subject": "SUBJ_001430",
+  "sequence_ids": [
+    "SEQ_001580",
+    "SEQ_044532",
+    "SEQ_023341",
+    "SEQ_029004",
+    "SEQ_046372",
+    "SEQ_007906",
+    "SEQ_014129",
+    "SEQ_015053",
+    "SEQ_056775",
+    "SEQ_001256",
+    "SEQ_021344",
+    "SEQ_036023",
+    "SEQ_045913",
+    "SEQ_015150",
+    "SEQ_048831",
+    "SEQ_007910",
+    "SEQ_043891",
+    "SEQ_008577",
+    "SEQ_056166",
+    "SEQ_056780",
+    "SEQ_027472",
+    "SEQ_026550",
+    "SEQ_059921",
+    "SEQ_006812",
+    "SEQ_056508",
+    "SEQ_057350",
+    "SEQ_039220",
+    "SEQ_031220",
+    "SEQ_048583",
+    "SEQ_048357",
+    "SEQ_034605",
+    "SEQ_003191",
+    "SEQ_019232",
+    "SEQ_050984",
+    "SEQ_020437",
+    "SEQ_020390",
+    "SEQ_009875",
+    "SEQ_013250",
+    "SEQ_050603",
+    "SEQ_018166"
+  ],
+  "checkpoint_sha256": {
+    "imu": "8bbab90b871403225299b634103d98caee11ea3227368e0aa93b2a199d740de9",
+    "imu_rot": "d456c02d0e6685cd0515d0d76f02765278180ea401e652e70ba30dc66cc2a022",
+    "all": "f91c407e8ebc62d0d29a606aef62e1666450e952f4964db956f4e0d3f1350ec3",
+    "all_rot": "dc30c12c3f21db9400d4c3a8390c1046b54064449e04b0b04fbb1bd0f886fb50"
+  },
+  "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
+  "seconds": 25.528362799988827,
+  "replay_seconds": 23.02062150000711,
+  "returned_joint_decisions": [
+    21,
+    26,
+    87,
+    59,
+    27,
+    85,
+    70,
+    15,
+    5,
+    63,
+    99,
+    30,
+    100,
+    60,
+    53,
+    66,
+    56,
+    65,
+    28,
+    83,
+    4,
+    77,
+    15,
+    36,
+    24,
+    40,
+    94,
+    93,
+    22,
+    57,
+    47,
+    3,
+    48,
+    18,
+    90,
+    38,
+    29,
+    2,
+    13,
+    62
+  ],
+  "prediction_timings": [
+    {
+      "variant": "all",
+      "seconds": 0.1039963000221178
+    },
+    {
+      "variant": "all",
+      "seconds": 0.0667115000251215
+    },
+    {
+      "variant": "all",
+      "seconds": 0.06501360001857392
+    },
+    {
+      "variant": "all",
+      "seconds": 0.04871090000960976
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05559879998327233
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05650409997906536
+    },
+    {
+      "variant": "all",
+      "seconds": 0.06001570000080392
+    },
+    {
+      "variant": "all",
+      "seconds": 0.057879800006048754
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05615089999628253
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05521769999177195
+    },
+    {
+      "variant": "all",
+      "seconds": 0.06548809999367222
+    },
+    {
+      "variant": "all",
+      "seconds": 0.0625117999734357
+    },
+    {
+      "variant": "all",
+      "seconds": 0.09479999999166466
+    },
+    {
+      "variant": "all",
+      "seconds": 0.09769870000309311
+    },
+    {
+      "variant": "all",
+      "seconds": 0.07217620001756586
+    },
+    {
+      "variant": "all",
+      "seconds": 0.07175239999196492
+    },
+    {
+      "variant": "all",
+      "seconds": 0.06460729998070747
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05552280001575127
+    },
+    {
+      "variant": "all",
+      "seconds": 0.06301040001562797
+    },
+    {
+      "variant": "all",
+      "seconds": 0.08379589999094605
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05875440000090748
+    },
+    {
+      "variant": "all",
+      "seconds": 0.06110010002157651
+    },
+    {
+      "variant": "all",
+      "seconds": 0.06277910000062548
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05955330000142567
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05440910000470467
+    },
+    {
+      "variant": "all",
+      "seconds": 0.061768999992636964
+    },
+    {
+      "variant": "all",
+      "seconds": 0.11232759998529218
+    },
+    {
+      "variant": "all",
+      "seconds": 0.07437610000488348
+    },
+    {
+      "variant": "all",
+      "seconds": 0.052363499999046326
+    },
+    {
+      "variant": "all",
+      "seconds": 0.056440900021698326
+    },
+    {
+      "variant": "all",
+      "seconds": 0.04190889999154024
+    },
+    {
+      "variant": "all",
+      "seconds": 0.061940799991134554
+    },
+    {
+      "variant": "all",
+      "seconds": 0.04098150000208989
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05447820000699721
+    },
+    {
+      "variant": "all",
+      "seconds": 0.04657080001197755
+    },
+    {
+      "variant": "all",
+      "seconds": 0.05215740000130609
+    },
+    {
+      "variant": "all",
+      "seconds": 0.042382099985843524
+    },
+    {
+      "variant": "all",
+      "seconds": 0.04831199999898672
+    },
+    {
+      "variant": "all",
+      "seconds": 0.04181140000582673
+    },
+    {
+      "variant": "all",
+      "seconds": 0.06810159998713061
+    }
+  ],
+  "updates": [
+    {
+      "subject": "SUBJ_001430",
+      "variant": "imu",
+      "trigger_sequence_id": "SEQ_003191",
+      "arrival_count": 32,
+      "sequence_ids": [
+        "SEQ_001580",
+        "SEQ_044532",
+        "SEQ_023341",
+        "SEQ_029004",
+        "SEQ_046372",
+        "SEQ_007906",
+        "SEQ_014129",
+        "SEQ_015053",
+        "SEQ_056775",
+        "SEQ_001256",
+        "SEQ_021344",
+        "SEQ_036023",
+        "SEQ_045913",
+        "SEQ_015150",
+        "SEQ_048831",
+        "SEQ_007910",
+        "SEQ_043891",
+        "SEQ_008577",
+        "SEQ_056166",
+        "SEQ_056780",
+        "SEQ_027472",
+        "SEQ_026550",
+        "SEQ_059921",
+        "SEQ_006812",
+        "SEQ_056508",
+        "SEQ_057350",
+        "SEQ_039220",
+        "SEQ_031220",
+        "SEQ_048583",
+        "SEQ_048357",
+        "SEQ_034605",
+        "SEQ_003191"
+      ],
+      "pseudo_joint_labels": [
+        21,
+        26,
+        87,
+        59,
+        27,
+        85,
+        70,
+        15,
+        5,
+        63,
+        99,
+        30,
+        100,
+        60,
+        53,
+        66,
+        56,
+        65,
+        28,
+        83,
+        4,
+        77,
+        15,
+        36,
+        24,
+        40,
+        94,
+        93,
+        22,
+        57,
+        47,
+        3
+      ],
+      "update_number": 0,
+      "seed": 508434033664856002,
+      "seconds": 3.3594983000075445,
+      "loss": 1.2071843147277832
+    },
+    {
+      "subject": "SUBJ_001430",
+      "variant": "imu_rot",
+      "trigger_sequence_id": "SEQ_003191",
+      "arrival_count": 32,
+      "sequence_ids": [
+        "SEQ_001580",
+        "SEQ_044532",
+        "SEQ_023341",
+        "SEQ_029004",
+        "SEQ_046372",
+        "SEQ_007906",
+        "SEQ_014129",
+        "SEQ_015053",
+        "SEQ_056775",
+        "SEQ_001256",
+        "SEQ_021344",
+        "SEQ_036023",
+        "SEQ_045913",
+        "SEQ_015150",
+        "SEQ_048831",
+        "SEQ_007910",
+        "SEQ_043891",
+        "SEQ_008577",
+        "SEQ_056166",
+        "SEQ_056780",
+        "SEQ_027472",
+        "SEQ_026550",
+        "SEQ_059921",
+        "SEQ_006812",
+        "SEQ_056508",
+        "SEQ_057350",
+        "SEQ_039220",
+        "SEQ_031220",
+        "SEQ_048583",
+        "SEQ_048357",
+        "SEQ_034605",
+        "SEQ_003191"
+      ],
+      "pseudo_joint_labels": [
+        21,
+        26,
+        87,
+        59,
+        27,
+        85,
+        70,
+        15,
+        5,
+        63,
+        99,
+        30,
+        100,
+        60,
+        53,
+        66,
+        56,
+        65,
+        28,
+        83,
+        4,
+        77,
+        15,
+        36,
+        24,
+        40,
+        94,
+        93,
+        22,
+        57,
+        47,
+        3
+      ],
+      "update_number": 0,
+      "seed": 758450100882589637,
+      "seconds": 0.9592004000151064,
+      "loss": 1.5486640930175781
+    },
+    {
+      "subject": "SUBJ_001430",
+      "variant": "all",
+      "trigger_sequence_id": "SEQ_003191",
+      "arrival_count": 32,
+      "sequence_ids": [
+        "SEQ_001580",
+        "SEQ_044532",
+        "SEQ_023341",
+        "SEQ_029004",
+        "SEQ_046372",
+        "SEQ_007906",
+        "SEQ_014129",
+        "SEQ_015053",
+        "SEQ_056775",
+        "SEQ_001256",
+        "SEQ_021344",
+        "SEQ_036023",
+        "SEQ_045913",
+        "SEQ_015150",
+        "SEQ_048831",
+        "SEQ_007910",
+        "SEQ_043891",
+        "SEQ_008577",
+        "SEQ_056166",
+        "SEQ_056780",
+        "SEQ_027472",
+        "SEQ_026550",
+        "SEQ_059921",
+        "SEQ_006812",
+        "SEQ_056508",
+        "SEQ_057350",
+        "SEQ_039220",
+        "SEQ_031220",
+        "SEQ_048583",
+        "SEQ_048357",
+        "SEQ_034605",
+        "SEQ_003191"
+      ],
+      "pseudo_joint_labels": [
+        21,
+        26,
+        87,
+        59,
+        27,
+        85,
+        70,
+        15,
+        5,
+        63,
+        99,
+        30,
+        100,
+        60,
+        53,
+        66,
+        56,
+        65,
+        28,
+        83,
+        4,
+        77,
+        15,
+        36,
+        24,
+        40,
+        94,
+        93,
+        22,
+        57,
+        47,
+        3
+      ],
+      "update_number": 0,
+      "seed": 929512923606844248,
+      "seconds": 8.088628999976208,
+      "loss": 0.8736657500267029
+    },
+    {
+      "subject": "SUBJ_001430",
+      "variant": "all_rot",
+      "trigger_sequence_id": "SEQ_003191",
+      "arrival_count": 32,
+      "sequence_ids": [
+        "SEQ_001580",
+        "SEQ_044532",
+        "SEQ_023341",
+        "SEQ_029004",
+        "SEQ_046372",
+        "SEQ_007906",
+        "SEQ_014129",
+        "SEQ_015053",
+        "SEQ_056775",
+        "SEQ_001256",
+        "SEQ_021344",
+        "SEQ_036023",
+        "SEQ_045913",
+        "SEQ_015150",
+        "SEQ_048831",
+        "SEQ_007910",
+        "SEQ_043891",
+        "SEQ_008577",
+        "SEQ_056166",
+        "SEQ_056780",
+        "SEQ_027472",
+        "SEQ_026550",
+        "SEQ_059921",
+        "SEQ_006812",
+        "SEQ_056508",
+        "SEQ_057350",
+        "SEQ_039220",
+        "SEQ_031220",
+        "SEQ_048583",
+        "SEQ_048357",
+        "SEQ_034605",
+        "SEQ_003191"
+      ],
+      "pseudo_joint_labels": [
+        21,
+        26,
+        87,
+        59,
+        27,
+        85,
+        70,
+        15,
+        5,
+        63,
+        99,
+        30,
+        100,
+        60,
+        53,
+        66,
+        56,
+        65,
+        28,
+        83,
+        4,
+        77,
+        15,
+        36,
+        24,
+        40,
+        94,
+        93,
+        22,
+        57,
+        47,
+        3
+      ],
+      "update_number": 0,
+      "seed": 717578891950962316,
+      "seconds": 7.903656600014074,
+      "loss": 1.1765938997268677
+    }
+  ],
+  "pre_update_cpu_vs_cloud": [
+    {
+      "sequence_id": "SEQ_001580",
+      "max_abs_logit_difference": 0.09620857238769531,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_044532",
+      "max_abs_logit_difference": 0.2992258071899414,
+      "same_independent_joint_argmax": false
+    },
+    {
+      "sequence_id": "SEQ_023341",
+      "max_abs_logit_difference": 0.11911916732788086,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_029004",
+      "max_abs_logit_difference": 0.12581515312194824,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_046372",
+      "max_abs_logit_difference": 0.31048107147216797,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_007906",
+      "max_abs_logit_difference": 0.21707814931869507,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_014129",
+      "max_abs_logit_difference": 0.13393592834472656,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_015053",
+      "max_abs_logit_difference": 0.1631636619567871,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_056775",
+      "max_abs_logit_difference": 0.1683506965637207,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_001256",
+      "max_abs_logit_difference": 0.14991259574890137,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_021344",
+      "max_abs_logit_difference": 0.1106874942779541,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_036023",
+      "max_abs_logit_difference": 0.301684707403183,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_045913",
+      "max_abs_logit_difference": 1.430511474609375e-05,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_015150",
+      "max_abs_logit_difference": 0.30653953552246094,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_048831",
+      "max_abs_logit_difference": 0.13765811920166016,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_007910",
+      "max_abs_logit_difference": 0.10776615142822266,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_043891",
+      "max_abs_logit_difference": 0.1358652114868164,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_008577",
+      "max_abs_logit_difference": 0.3756842613220215,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_056166",
+      "max_abs_logit_difference": 0.1253441572189331,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_056780",
+      "max_abs_logit_difference": 0.22252798080444336,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_027472",
+      "max_abs_logit_difference": 0.2211780548095703,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_026550",
+      "max_abs_logit_difference": 0.13121771812438965,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_059921",
+      "max_abs_logit_difference": 0.3284416198730469,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_006812",
+      "max_abs_logit_difference": 0.07638287544250488,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_056508",
+      "max_abs_logit_difference": 0.14874649047851562,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_057350",
+      "max_abs_logit_difference": 0.14281107485294342,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_039220",
+      "max_abs_logit_difference": 0.07033920288085938,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_031220",
+      "max_abs_logit_difference": 0.15816324949264526,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_048583",
+      "max_abs_logit_difference": 0.1572580337524414,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_048357",
+      "max_abs_logit_difference": 0.3329622149467468,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_034605",
+      "max_abs_logit_difference": 0.09922266006469727,
+      "same_independent_joint_argmax": true
+    },
+    {
+      "sequence_id": "SEQ_003191",
+      "max_abs_logit_difference": 0.14159393310546875,
+      "same_independent_joint_argmax": true
+    }
+  ],
+  "frozen_weight_files_unchanged": true,
+  "timing_summary": {
+    "prediction_seconds_median": {
+      "all": 0.05978450000111479
+    },
+    "update_seconds": {
+      "imu": 3.3594983000075445,
+      "imu_rot": 0.9592004000151064,
+      "all": 8.088628999976208,
+      "all_rot": 7.903656600014074
+    },
+    "max_pre_update_logit_drift": 0.3756842613220215,
+    "pre_update_argmax_agreement": 0.96875
+  }
+}

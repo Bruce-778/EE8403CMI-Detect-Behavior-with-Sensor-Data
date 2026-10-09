@@ -1,0 +1,40 @@
+{
+  "status": "verified",
+  "seconds": 127.97813479998149,
+  "sequences": 8151,
+  "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
+  "files": {
+    "features.npy": {
+      "bytes": 760656488,
+      "sha256": "8995432a23389e892d48dbc80491ea4da06da6de3c8d12f071624c8c2823ad32"
+    },
+    "metadata.csv": {
+      "bytes": 935888,
+      "sha256": "57e9d95d36d1a49c2c79e3f81b0c6b7c389db0315494d39ed122d497492a1940"
+    },
+    "offsets.npy": {
+      "bytes": 65344,
+      "sha256": "65fb8b1248361588b0501c28ebd81099c1269825d9ea8fcef77db5f7031ae7fb"
+    },
+    "phases.npy": {
+      "bytes": 4541360,
+      "sha256": "f1451f921bf73d33da103128521dbfa403dba6e94de158be7242ad6dde44fe24"
+    },
+    "provenance.json": {
+      "bytes": 930,
+      "sha256": "b9cc69eb3ea35e1098988d9e2c1a9e583f7bb42161b042794be0fabec1210d24"
+    }
+  },
+  "original_cloud_metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+  "training_inputs": {
+    "train.csv": {
+      "bytes": 1121545963,
+      "sha256": "f67c9c0066bc1cdba1884909a5eac1e8edd4b108b508ba68f18acff88ffff7e9"
+    },
+    "train_demographics.csv": {
+      "bytes": 2923,
+      "sha256": "e763685faa85415d12ebd948c1fe810df8835a738cd34bfc23fff5d66c1d73e2"
+    }
+  },
+  "protocol": "Full source physical features from byte-verified raw training CSV; raw sequence order matches cloud metadata. Validation annotations are excluded from the online inference interface."
+}
