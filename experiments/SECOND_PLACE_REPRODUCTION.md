@@ -521,3 +521,9 @@ fold0固定排序首个subject、固定顺序42的40条真实到达pilot完成�
 同一32条pilot样本按云端原始验证行顺序重放其batch32与batch最大长度padding，CPU/cloud logits最大差仅0.0000679493，joint argmax全部一致。单条固定200帧padding也接近云端；原test.py使用逐条实际长度输入，pilot的这种推理最大差0.375684。证据支持主要差异来自padding，而非CPU/GPU运行库本身；不把这一推理协议差异算成在线伪标签贡献。详见second_place_online_padding_probe_v1.json。scripts/diagnose_second_place_padding.py提供保留旧记录的可重放入口；原始诊断实际由outputs/second_place/probe_padding.py执行。
 
 完整CPU比较保留同一实际长度推理协议的独立序列、三个因果历史对照，并分别测量仅伪标签与历史加伪标签。已完成的GPU批量验证OOF保留原值，CPU结果将独立报告。
+
+### 完整CPU在线贡献比较已启动（尚未完成）
+
+2026-10-09 00:35:46 PDT启动scripts/evaluate_second_place_online.py，PID2040、exec session69137，CPU2线程、torch2.8.0+cpu。全新目录outputs/second_place/online_cpu_five_fold_v1，最终记录second_place_online_cpu_five_fold_v1.json。请求五折×三场景×三个固定顺序×仅伪标签/历史加伪标签共90组；另保存匹配CPU独立序列及三个历史对照，全部完成后产生30组各8151条OOF与逐折均值/样本标准差。当前进度文件current_job.json，完整单组完成才写progress.json；不能把启动或单组结果称为完整五折。
+
+首折原始输入1627条CPU独立对照已生成，第一组伪标签正在实际更新。冻结20份原始权重从已核验合并目录读取，缓存SHA/IDs与原始fold/source核验；预测/更新仅接收同subject已到达传感器与ID。所有fold/场景/顺序/模式状态独立重置，伪标签单步保留Adam5e-5和train-mode BN。匹配控制关闭更新的新测试通过，因果测试共3项通过。长运行过程中不改执行源码、不重复启动，不把尚未完成的在线贡献报告为提升。simple/deep完整五折仍未运行；GPU3h59m证据没有证明预算足够，不启动新架构训练。

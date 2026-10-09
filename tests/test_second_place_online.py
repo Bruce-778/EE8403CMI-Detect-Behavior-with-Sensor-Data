@@ -74,6 +74,16 @@ class OnlineCausalityTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             fresh.predict_one('0', 'A', self.inputs[0])
 
+    def test_matched_control_never_updates(self):
+        control = SubjectOnlineAdapter(copy.deepcopy(self.models), 2, seed=42, use_history=False, update_enabled=False)
+        expected = self.models['all'](torch.from_numpy(self.inputs[0]).unsqueeze(0), torch.tensor([4]), None)['gesture_logits'][0].detach().numpy()
+        for i in range(35):
+            _, logits = control.predict_one(str(i), 'A', self.inputs[0])
+            np.testing.assert_array_equal(logits, expected)
+        self.assertEqual(control.trace, [])
+        self.assertEqual(control.subjects['A']['models'], {})
+        self.assertTrue(all(not items for items in control.subjects['A']['buffers'].values()))
+
 
 if __name__ == '__main__':
     unittest.main()

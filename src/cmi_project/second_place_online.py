@@ -18,11 +18,12 @@ VARIANTS = ('imu', 'imu_rot', 'all', 'all_rot')
 
 
 class SubjectOnlineAdapter:
-    def __init__(self, baseline_models, classes, *, seed, use_history=True):
+    def __init__(self, baseline_models, classes, *, seed, use_history=True, update_enabled=True):
         if set(baseline_models) != set(VARIANTS):
             raise ValueError('All four original branches required.')
         self.baseline = baseline_models
         self.classes, self.seed, self.use_history = classes, int(seed), use_history
+        self.update_enabled = bool(update_enabled)
         self.subjects, self.seen, self.trace = {}, set(), []
         self.prediction_seconds = []
         for model in self.baseline.values():
@@ -54,6 +55,8 @@ class SubjectOnlineAdapter:
             raise ValueError('Invalid online joint output.')
         decision = (state['decoder'].predict_one(subject, logits) if self.use_history else int(logits.argmax()))
         # The chosen class is fixed before the update and is never revised.
+        if not self.update_enabled:
+            return decision, logits
         imu = x[:, :15].copy()
         zero_rot = imu.copy()
         zero_rot[:, 3:] = 0

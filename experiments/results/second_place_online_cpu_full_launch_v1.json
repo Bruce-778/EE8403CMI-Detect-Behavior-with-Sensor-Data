@@ -1,0 +1,39 @@
+{
+  "status": "running",
+  "observed_at_utc": "2026-10-09T07:42:06.828640+00:00",
+  "started_at_utc": "2026-10-09T07:35:46Z",
+  "pid": 2040,
+  "exec_session_id": 69137,
+  "command": "D:\\anaconda\\envs\\cmi\\python.exe -s -u scripts/evaluate_second_place_online.py --cache outputs/second_place/online_cache_cpu_v1 --imported outputs/kaggle_training/imported/second_place_base_five_fold_merged_v1 --output outputs/second_place/online_cpu_five_fold_v1 --name second_place_online_cpu_five_fold_v1 --threads 2",
+  "progress": "outputs/second_place/online_cpu_five_fold_v1/progress.json",
+  "current_job": "outputs/second_place/online_cpu_five_fold_v1/current_job.json",
+  "final_record": "experiments/results/second_place_online_cpu_five_fold_v1.json",
+  "requested_adaptation_jobs": 90,
+  "requested_final_evaluations": 30,
+  "requested_oof_sequences_per_evaluation": 8151,
+  "device": "CPU",
+  "torch": "2.8.0+cpu",
+  "threads": 2,
+  "code_sha256": {
+    "scripts/evaluate_second_place_online.py": "541ba951acd9b5de35fd98e76802c2e3cc096a5e0fd8d2be3262430b4c3b871c",
+    "src/cmi_project/second_place_online.py": "ee67b3eba35ccd052bbedc6cb5c8fec911354e9a230f77e13ffca9171bfd9d18"
+  },
+  "latest_job": {
+    "fold": 0,
+    "scenario": "observed",
+    "order": 42,
+    "mode": "pseudo_only",
+    "status": "running",
+    "arrival": 500,
+    "sequences": 1627,
+    "updates": 22,
+    "completed_jobs": 0,
+    "seconds": 198.16645669998252
+  },
+  "scope": "Launch and live progress evidence only, not a completed experiment or full CV score",
+  "protocol": "No truth in inference/update; no future sensors, cross-subject model/buffer/history sharing or retrospective decisions. Reset every fold/scenario/order/mode. All three fixed orders reported, not selected. Original source single-sequence actual-length inference. Pseudo-only and history+pseudo contrasted with matched CPU independent/history controls.",
+  "unrun_components": [
+    "simple/deep full five-fold",
+    "author original ten-fold ensemble"
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "status": "base_five_fold_verified_online_cpu_pilot_completed_padding_diagnosis_pending",
+  "status": "base_five_fold_verified_online_cpu_full_comparison_running",
   "actual_reproduction_scores": {
     "scope": "full fixed five-fold development OOF",
     "record": "experiments\\results\\second_place_base_five_fold_merged_v1.json",
@@ -1728,7 +1728,7 @@
     "logged_joint_classes": 102,
     "run_seconds": 17081
   },
-  "next_action": "Finish padding/numerical probe for CPU single-sequence vs cloud validation batch32; score a matched CPU independent/history control before attributing pseudo-label effects. Then run full5fold3scenarios3orders if CPU time/resources feasible; no new Kaggle model training.",
+  "next_action": "Monitor the existing CPU PID2040/session69137, inspect current_job.json/progress.json; do not launch a duplicate. Audit complete90 jobs and30 full8151 OOF results before reporting pseudo-label gains; distinguish padding controls from previous cloud batch32 CV.",
   "completed_fold3_runtime": {
     "source": "Kaggle private notebook",
     "title": "CMI Second Place Fixed Fold Reproduction",
@@ -1794,14 +1794,60 @@
   "latest_quota_evidence": "Account menu: GPU3h59m available of30h after v5 completion; screenshot outputs/second_place/evidence/kaggle_v5_complete_quota.jpg",
   "remaining_components": {
     "simple_deep_full_five_fold": "not run; remaining3h59m insufficient demonstrated budget; no shortened experiments",
-    "online_pseudo_label": "Implemented subject-isolated adapter;40-arrival real-input pilot completed. Full CV not run; pre-update CPU single sequence differs from exported cloud batch32 outputs, padding/numerical diagnosis required.",
+    "online_pseudo_label": "Full base fixed-five-fold CPU comparison running; no full OOF score yet. Subject-isolated pseudo-only/history+pseudo x3 scenarios x3 fixed orders; matched independent/history controls. No new GPU training.",
     "author_original_ten_fold_weights": "not reproduced"
   },
   "online_cpu_pilot": {
     "record": "experiments/results/second_place_online_cpu_pilot_v1.json",
     "cache": "outputs/second_place/online_cache_cpu_v1",
     "cache_check": "experiments/results/second_place_online_cache_cpu_v1.json",
-    "tests": "2 passed: other-subject interleaving cannot alter prefix/update, immutable frozen state, future invariance and state reset",
+    "tests": "3 passed: same-subject interleaving/future invariance, immutable baseline/reset, disabled matched control never updates",
     "adaptation": "Subject-isolated models/buffers/RNG, Adam5e-5 one step at32, train-mode BN, no truth in prediction/update"
+  },
+  "online_padding_diagnosis": {
+    "record": "experiments/results/second_place_online_padding_probe_v1.json",
+    "max_same_batch_cpu_cloud_logit_difference": 6.794929504394531e-05,
+    "same_batch_argmax_agreement": 1.0,
+    "actual_length_pilot_max_difference": 0.3756842613220215,
+    "interpretation": "Padding protocol is the main observed source of pre-update divergence. Online contribution requires matched CPU actual-length independent/history controls."
+  },
+  "online_cpu_runtime": {
+    "status": "running",
+    "observed_at_utc": "2026-10-09T07:42:06.828640+00:00",
+    "started_at_utc": "2026-10-09T07:35:46Z",
+    "pid": 2040,
+    "exec_session_id": 69137,
+    "command": "D:\\anaconda\\envs\\cmi\\python.exe -s -u scripts/evaluate_second_place_online.py --cache outputs/second_place/online_cache_cpu_v1 --imported outputs/kaggle_training/imported/second_place_base_five_fold_merged_v1 --output outputs/second_place/online_cpu_five_fold_v1 --name second_place_online_cpu_five_fold_v1 --threads 2",
+    "progress": "outputs/second_place/online_cpu_five_fold_v1/progress.json",
+    "current_job": "outputs/second_place/online_cpu_five_fold_v1/current_job.json",
+    "final_record": "experiments/results/second_place_online_cpu_five_fold_v1.json",
+    "requested_adaptation_jobs": 90,
+    "requested_final_evaluations": 30,
+    "requested_oof_sequences_per_evaluation": 8151,
+    "device": "CPU",
+    "torch": "2.8.0+cpu",
+    "threads": 2,
+    "code_sha256": {
+      "scripts/evaluate_second_place_online.py": "541ba951acd9b5de35fd98e76802c2e3cc096a5e0fd8d2be3262430b4c3b871c",
+      "src/cmi_project/second_place_online.py": "ee67b3eba35ccd052bbedc6cb5c8fec911354e9a230f77e13ffca9171bfd9d18"
+    },
+    "latest_job": {
+      "fold": 0,
+      "scenario": "observed",
+      "order": 42,
+      "mode": "pseudo_only",
+      "status": "running",
+      "arrival": 500,
+      "sequences": 1627,
+      "updates": 22,
+      "completed_jobs": 0,
+      "seconds": 198.16645669998252
+    },
+    "scope": "Launch and live progress evidence only, not a completed experiment or full CV score",
+    "protocol": "No truth in inference/update; no future sensors, cross-subject model/buffer/history sharing or retrospective decisions. Reset every fold/scenario/order/mode. All three fixed orders reported, not selected. Original source single-sequence actual-length inference. Pseudo-only and history+pseudo contrasted with matched CPU independent/history controls.",
+    "unrun_components": [
+      "simple/deep full five-fold",
+      "author original ten-fold ensemble"
+    ]
   }
 }
