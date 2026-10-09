@@ -1,5 +1,5 @@
 {
-  "status": "base_folds0_1_2_3_verified_awaiting_fold4",
+  "status": "base_folds0_1_2_3_verified_base_fold4_running",
   "actual_reproduction_scores": {
     "scope": "partial held-out folds; not five-fold CV",
     "record": "experiments/results/second_place_base_fold0_v1.json",
@@ -654,33 +654,32 @@
   "runtime": {
     "source": "Kaggle private notebook",
     "title": "CMI Second Place Fixed Fold Reproduction",
-    "script_version_id": 356543991,
-    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356543991",
-    "version": 4,
-    "status": "Complete: all four base fold3 arms and routed scenarios, artifacts audited locally",
-    "last_observed_at_utc": "2026-10-09T02:24:35.385521+00:00",
+    "script_version_id": 356600289,
+    "url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356600289",
+    "version": 5,
+    "status": "Running: pinned upstream, CUDA and fixed folds verified; raw input SHA/cache startup pending, no complete fold result",
+    "last_observed_at_utc": "2026-10-09T02:27:09.917493+00:00",
     "accelerator": "GPU T4 x2",
     "internet": false,
-    "environment": "Editor selected Pin to original environment (2026-10-02), same as completed v3; log torch2.11.0+cu128/Tesla T4",
+    "environment": "Editor selected Pin to original environment2026-10-02, same as completedv4; actual logtorch2.11.0+cu128/TeslaT4",
     "folds": [
-      3
+      4
     ],
     "architectures": [
       "base"
     ],
     "epochs": 50,
     "batch_size": 32,
-    "output_run": "base_fold3_v4",
-    "gpu_quota_available_at_launch_hours": 13.133333333333333,
-    "quota_evidence": "Account menu GPU13h8m available of30h. EditorQuota16:51 is used.",
-    "estimated_remaining_base_two_fold_hours": 9.489444444444445,
-    "budget_limit": "Two base folds estimated9.489h within available13.133h; recheck actual available before fold4. Three complete architectures not established within budget.",
-    "notebook_sha256": "0414988b1cdef225d8b790b03fcb436bb3b090c2aa62a589de975f65632a950b",
-    "screenshot": "outputs/second_place/evidence/kaggle_v4_fold3_started.jpg",
+    "output_run": "base_fold4_v5",
+    "gpu_quota_available_at_launch_hours": 8.633333333333333,
+    "quota_evidence": "Account menu GPU8h38m available of30h; editorQuota21:21 denotes used.",
+    "estimated_remaining_base_one_fold_hours": 4.498333333333333,
+    "budget_limit": "Final base fold estimated4.498h within available8.633h. Other complete architectures not established within budget; recheck actual available for any new run.",
+    "notebook_sha256": "854cf1963b05fc50ff348b2eee1d8de8771f665ef51fe9dee3287d5736d16269",
+    "screenshot": "outputs/second_place/evidence/kaggle_v5_fold4_started.jpg",
     "actual_torch": "2.11.0+cu128",
     "actual_gpu": "Tesla T4",
-    "training_input_hashes_verified_in_log": true,
-    "run_seconds": 16194
+    "training_input_hashes_verified_in_log": false
   },
   "notebook_sha256": "03165f139b7c13fc4f02207a50290c083b262f1590857fd9492da76061dd142d",
   "author_reference": {
@@ -793,7 +792,7 @@
     "epochs": 50,
     "batch_size": 32,
     "folds": [
-      3
+      4
     ],
     "architectures": [
       "base"
@@ -809,7 +808,7 @@
     "checkpoint_selection": "last",
     "history_postprocessing": false,
     "online_pseudo_labels": false,
-    "output_run": "base_fold3_v4",
+    "output_run": "base_fold4_v5",
     "explicit_logit_ids": true,
     "small_cache_metadata_in_archive": true
   },
@@ -912,7 +911,7 @@
     "logged_joint_classes": 102,
     "run_seconds": 17081
   },
-  "next_action": "Start only remaining base fold4 after checked GPU8h38m available; original50epochs. No repeat of verified folds0..3.",
+  "next_action": "Monitor exactv5; audit fresh fold4 artifacts, then merge all5 verified batches preserving fold-specific ontology/train IDs/source/seed; full8151OOF and per-fold mean/sampleSD only after exact coverage verified. No duplicate training.",
   "completed_fold3_runtime": {
     "source": "Kaggle private notebook",
     "title": "CMI Second Place Fixed Fold Reproduction",

@@ -419,13 +419,9 @@ SHA256 `cb9f65ce7f02528b0d2b1ea8b612f1bb7c98b644fbcbe174c6686e7bea5002f4`。
 
 
 | 相同fold3 / 1,626验证sequence | 冻结方案 | 第二名base路由 | 差值 |
-
 | --- | ---: | ---: | ---: |
-
 | observed | 0.863590 | 0.910194 | +0.046604 |
-
 | aux_dropout50 | 0.841888 | 0.881276 | +0.039388 |
-
 | imu_only | 0.811088 | 0.850673 | +0.039585 |
 
 
@@ -444,3 +440,22 @@ SHA256 `cb9f65ce7f02528b0d2b1ea8b612f1bb7c98b644fbcbe174c6686e7bea5002f4`。
 下一批前账户明确**GPU8h38m available of30h**，最后base fold4按实测4.498h预计可覆盖；simple/deep完整五折无预算保证。
 
 分别本地commit，不push、不比赛提交、不替换生产权重。
+
+
+### 最后一折 fold4 启动：2026-10-08 19:27 PDT
+
+私有v5 **scriptVersionId356600289** 已进入Running。只训练尚未完成的base fold4
+四分支各50epochs，bs32、最后权重、原始超参不变，输出`base_fold4_v5`。
+T4x2互联网关闭，编辑器Pin to original environment2026-10-02；日志实际
+torch2.11.0+cu128/TeslaT4与固定fold文件SHA核验通过。原始输入SHA/cache
+尚在启动检查阶段，不能声称已完成。Notebook全部codecell编译/嵌入关键文件
+与本地字节一致；SHA256 `854cf1963b05fc50ff348b2eee1d8de8771f665ef51fe9dee3287d5736d16269`。
+
+https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356600289
+
+启动前明确GPU8h38m available，editorQuota21:21表示已用。按v4实测最后
+base fold约4.498h，当前额度预计覆盖。其他架构完整五折无预算保证。
+不重训已核验四折、不比赛提交/push/生产权重替换。页面证据
+`outputs/second_place/evidence/kaggle_v5_fold4_started.jpg`；自动跟进更新为v5。
+完成先独立核验再合并全部五折到新目录，保留每折联合类别轴/train IDs/seed及
+来源，确认8151条OOF完整覆盖后才报告五折均值/样本标准差。
