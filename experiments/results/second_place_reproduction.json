@@ -1,8 +1,8 @@
 {
-  "status": "base_all_five_batches_verified_merge_pending",
+  "status": "base_five_fold_oof_verified_remaining_components_pending",
   "actual_reproduction_scores": {
-    "scope": "all five batches individually verified; aggregate OOF pending",
-    "record": "experiments/results/second_place_base_fold0_v1.json",
+    "scope": "full fixed five-fold development OOF",
+    "record": "experiments\\results\\second_place_base_five_fold_merged_v1.json",
     "folds": [
       0,
       1,
@@ -191,7 +191,127 @@
               }
             }
           }
-        ]
+        ],
+        "old": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_observed_old",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8520287872641525,
+            "binary_f1": 0.9872411250048525,
+            "macro_f1_9class": 0.7168164495234526
+          },
+          "fold_std": {
+            "score": 0.008718663967811539,
+            "binary_f1": 0.004827736615349934,
+            "macro_f1_9class": 0.014342624840866923
+          },
+          "oof": {
+            "score": 0.8522023681112654,
+            "binary_f1": 0.9872448979591837,
+            "macro_f1_9class": 0.7171598382633471
+          }
+        },
+        "new": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_observed_new",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8913616340904627,
+            "binary_f1": 0.9957004024693786,
+            "macro_f1_9class": 0.7870228657115469
+          },
+          "fold_std": {
+            "score": 0.012918826254867158,
+            "binary_f1": 0.000928492917880637,
+            "macro_f1_9class": 0.02542556573532798
+          },
+          "oof": {
+            "score": 0.891485425349035,
+            "binary_f1": 0.9956989247311828,
+            "macro_f1_9class": 0.7872719259668872
+          }
+        },
+        "history_42": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_observed_history_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9208879902806653,
+            "binary_f1": 0.9963799715689794,
+            "macro_f1_9class": 0.8453960089923515
+          },
+          "fold_std": {
+            "score": 0.011939752621479054,
+            "binary_f1": 0.0010104431097935896,
+            "macro_f1_9class": 0.0231532345188375
+          },
+          "oof": {
+            "score": 0.920956760367837,
+            "binary_f1": 0.9963792934729425,
+            "macro_f1_9class": 0.8455342272627316
+          }
+        },
+        "history_142": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_observed_history_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9197215516561744,
+            "binary_f1": 0.9965811916035626,
+            "macro_f1_9class": 0.8428619117087861
+          },
+          "fold_std": {
+            "score": 0.01124975478470091,
+            "binary_f1": 0.0009077660053095118,
+            "macro_f1_9class": 0.022054522107903728
+          },
+          "oof": {
+            "score": 0.9197548572437086,
+            "binary_f1": 0.9965803615046409,
+            "macro_f1_9class": 0.8429293529827764
+          }
+        },
+        "history_242": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_observed_history_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9215833888570719,
+            "binary_f1": 0.9965841437928811,
+            "macro_f1_9class": 0.8465826339212628
+          },
+          "fold_std": {
+            "score": 0.010466747431656905,
+            "binary_f1": 0.001817671097633733,
+            "macro_f1_9class": 0.019864504083619096
+          },
+          "oof": {
+            "score": 0.9216875519945773,
+            "binary_f1": 0.9965816974313898,
+            "macro_f1_9class": 0.8467934065577649
+          }
+        }
       },
       "aux_dropout50": {
         "folds": [
@@ -370,7 +490,127 @@
               }
             }
           }
-        ]
+        ],
+        "old": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_aux_dropout50_old",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8214550540966442,
+            "binary_f1": 0.984661433331142,
+            "macro_f1_9class": 0.6582486748621464
+          },
+          "fold_std": {
+            "score": 0.011674976819305785,
+            "binary_f1": 0.006390086324718739,
+            "macro_f1_9class": 0.019846477550397725
+          },
+          "oof": {
+            "score": 0.8215828472988969,
+            "binary_f1": 0.9846667977196776,
+            "macro_f1_9class": 0.6584988968781161
+          }
+        },
+        "new": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_aux_dropout50_new",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8613101885311109,
+            "binary_f1": 0.9933474323831624,
+            "macro_f1_9class": 0.7292729446790593
+          },
+          "fold_std": {
+            "score": 0.013241922817845898,
+            "binary_f1": 0.0014322151981536635,
+            "macro_f1_9class": 0.025071860210248032
+          },
+          "oof": {
+            "score": 0.8612806446644978,
+            "binary_f1": 0.9933437744714174,
+            "macro_f1_9class": 0.7292175148575782
+          }
+        },
+        "history_42": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_aux_dropout50_history_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8931996337041641,
+            "binary_f1": 0.9952061822443611,
+            "macro_f1_9class": 0.791193085163967
+          },
+          "fold_std": {
+            "score": 0.012453436772445764,
+            "binary_f1": 0.0015176554865545754,
+            "macro_f1_9class": 0.023914550712658595
+          },
+          "oof": {
+            "score": 0.8932970335991619,
+            "binary_f1": 0.995204071645297,
+            "macro_f1_9class": 0.7913899955530267
+          }
+        },
+        "history_142": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_aux_dropout50_history_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8934660669950611,
+            "binary_f1": 0.9949124782304463,
+            "macro_f1_9class": 0.7920196557596763
+          },
+          "fold_std": {
+            "score": 0.013518769436924523,
+            "binary_f1": 0.0008079764680410591,
+            "macro_f1_9class": 0.02635063309485388
+          },
+          "oof": {
+            "score": 0.8935639313365096,
+            "binary_f1": 0.9949109414758269,
+            "macro_f1_9class": 0.7922169211971922
+          }
+        },
+        "history_242": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_aux_dropout50_history_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8943652537077789,
+            "binary_f1": 0.9938430497522253,
+            "macro_f1_9class": 0.7948874576633326
+          },
+          "fold_std": {
+            "score": 0.013894335784493185,
+            "binary_f1": 0.002390985712400875,
+            "macro_f1_9class": 0.0260919719894396
+          },
+          "oof": {
+            "score": 0.8944994026377083,
+            "binary_f1": 0.9938374254132838,
+            "macro_f1_9class": 0.7951613798621329
+          }
+        }
       },
       "imu_only": {
         "folds": [
@@ -549,7 +789,127 @@
               }
             }
           }
-        ]
+        ],
+        "old": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_imu_only_old",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.7871941233545804,
+            "binary_f1": 0.9803190079186714,
+            "macro_f1_9class": 0.5940692387904893
+          },
+          "fold_std": {
+            "score": 0.014102269936457891,
+            "binary_f1": 0.005973396108311792,
+            "macro_f1_9class": 0.026969188278173052
+          },
+          "oof": {
+            "score": 0.7877327390265136,
+            "binary_f1": 0.9803227075954348,
+            "macro_f1_9class": 0.5951427704575926
+          }
+        },
+        "new": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_imu_only_new",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.831799176375813,
+            "binary_f1": 0.9908936841637915,
+            "macro_f1_9class": 0.6727046685878344
+          },
+          "fold_std": {
+            "score": 0.013722737420546185,
+            "binary_f1": 0.0037207581833979997,
+            "macro_f1_9class": 0.023784875997065004
+          },
+          "oof": {
+            "score": 0.8317701157480032,
+            "binary_f1": 0.9908850338135843,
+            "macro_f1_9class": 0.6726551976824221
+          }
+        },
+        "history_42": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_imu_only_history_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8645818306657516,
+            "binary_f1": 0.9929532616641961,
+            "macro_f1_9class": 0.736210399667307
+          },
+          "fold_std": {
+            "score": 0.01449849053194805,
+            "binary_f1": 0.004381508112012939,
+            "macro_f1_9class": 0.025019623439956295
+          },
+          "oof": {
+            "score": 0.8646296399764175,
+            "binary_f1": 0.9929480901077375,
+            "macro_f1_9class": 0.7363111898450976
+          }
+        },
+        "history_142": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_imu_only_history_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.864512225150523,
+            "binary_f1": 0.9927544640286609,
+            "macro_f1_9class": 0.736269986272385
+          },
+          "fold_std": {
+            "score": 0.013549050006129998,
+            "binary_f1": 0.0023700001767148,
+            "macro_f1_9class": 0.025124989597490936
+          },
+          "oof": {
+            "score": 0.864653118474406,
+            "binary_f1": 0.9927507836990596,
+            "macro_f1_9class": 0.7365554532497522
+          }
+        },
+        "history_242": {
+          "experiment_name": "second_place_base_five_fold_merged_v1_imu_only_history_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8644437467452002,
+            "binary_f1": 0.9922753250464528,
+            "macro_f1_9class": 0.736612168443948
+          },
+          "fold_std": {
+            "score": 0.015289559653714773,
+            "binary_f1": 0.0029773987220814164,
+            "macro_f1_9class": 0.028067307527961178
+          },
+          "oof": {
+            "score": 0.864620392997955,
+            "binary_f1": 0.9922662750856583,
+            "macro_f1_9class": 0.7369745109102516
+          }
+        }
       }
     },
     "arms": [
@@ -564,6 +924,46 @@
         "macro_f1_9class": 0.7804077696401484
       },
       {
+        "fold": 1,
+        "architecture": "base",
+        "variant": "all",
+        "sequences": 1632,
+        "joint_classes": 102,
+        "score": 0.8893648970300044,
+        "binary_f1": 0.9956118966357874,
+        "macro_f1_9class": 0.7831178974242214
+      },
+      {
+        "fold": 2,
+        "architecture": "base",
+        "variant": "all",
+        "sequences": 1631,
+        "joint_classes": 102,
+        "score": 0.8696688180397892,
+        "binary_f1": 0.9921951219512195,
+        "macro_f1_9class": 0.747142514128359
+      },
+      {
+        "fold": 3,
+        "architecture": "base",
+        "variant": "all",
+        "sequences": 1626,
+        "joint_classes": 102,
+        "score": 0.910193767120935,
+        "binary_f1": 0.9955817378497791,
+        "macro_f1_9class": 0.824805796392091
+      },
+      {
+        "fold": 4,
+        "architecture": "base",
+        "variant": "all",
+        "sequences": 1635,
+        "joint_classes": 102,
+        "score": 0.8867566826492301,
+        "binary_f1": 0.9951171875,
+        "macro_f1_9class": 0.7783961777984603
+      },
+      {
         "fold": 0,
         "architecture": "base",
         "variant": "all_rot",
@@ -574,6 +974,46 @@
         "macro_f1_9class": 0.6687197899277113
       },
       {
+        "fold": 1,
+        "architecture": "base",
+        "variant": "all_rot",
+        "sequences": 1632,
+        "joint_classes": 102,
+        "score": 0.8364118655645959,
+        "binary_f1": 0.9907181240840254,
+        "macro_f1_9class": 0.6821056070451664
+      },
+      {
+        "fold": 2,
+        "architecture": "base",
+        "variant": "all_rot",
+        "sequences": 1631,
+        "joint_classes": 102,
+        "score": 0.8349249667601274,
+        "binary_f1": 0.9868356899073623,
+        "macro_f1_9class": 0.6830142436128925
+      },
+      {
+        "fold": 3,
+        "architecture": "base",
+        "variant": "all_rot",
+        "sequences": 1626,
+        "joint_classes": 102,
+        "score": 0.8559583394529889,
+        "binary_f1": 0.990205680705191,
+        "macro_f1_9class": 0.7217109982007869
+      },
+      {
+        "fold": 4,
+        "architecture": "base",
+        "variant": "all_rot",
+        "sequences": 1635,
+        "joint_classes": 102,
+        "score": 0.8429306667706795,
+        "binary_f1": 0.9917113603120429,
+        "macro_f1_9class": 0.694149973229316
+      },
+      {
         "fold": 0,
         "architecture": "base",
         "variant": "imu",
@@ -582,6 +1022,46 @@
         "score": 0.8325818577551118,
         "binary_f1": 0.9911591355599214,
         "macro_f1_9class": 0.6740045799503022
+      },
+      {
+        "fold": 1,
+        "architecture": "base",
+        "variant": "imu",
+        "sequences": 1632,
+        "joint_classes": 102,
+        "score": 0.838602990354265,
+        "binary_f1": 0.9916870415647921,
+        "macro_f1_9class": 0.6855189391437378
+      },
+      {
+        "fold": 2,
+        "architecture": "base",
+        "variant": "imu",
+        "sequences": 1631,
+        "joint_classes": 102,
+        "score": 0.814243070084642,
+        "binary_f1": 0.9853658536585366,
+        "macro_f1_9class": 0.6431202865107475
+      },
+      {
+        "fold": 3,
+        "architecture": "base",
+        "variant": "imu",
+        "sequences": 1626,
+        "joint_classes": 102,
+        "score": 0.8506729841596992,
+        "binary_f1": 0.9965534219596258,
+        "macro_f1_9class": 0.7047925463597726
+      },
+      {
+        "fold": 4,
+        "architecture": "base",
+        "variant": "imu",
+        "sequences": 1635,
+        "joint_classes": 102,
+        "score": 0.8149320350553418,
+        "binary_f1": 0.9857633775159549,
+        "macro_f1_9class": 0.6441006925947288
       },
       {
         "fold": 0,
@@ -596,72 +1076,12 @@
       {
         "fold": 1,
         "architecture": "base",
-        "variant": "all",
-        "sequences": 1632,
-        "joint_classes": 102,
-        "score": 0.8893648970300044,
-        "binary_f1": 0.9956118966357874,
-        "macro_f1_9class": 0.7831178974242214
-      },
-      {
-        "fold": 1,
-        "architecture": "base",
-        "variant": "all_rot",
-        "sequences": 1632,
-        "joint_classes": 102,
-        "score": 0.8364118655645959,
-        "binary_f1": 0.9907181240840254,
-        "macro_f1_9class": 0.6821056070451664
-      },
-      {
-        "fold": 1,
-        "architecture": "base",
-        "variant": "imu",
-        "sequences": 1632,
-        "joint_classes": 102,
-        "score": 0.838602990354265,
-        "binary_f1": 0.9916870415647921,
-        "macro_f1_9class": 0.6855189391437378
-      },
-      {
-        "fold": 1,
-        "architecture": "base",
         "variant": "imu_rot",
         "sequences": 1632,
         "joint_classes": 102,
         "score": 0.7381424421300085,
         "binary_f1": 0.9784102060843964,
         "macro_f1_9class": 0.4978746781756204
-      },
-      {
-        "fold": 2,
-        "architecture": "base",
-        "variant": "all",
-        "sequences": 1631,
-        "joint_classes": 102,
-        "score": 0.8696688180397892,
-        "binary_f1": 0.9921951219512195,
-        "macro_f1_9class": 0.747142514128359
-      },
-      {
-        "fold": 2,
-        "architecture": "base",
-        "variant": "all_rot",
-        "sequences": 1631,
-        "joint_classes": 102,
-        "score": 0.8349249667601274,
-        "binary_f1": 0.9868356899073623,
-        "macro_f1_9class": 0.6830142436128925
-      },
-      {
-        "fold": 2,
-        "architecture": "base",
-        "variant": "imu",
-        "sequences": 1631,
-        "joint_classes": 102,
-        "score": 0.814243070084642,
-        "binary_f1": 0.9853658536585366,
-        "macro_f1_9class": 0.6431202865107475
       },
       {
         "fold": 2,
@@ -676,72 +1096,12 @@
       {
         "fold": 3,
         "architecture": "base",
-        "variant": "all",
-        "sequences": 1626,
-        "joint_classes": 102,
-        "score": 0.910193767120935,
-        "binary_f1": 0.9955817378497791,
-        "macro_f1_9class": 0.824805796392091
-      },
-      {
-        "fold": 3,
-        "architecture": "base",
-        "variant": "all_rot",
-        "sequences": 1626,
-        "joint_classes": 102,
-        "score": 0.8559583394529889,
-        "binary_f1": 0.990205680705191,
-        "macro_f1_9class": 0.7217109982007869
-      },
-      {
-        "fold": 3,
-        "architecture": "base",
-        "variant": "imu",
-        "sequences": 1626,
-        "joint_classes": 102,
-        "score": 0.8506729841596992,
-        "binary_f1": 0.9965534219596258,
-        "macro_f1_9class": 0.7047925463597726
-      },
-      {
-        "fold": 3,
-        "architecture": "base",
         "variant": "imu_rot",
         "sequences": 1626,
         "joint_classes": 102,
         "score": 0.7507702648925851,
         "binary_f1": 0.9750611246943766,
         "macro_f1_9class": 0.5264794050907936
-      },
-      {
-        "fold": 4,
-        "architecture": "base",
-        "variant": "all",
-        "sequences": 1635,
-        "joint_classes": 102,
-        "score": 0.8867566826492301,
-        "binary_f1": 0.9951171875,
-        "macro_f1_9class": 0.7783961777984603
-      },
-      {
-        "fold": 4,
-        "architecture": "base",
-        "variant": "all_rot",
-        "sequences": 1635,
-        "joint_classes": 102,
-        "score": 0.8429306667706795,
-        "binary_f1": 0.9917113603120429,
-        "macro_f1_9class": 0.694149973229316
-      },
-      {
-        "fold": 4,
-        "architecture": "base",
-        "variant": "imu",
-        "sequences": 1635,
-        "joint_classes": 102,
-        "score": 0.8149320350553418,
-        "binary_f1": 0.9857633775159549,
-        "macro_f1_9class": 0.6441006925947288
       },
       {
         "fold": 4,
@@ -755,16 +1115,315 @@
       }
     ],
     "online_score": null,
-    "five_fold_mean": null,
-    "five_fold_sample_std": null,
+    "five_fold_mean": {
+      "observed": {
+        "score": 0.8913616340904627,
+        "binary_f1": 0.9957004024693786,
+        "macro_f1_9class": 0.7870228657115469
+      },
+      "aux_dropout50": {
+        "score": 0.8613101885311109,
+        "binary_f1": 0.9933474323831624,
+        "macro_f1_9class": 0.7292729446790593
+      },
+      "imu_only": {
+        "score": 0.831799176375813,
+        "binary_f1": 0.9908936841637915,
+        "macro_f1_9class": 0.6727046685878344
+      }
+    },
+    "five_fold_sample_std": {
+      "observed": {
+        "score": 0.012918826254867158,
+        "binary_f1": 0.000928492917880637,
+        "macro_f1_9class": 0.02542556573532798
+      },
+      "aux_dropout50": {
+        "score": 0.013241922817845898,
+        "binary_f1": 0.0014322151981536635,
+        "macro_f1_9class": 0.025071860210248032
+      },
+      "imu_only": {
+        "score": 0.013722737420546185,
+        "binary_f1": 0.0037207581833979997,
+        "macro_f1_9class": 0.023784875997065004
+      }
+    },
     "online_pseudo_labels_evaluated": false,
     "records": [
       "experiments/results/second_place_base_fold0_v1.json",
       "experiments/results/second_place_base_fold1_v2.json",
       "experiments/results/second_place_base_fold2_v3.json",
-      "experiments/results/second_place_base_fold3_v4.json"
+      "experiments/results/second_place_base_fold3_v4.json",
+      "experiments/results/second_place_base_fold4_v5.json"
     ],
-    "validation_sequences": 8151
+    "validation_sequences": 8151,
+    "source_batches": [
+      {
+        "fold": 0,
+        "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356304653",
+        "archive": "D:\\UW EE PMP\\kaggle_CMI\\project\\outputs\\second_place\\recovery_v1\\second_place_experiments.zip",
+        "archive_sha256": "e90cdcd1ebbd56496980f0f007ae99745078c55824a2547b466f98907d106b5c",
+        "archive_bytes": 74789671,
+        "record": "D:\\UW EE PMP\\kaggle_CMI\\project\\experiments\\results\\second_place_base_fold0_v1.json",
+        "record_sha256": "cb75e2981eaf4b0bf12ebea662cb8e3db02df283dd4e1c3b92cade4d65e836a7",
+        "metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+        "seed": 42
+      },
+      {
+        "fold": 1,
+        "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356387143",
+        "archive": "D:\\UW EE PMP\\kaggle_CMI\\project\\outputs\\second_place\\recovery_v2\\second_place_experiments.zip",
+        "archive_sha256": "d6998d43937aed624d9b1d14587872f3b9d65a4b737903d3bf535e2268212cb4",
+        "archive_bytes": 75396076,
+        "record": "D:\\UW EE PMP\\kaggle_CMI\\project\\experiments\\results\\second_place_base_fold1_v2.json",
+        "record_sha256": "bd66a0a9c58d669b9d951d5df5c23147befa376d8695ef664c2c5d3e9fab2638",
+        "metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+        "seed": 43
+      },
+      {
+        "fold": 2,
+        "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356470282",
+        "archive": "D:\\UW EE PMP\\kaggle_CMI\\project\\outputs\\second_place\\recovery_v3\\second_place_experiments.zip",
+        "archive_sha256": "816e8ff58845391618e7b37b4f40c6c19dc58902edb56111fb8486fb844c1843",
+        "archive_bytes": 75836154,
+        "record": "D:\\UW EE PMP\\kaggle_CMI\\project\\experiments\\results\\second_place_base_fold2_v3.json",
+        "record_sha256": "c32d853caf5f92e58948966a79343fa06c69140941e67369d29728424dd6336f",
+        "metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+        "seed": 44
+      },
+      {
+        "fold": 3,
+        "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356543991",
+        "archive": "D:\\UW EE PMP\\kaggle_CMI\\project\\outputs\\second_place\\recovery_v4\\second_place_experiments.zip",
+        "archive_sha256": "cb9f65ce7f02528b0d2b1ea8b612f1bb7c98b644fbcbe174c6686e7bea5002f4",
+        "archive_bytes": 75461764,
+        "record": "D:\\UW EE PMP\\kaggle_CMI\\project\\experiments\\results\\second_place_base_fold3_v4.json",
+        "record_sha256": "0c1a0ab41f467d86d72d072d4338274e17f7eebb20612fe15bbb50e6931075c8",
+        "metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+        "seed": 45
+      },
+      {
+        "fold": 4,
+        "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356600289",
+        "archive": "D:\\UW EE PMP\\kaggle_CMI\\project\\outputs\\second_place\\recovery_v5\\second_place_experiments.zip",
+        "archive_sha256": "dcfc43551c7d6db59cfafde5ff407a3bda1dd964ef79c9f8a1c35b5285db8620",
+        "archive_bytes": 75352011,
+        "record": "D:\\UW EE PMP\\kaggle_CMI\\project\\experiments\\results\\second_place_base_fold4_v5.json",
+        "record_sha256": "fc6e42c117f8ffa682ca3ad36b6cea2ca2fb4a9e98f87b4bf46d7088fba49901",
+        "metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+        "seed": 46
+      }
+    ],
+    "diagnostics": {
+      "observed": {
+        "official_9class_oof_f1": {
+          "old": {
+            "Above ear - pull hair": 0.7635807192042846,
+            "Cheek - pinch skin": 0.6209150326797386,
+            "Eyebrow - pull hair": 0.537759336099585,
+            "Eyelash - pull hair": 0.58700882117081,
+            "Forehead - pull hairline": 0.7708812260536398,
+            "Forehead - scratch": 0.8401206636500754,
+            "Neck - pinch skin": 0.6364347146207975,
+            "Neck - scratch": 0.7190146266358738,
+            "non_target": 0.9787234042553191
+          },
+          "new": {
+            "Above ear - pull hair": 0.8424336973478939,
+            "Cheek - pinch skin": 0.7320061255742726,
+            "Eyebrow - pull hair": 0.6089850249584027,
+            "Eyelash - pull hair": 0.6834094368340944,
+            "Forehead - pull hairline": 0.8051323175621492,
+            "Forehead - scratch": 0.8828297715549005,
+            "Neck - pinch skin": 0.7366694011484823,
+            "Neck - scratch": 0.8012279355333844,
+            "non_target": 0.9927536231884058
+          },
+          "history_42": {
+            "Above ear - pull hair": 0.8853503184713376,
+            "Cheek - pinch skin": 0.7966488956587966,
+            "Eyebrow - pull hair": 0.7123287671232876,
+            "Eyelash - pull hair": 0.7544539116963594,
+            "Forehead - pull hairline": 0.8687350835322196,
+            "Forehead - scratch": 0.9312169312169312,
+            "Neck - pinch skin": 0.8178202068416865,
+            "Neck - scratch": 0.849336455893833,
+            "non_target": 0.9939174749301332
+          },
+          "history_142": {
+            "Above ear - pull hair": 0.8902920284135754,
+            "Cheek - pinch skin": 0.78,
+            "Eyebrow - pull hair": 0.7320158102766798,
+            "Eyelash - pull hair": 0.7601246105919003,
+            "Forehead - pull hairline": 0.8553157474020784,
+            "Forehead - scratch": 0.9194883370955605,
+            "Neck - pinch skin": 0.8048192771084337,
+            "Neck - scratch": 0.8500772797527048,
+            "non_target": 0.9942310862040548
+          },
+          "history_242": {
+            "Above ear - pull hair": 0.8890649762282092,
+            "Cheek - pinch skin": 0.7900466562986003,
+            "Eyebrow - pull hair": 0.7252396166134185,
+            "Eyelash - pull hair": 0.7580398162327718,
+            "Forehead - pull hairline": 0.8848580441640379,
+            "Forehead - scratch": 0.9273827534039334,
+            "Neck - pinch skin": 0.8,
+            "Neck - scratch": 0.8522815158546017,
+            "non_target": 0.9942272802243114
+          }
+        },
+        "independent_minus_old_fold_mean": {
+          "score": 0.03933284682631011,
+          "binary_f1": 0.008459277464526127,
+          "macro_f1_9class": 0.07020641618809431
+        },
+        "history_minus_independent_fold_mean": {
+          "42": 0.029526356190202607,
+          "142": 0.028359917565711767,
+          "242": 0.030221754766609266
+        }
+      },
+      "aux_dropout50": {
+        "official_9class_oof_f1": {
+          "old": {
+            "Above ear - pull hair": 0.6558139534883721,
+            "Cheek - pinch skin": 0.5456,
+            "Eyebrow - pull hair": 0.4816053511705686,
+            "Eyelash - pull hair": 0.5689381933438986,
+            "Forehead - pull hairline": 0.6848249027237354,
+            "Forehead - scratch": 0.7851851851851852,
+            "Neck - pinch skin": 0.5664280031821798,
+            "Neck - scratch": 0.6635514018691588,
+            "non_target": 0.9745430809399478
+          },
+          "new": {
+            "Above ear - pull hair": 0.7569279493269992,
+            "Cheek - pinch skin": 0.6402439024390244,
+            "Eyebrow - pull hair": 0.5416666666666666,
+            "Eyelash - pull hair": 0.6409674981103552,
+            "Forehead - pull hairline": 0.7324171382376717,
+            "Forehead - scratch": 0.8481291269258987,
+            "Neck - pinch skin": 0.6535626535626535,
+            "Neck - scratch": 0.7602158828064765,
+            "non_target": 0.9888268156424581
+          },
+          "history_42": {
+            "Above ear - pull hair": 0.8124501197126895,
+            "Cheek - pinch skin": 0.7101669195751138,
+            "Eyebrow - pull hair": 0.6434782608695652,
+            "Eyelash - pull hair": 0.7066147859922179,
+            "Forehead - pull hairline": 0.7951020408163265,
+            "Forehead - scratch": 0.9055472263868066,
+            "Neck - pinch skin": 0.732751784298176,
+            "Neck - scratch": 0.8244514106583072,
+            "non_target": 0.9919474116680361
+          },
+          "history_142": {
+            "Above ear - pull hair": 0.823993685872139,
+            "Cheek - pinch skin": 0.7163720215219063,
+            "Eyebrow - pull hair": 0.6449044585987261,
+            "Eyelash - pull hair": 0.710077519379845,
+            "Forehead - pull hairline": 0.7961476725521669,
+            "Forehead - scratch": 0.8960843373493976,
+            "Neck - pinch skin": 0.7394822006472492,
+            "Neck - scratch": 0.8114374034003091,
+            "non_target": 0.9914529914529915
+          },
+          "history_242": {
+            "Above ear - pull hair": 0.8250401284109149,
+            "Cheek - pinch skin": 0.7107692307692308,
+            "Eyebrow - pull hair": 0.6434359805510534,
+            "Eyelash - pull hair": 0.7117601844734819,
+            "Forehead - pull hairline": 0.8145800316957211,
+            "Forehead - scratch": 0.9003021148036254,
+            "Neck - pinch skin": 0.7426761678543151,
+            "Neck - scratch": 0.8182521268368136,
+            "non_target": 0.9896364533640402
+          }
+        },
+        "independent_minus_old_fold_mean": {
+          "score": 0.039855134434466644,
+          "binary_f1": 0.008685999052020388,
+          "macro_f1_9class": 0.0710242698169129
+        },
+        "history_minus_independent_fold_mean": {
+          "42": 0.031889445173053255,
+          "142": 0.032155878463950294,
+          "242": 0.03305506517666801
+        }
+      },
+      "imu_only": {
+        "official_9class_oof_f1": {
+          "old": {
+            "Above ear - pull hair": 0.5660377358490566,
+            "Cheek - pinch skin": 0.44178628389154706,
+            "Eyebrow - pull hair": 0.40502092050209204,
+            "Eyelash - pull hair": 0.5357710651828299,
+            "Forehead - pull hairline": 0.6133743274404304,
+            "Forehead - scratch": 0.7394113424264178,
+            "Neck - pinch skin": 0.48126561199000834,
+            "Neck - scratch": 0.6062015503875969,
+            "non_target": 0.9674160964483545
+          },
+          "new": {
+            "Above ear - pull hair": 0.6656050955414012,
+            "Cheek - pinch skin": 0.5475113122171946,
+            "Eyebrow - pull hair": 0.46856158484065463,
+            "Eyelash - pull hair": 0.5986394557823129,
+            "Forehead - pull hairline": 0.6746031746031746,
+            "Forehead - scratch": 0.8195542774982028,
+            "Neck - pinch skin": 0.562962962962963,
+            "Neck - scratch": 0.7317073170731707,
+            "non_target": 0.984751598622725
+          },
+          "history_42": {
+            "Above ear - pull hair": 0.7188498402555911,
+            "Cheek - pinch skin": 0.6319758672699849,
+            "Eyebrow - pull hair": 0.5682715074980268,
+            "Eyelash - pull hair": 0.6687598116169545,
+            "Forehead - pull hairline": 0.7451298701298701,
+            "Forehead - scratch": 0.8822652757078987,
+            "Neck - pinch skin": 0.6347687400318979,
+            "Neck - scratch": 0.7885985748218527,
+            "non_target": 0.9881812212738017
+          },
+          "history_142": {
+            "Above ear - pull hair": 0.7279936558287073,
+            "Cheek - pinch skin": 0.6393822393822394,
+            "Eyebrow - pull hair": 0.5630914826498423,
+            "Eyelash - pull hair": 0.6698039215686274,
+            "Forehead - pull hairline": 0.7411575562700965,
+            "Forehead - scratch": 0.8694362017804155,
+            "Neck - pinch skin": 0.6463022508038585,
+            "Neck - scratch": 0.783974862529458,
+            "non_target": 0.9878569084345258
+          },
+          "history_242": {
+            "Above ear - pull hair": 0.7191011235955056,
+            "Cheek - pinch skin": 0.6235565819861432,
+            "Eyebrow - pull hair": 0.5761904761904761,
+            "Eyelash - pull hair": 0.6709163346613546,
+            "Forehead - pull hairline": 0.7503949447077409,
+            "Forehead - scratch": 0.8771407297096053,
+            "Neck - pinch skin": 0.6349960411718132,
+            "Neck - scratch": 0.7934528448947779,
+            "non_target": 0.987021521274848
+          }
+        },
+        "independent_minus_old_fold_mean": {
+          "score": 0.04460505302123263,
+          "binary_f1": 0.010574676245120096,
+          "macro_f1_9class": 0.07863542979734506
+        },
+        "history_minus_independent_fold_mean": {
+          "42": 0.03278265428993854,
+          "142": 0.03271304877470993,
+          "242": 0.03264457036938717
+        }
+      }
+    }
   },
   "followup_automation": {
     "id": "cmi",
@@ -1069,7 +1728,7 @@
     "logged_joint_classes": 102,
     "run_seconds": 17081
   },
-  "next_action": "Strictly merge all five individually verified batches into a fresh directory, retain per-fold ontology/trainIDs/seed/source provenance, re-audit and save complete8151OOF; no new training pending quota feasibility.",
+  "next_action": "Base five-fold complete. No further Kaggle model training: GPU3h59m remaining is not a demonstrated budget for simple/deep full fivefold. Review upstream pseudo-label code, implement strictly causal same-subject-only adapted updates and CPU timing pilot before arranging evaluation. No val labels in inference/update; reset fold/scenario/order; report source adaptation separately.",
   "completed_fold3_runtime": {
     "source": "Kaggle private notebook",
     "title": "CMI Second Place Fixed Fold Reproduction",
@@ -1132,5 +1791,10 @@
     "training_input_hashes_verified_in_log": true,
     "run_seconds": 16735
   },
-  "latest_quota_evidence": "Account menu: GPU3h59m available of30h after v5 completion; screenshot outputs/second_place/evidence/kaggle_v5_complete_quota.jpg"
+  "latest_quota_evidence": "Account menu: GPU3h59m available of30h after v5 completion; screenshot outputs/second_place/evidence/kaggle_v5_complete_quota.jpg",
+  "remaining_components": {
+    "simple_deep_full_five_fold": "not run; remaining3h59m insufficient demonstrated budget; no shortened experiments",
+    "online_pseudo_label": "not implemented or evaluated; same-subject causal adaptation and CPU feasibility pilot required",
+    "author_original_ten_fold_weights": "not reproduced"
+  }
 }
