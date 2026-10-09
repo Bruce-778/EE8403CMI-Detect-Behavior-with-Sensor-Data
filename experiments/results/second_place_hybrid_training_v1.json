@@ -1,0 +1,66 @@
+{
+  "status": "running",
+  "scope": "Registered fixed-five-fold IMU loss ablation; no measured CV result yet",
+  "launch_utc": "2026-10-09T08:17:10Z",
+  "recorded_utc": "2026-10-09T08:19:42.709647+00:00",
+  "script_version_id": 356690453,
+  "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-hybrid-imu-fixed-folds?scriptVersionId=356690453",
+  "logs_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-hybrid-imu-fixed-folds/log?scriptVersionId=356690453",
+  "private": true,
+  "internet": false,
+  "accelerator": "GPU T4 x2",
+  "editor_environment": "Pin to original environment",
+  "log_environment_display": "Latest Container Image",
+  "actual_runtime_log": {
+    "torch": "2.11.0+cu128",
+    "gpu": "Tesla T4"
+  },
+  "environment_note": "Editor was pinned before saving; logs display Latest Container Image but actual runtime matches completed base controls.",
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "architectures": [
+    "base"
+  ],
+  "variants": [
+    "imu",
+    "imu_rot"
+  ],
+  "epochs": 50,
+  "batch_size": 32,
+  "seed": "42+fold",
+  "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
+  "auxiliary_loss": {
+    "macro9_weight": 0.5,
+    "binary_weight": 0.1
+  },
+  "unchanged": "Original phase CE, phase-wise Mixup0.5, Adam0.001/wd0.0001, warmup/cosine, clip1, 200-frame processing and final50epoch weights.",
+  "reuse_after_individual_audit": "The ten original all/all_rot arms; new IMU contribution must be compared with the exact complete base control.",
+  "run_output": "outputs/second_place/hybrid_imu_group_loss_v1",
+  "download_filename": "second_place_hybrid_experiments.zip",
+  "quota_before_launch": {
+    "available": "3h59m of30h",
+    "prior_ten_imu_histories_hours": 3.17125,
+    "estimated_margin_hours": 0.8120833333333337
+  },
+  "startup_checks": {
+    "folds_bytes_sha256": "b30dc50594963357bfe70677b2f90822e8ff6008fd023e8b114573db921b924a",
+    "train_csv_sha256": "f67c9c0066bc1cdba1884909a5eac1e8edd4b108b508ba68f18acff88ffff7e9",
+    "train_demographics_sha256": "e763685faa85415d12ebd948c1fe810df8835a738cd34bfc23fff5d66c1d73e2",
+    "feature_cache": "still building at startup check"
+  },
+  "evidence": "outputs/second_place/evidence/kaggle_hybrid_v1_running.jpg",
+  "preflight_record": "experiments/results/second_place_hybrid_notebook_check_v1.json",
+  "training_batch_record": "experiments/results/second_place_hybrid_training_batch_v1.json",
+  "code_sha256": {
+    "scripts/train_second_place_hybrid.py": "ff35108e8e2dacc1c444145c0d28e1ebecafc358d4991f8d5b720e95ca9e8ce3",
+    "scripts/export_second_place_hybrid.py": "854a77362b4e8d46ab30a51ef5e1c84428a37639eb8859e25c7f4cdc84599d9f",
+    "src/cmi_project/second_place_hybrid.py": "6a9a99ba3cda7a1e4583ac5be3108bf06f38b87f2dedccb34a65607234509073",
+    "outputs/second_place/notebooks/cmi-second-place-hybrid-imu.ipynb": "657830a909252855a8b8f15bd5511b74e3fbf9e07af7846a99992ebf653e2581"
+  },
+  "online_competition_score": null
+}

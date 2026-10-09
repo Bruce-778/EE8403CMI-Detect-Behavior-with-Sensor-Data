@@ -71,3 +71,9 @@ about0.812h for additional loss overhead, setup and export. No shortened50epoch
 training is used. A complete ToF retraining would exceed this demonstrated
 budget, so it is not started. Kaggle runs privately/offline in the original
 environment; no competition submission, push or frozen production replacement.
+
+## Actual GPU launch: private version356690453
+
+Normal browser Save & Run All accepted on2026-10-09T08:17:10Z. The unique private notebook is Running: https://www.kaggle.com/code/mingweiwei03/cmi-second-place-hybrid-imu-fixed-folds?scriptVersionId=356690453. Official CMI competition input attached, T4x2, internet off, editor Pin to original environment. Logs label the container Latest Container Image, but actual torch2.11.0+cu128/TeslaT4 matches the completed base controls; this display difference is recorded rather than hidden. Fixed-fold byte SHA and both raw CSV byte SHAs passed in actual startup logs. Cache generation is still in progress; no CV result is claimed.
+
+All ten IMU models retain50epochs. After completion download second_place_hybrid_experiments.zip via normalUI into a new recovery/import directory, audit each arm and new-loss provenance, then preserve and merge the original ten all/all_rot arms with identical per-fold joint axes/trainIDs/seed. Report all8151 sequence OOF, eachfold/mean/sampleSD, three missing-sensor scenarios and all three fixed causal history orders. A dedicated strict hybrid merge helper still needs implementation. The existing CPU online PID2040 remains running and its source is unchanged.

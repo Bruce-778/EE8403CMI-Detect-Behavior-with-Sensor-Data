@@ -1,0 +1,19 @@
+{
+  "status": "verified",
+  "notebook_sha256": "657830a909252855a8b8f15bd5511b74e3fbf9e07af7846a99992ebf653e2581",
+  "embedded_file_sha256": {
+    "scripts/train_second_place_hybrid.py": "ff35108e8e2dacc1c444145c0d28e1ebecafc358d4991f8d5b720e95ca9e8ce3",
+    "src/cmi_project/second_place_hybrid.py": "6a9a99ba3cda7a1e4583ac5be3108bf06f38b87f2dedccb34a65607234509073",
+    "configs/folds.csv": "b30dc50594963357bfe70677b2f90822e8ff6008fd023e8b114573db921b924a",
+    "configs/second_place_source.json": "ef42b5ebb4ac34009801061a8d43c0495abfbd8111398bd9f0b79ffdc1b5b547",
+    "src/cmi_project/vendor/second_place/model.py": "f9f4d0407b851911015e925f96b5bd3044da66ff977351f38eceeff18ab44341",
+    "src/cmi_project/vendor/second_place/masked_batchnorm.py": "952d8c713f139b09ea88f263013d216d8ca6ca4685104fb9ad5bdbb15c16243a",
+    "src/cmi_project/vendor/second_place/utils.py": "8ae707c485a3edcca9e8955059be14627f5532ccf4ca3740ae0a9fbc11cc926e",
+    "src/cmi_project/vendor/second_place/train.py": "32956549d253a17d39a9aade1a3c968463365fcbe2728c47c372df41eab6b156",
+    "src/cmi_project/vendor/second_place/test.py": "efcacf7678223a54ba2dc13f27d0e5aba5c37e6d3bf49c8a12465292e19e0b28",
+    "src/cmi_project/vendor/second_place/README.md": "715ee932baa2588a6657436f23ba81fc0d2be00cb6f14364968b37dff00d259e",
+    "src/cmi_project/vendor/second_place/requirements.txt": "7e71291119ac445f3e4df38dc8083e9d7c6ef32f3063ae0a40083ce9b2086cc6"
+  },
+  "code_cells_compiled": 2,
+  "protocol": "Five folds, imu and imu_rot,50epochs,batch32; only metric-group loss added; no ToF retraining or submission"
+}
