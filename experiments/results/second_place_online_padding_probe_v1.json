@@ -1,0 +1,266 @@
+{
+  "status": "completed",
+  "scope": "Padding and numerical diagnosis, no scored adaptation result",
+  "original_inference": "upstream test.py uses a single sequence with its actual length; exported validation used batch32 and max-length padding",
+  "rows": [
+    {
+      "sequence_id": "SEQ_001256",
+      "length": 51,
+      "batch_padding": 180,
+      "cpu_batch_cloud_max_diff": 8.106231689453125e-06,
+      "cpu_fixed200_cloud_max_diff": 8.106231689453125e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_001580",
+      "length": 49,
+      "batch_padding": 180,
+      "cpu_batch_cloud_max_diff": 7.867813110351562e-06,
+      "cpu_fixed200_cloud_max_diff": 8.106231689453125e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_003191",
+      "length": 71,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 1.677870750427246e-05,
+      "cpu_fixed200_cloud_max_diff": 1.7017126083374023e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_006812",
+      "length": 52,
+      "batch_padding": 162,
+      "cpu_batch_cloud_max_diff": 1.2874603271484375e-05,
+      "cpu_fixed200_cloud_max_diff": 1.1444091796875e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_007906",
+      "length": 58,
+      "batch_padding": 162,
+      "cpu_batch_cloud_max_diff": 9.5367431640625e-06,
+      "cpu_fixed200_cloud_max_diff": 1.0013580322265625e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_007910",
+      "length": 70,
+      "batch_padding": 162,
+      "cpu_batch_cloud_max_diff": 8.821487426757812e-06,
+      "cpu_fixed200_cloud_max_diff": 8.821487426757812e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_008577",
+      "length": 48,
+      "batch_padding": 135,
+      "cpu_batch_cloud_max_diff": 9.298324584960938e-06,
+      "cpu_fixed200_cloud_max_diff": 9.5367431640625e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_014129",
+      "length": 57,
+      "batch_padding": 170,
+      "cpu_batch_cloud_max_diff": 1.1205673217773438e-05,
+      "cpu_fixed200_cloud_max_diff": 1.1205673217773438e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_015053",
+      "length": 53,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 1.3053417205810547e-05,
+      "cpu_fixed200_cloud_max_diff": 1.2576580047607422e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_015150",
+      "length": 82,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 6.67572021484375e-06,
+      "cpu_fixed200_cloud_max_diff": 5.7220458984375e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_021344",
+      "length": 53,
+      "batch_padding": 137,
+      "cpu_batch_cloud_max_diff": 1.1444091796875e-05,
+      "cpu_fixed200_cloud_max_diff": 1.0728836059570312e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_023341",
+      "length": 51,
+      "batch_padding": 153,
+      "cpu_batch_cloud_max_diff": 6.198883056640625e-06,
+      "cpu_fixed200_cloud_max_diff": 6.198883056640625e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_026550",
+      "length": 74,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 8.761882781982422e-06,
+      "cpu_fixed200_cloud_max_diff": 9.298324584960938e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_027472",
+      "length": 60,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 1.33514404296875e-05,
+      "cpu_fixed200_cloud_max_diff": 1.3709068298339844e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_029004",
+      "length": 48,
+      "batch_padding": 148,
+      "cpu_batch_cloud_max_diff": 1.1205673217773438e-05,
+      "cpu_fixed200_cloud_max_diff": 1.0728836059570312e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_031220",
+      "length": 52,
+      "batch_padding": 180,
+      "cpu_batch_cloud_max_diff": 8.344650268554688e-06,
+      "cpu_fixed200_cloud_max_diff": 8.106231689453125e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_034605",
+      "length": 52,
+      "batch_padding": 182,
+      "cpu_batch_cloud_max_diff": 8.344650268554688e-06,
+      "cpu_fixed200_cloud_max_diff": 8.821487426757812e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_036023",
+      "length": 50,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 2.0742416381835938e-05,
+      "cpu_fixed200_cloud_max_diff": 2.0742416381835938e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_039220",
+      "length": 139,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 7.152557373046875e-06,
+      "cpu_fixed200_cloud_max_diff": 6.67572021484375e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_043891",
+      "length": 53,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 1.239776611328125e-05,
+      "cpu_fixed200_cloud_max_diff": 1.239776611328125e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_044532",
+      "length": 54,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 3.0159950256347656e-05,
+      "cpu_fixed200_cloud_max_diff": 3.063678741455078e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_045913",
+      "length": 107,
+      "batch_padding": 107,
+      "cpu_batch_cloud_max_diff": 1.3530254364013672e-05,
+      "cpu_fixed200_cloud_max_diff": 0.09876823425292969,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_046372",
+      "length": 55,
+      "batch_padding": 107,
+      "cpu_batch_cloud_max_diff": 5.7220458984375e-06,
+      "cpu_fixed200_cloud_max_diff": 4.291534423828125e-06,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_048357",
+      "length": 47,
+      "batch_padding": 131,
+      "cpu_batch_cloud_max_diff": 3.5762786865234375e-05,
+      "cpu_fixed200_cloud_max_diff": 3.4332275390625e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_048583",
+      "length": 54,
+      "batch_padding": 131,
+      "cpu_batch_cloud_max_diff": 1.4781951904296875e-05,
+      "cpu_fixed200_cloud_max_diff": 1.4781951904296875e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_048831",
+      "length": 74,
+      "batch_padding": 131,
+      "cpu_batch_cloud_max_diff": 1.049041748046875e-05,
+      "cpu_fixed200_cloud_max_diff": 1.049041748046875e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_056166",
+      "length": 54,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 1.4781951904296875e-05,
+      "cpu_fixed200_cloud_max_diff": 1.3828277587890625e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_056508",
+      "length": 49,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 6.0677528381347656e-05,
+      "cpu_fixed200_cloud_max_diff": 6.0677528381347656e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_056775",
+      "length": 61,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 1.621246337890625e-05,
+      "cpu_fixed200_cloud_max_diff": 1.5735626220703125e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_056780",
+      "length": 112,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 1.5735626220703125e-05,
+      "cpu_fixed200_cloud_max_diff": 1.621246337890625e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_057350",
+      "length": 62,
+      "batch_padding": 165,
+      "cpu_batch_cloud_max_diff": 2.1696090698242188e-05,
+      "cpu_fixed200_cloud_max_diff": 2.1457672119140625e-05,
+      "cpu_batch_argmax_matches": true
+    },
+    {
+      "sequence_id": "SEQ_059921",
+      "length": 53,
+      "batch_padding": 200,
+      "cpu_batch_cloud_max_diff": 6.794929504394531e-05,
+      "cpu_fixed200_cloud_max_diff": 6.878376007080078e-05,
+      "cpu_batch_argmax_matches": true
+    }
+  ],
+  "max_cpu_batch_cloud_diff": 6.794929504394531e-05,
+  "batch_argmax_agreement": 1.0,
+  "variable_length_pilot_max_diff": 0.3756842613220215
+}

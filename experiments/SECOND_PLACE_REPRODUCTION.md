@@ -515,3 +515,9 @@ scripts/merge_second_place_batches.py重新校验五个原ZIP字节SHA并解包�
 src/cmi_project/second_place_online.py按subject隔离模型/缓冲/Hungarian/RNG，以固定seed每32条已到达伪标签做新Adam5e-5单步，保留train-mode BN更新，当前joint决策先固定后更新；原源代码跨subject全局缓冲/权重与本任务限制不同，这不是逐字上游实现。两项因果测试通过，包括改变其他subject交错到达不影响本subject的预测/更新、未来输入不改既有返回、冻结base状态不变、fresh状态复位。
 fold0固定排序首个subject、固定顺序42的40条真实到达pilot完成，四个分支各发生一次32条更新。单条all预测中位0.0598秒，imu/imu_rot/all/all_rot单步约3.36/0.96/8.09/7.90秒。冻结权重文件SHA保持不变；结果second_place_online_cpu_pilot_v1.json，仅CPU耗时/因果功能试验，不报告CV。
 数值比较发现更新前32条单序列预测对云端batch32 logits最大差0.375684、joint argmax一致31/32。因此先排查批量padding与CPU/GPU运行库差异，完整适配必须使用匹配CPU独立/历史对照，不能将推理差异归为伪标签提升。未启动新的Kaggle训练、未比赛提交/push或替换冻结权重。
+
+### CPU padding 数值排查完成
+
+同一32条pilot样本按云端原始验证行顺序重放其batch32与batch最大长度padding，CPU/cloud logits最大差仅0.0000679493，joint argmax全部一致。单条固定200帧padding也接近云端；原test.py使用逐条实际长度输入，pilot的这种推理最大差0.375684。证据支持主要差异来自padding，而非CPU/GPU运行库本身；不把这一推理协议差异算成在线伪标签贡献。详见second_place_online_padding_probe_v1.json。scripts/diagnose_second_place_padding.py提供保留旧记录的可重放入口；原始诊断实际由outputs/second_place/probe_padding.py执行。
+
+完整CPU比较保留同一实际长度推理协议的独立序列、三个因果历史对照，并分别测量仅伪标签与历史加伪标签。已完成的GPU批量验证OOF保留原值，CPU结果将独立报告。
