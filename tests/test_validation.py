@@ -93,7 +93,7 @@ class ValidationTests(unittest.TestCase):
                 load_fold_manifest(path)
 
     def test_sensor_diagnostics_separate_no_response_from_missing(self):
-        from test_preprocessing import fixture
+        from sensor_fixture import fixture
         from cmi_project.dataset_analysis import SENSOR_COLUMNS
         a, b = fixture(2), fixture(3, "B", "S2")
         a.loc[0, "rot_w"] = np.nan

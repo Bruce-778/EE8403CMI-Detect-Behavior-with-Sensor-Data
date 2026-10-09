@@ -1,3 +1,8 @@
+> 2026-10-09：当前主实验已切换为第二名 base + IMU 官方分组辅助损失。
+> 主入口见项目 README 和 `configs/main_experiment.json`；混合每步记录见
+> [SECOND_PLACE_HYBRID.md](SECOND_PLACE_HYBRID.md)。下面的原方案实验过程、结果和旧命令保持历史内容，
+> 对应实现已迁入 [legacy/cnn_dynamics_mixup](legacy/cnn_dynamics_mixup/README.md)。
+
 > 实验档案说明（2026-10-07 清理）：本页保留当时的结果、决策与命令。当前运行方案为 `cnn_dynamics_mixup`，Public 0.839556 / Private 0.833362；请以[当前项目入口](../README.md)为准。旧配置原样存于 `experiments/configs/`，旧运行代码可从 Git 历史恢复。
 
 # 主实验记录

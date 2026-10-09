@@ -21,9 +21,9 @@ from cmi_project.second_place_evaluation import CausalJointAssignment, check_arm
 class SecondPlaceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        folder = ROOT / 'outputs/reference_code/second_place'
+        folder = ROOT / 'src/cmi_project/vendor/second_place'
         if not folder.exists():
-            raise unittest.SkipTest('Pinned upstream checkout required; see SECOND_PLACE_REPRODUCTION.md')
+            raise unittest.SkipTest('Pinned vendored upstream checkout is required')
         torch.set_num_threads(2)
         cls.ref = load_reference(folder, ROOT / 'configs/second_place_source.json')
 
@@ -137,7 +137,7 @@ class SecondPlaceTests(unittest.TestCase):
     def test_causal_joint_history_matches_upstream_prefixes_and_preserves_returned_decisions(self):
         import ast
         from scipy.optimize import linear_sum_assignment
-        tree = ast.parse((ROOT / 'outputs/reference_code/second_place/test.py').read_text(encoding='utf-8'))
+        tree = ast.parse((ROOT / 'src/cmi_project/vendor/second_place/test.py').read_text(encoding='utf-8'))
         node = next(x for x in tree.body if isinstance(x, ast.FunctionDef) and x.name == 'solve_capacity1_with_hungarian')
         namespace = {'np': np, 'linear_sum_assignment': linear_sum_assignment}
         exec(compile(ast.Module(body=[node], type_ignores=[]), '<verified reference decoder>', 'exec'), namespace)

@@ -1,0 +1,348 @@
+{
+  "status": "verified",
+  "snapshot_commit": "b4de175",
+  "snapshot_tag": "pre-hybrid-main-cleanup-20261009",
+  "primary_config": "configs/main_experiment.json",
+  "moved_files": [
+    {
+      "original": "src/cmi_project/cnn.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/cnn.py",
+      "sha256": "fc9d4be1a0445096198da725927ce2a932d903642a279fd6f5a19651beb52d2e"
+    },
+    {
+      "original": "src/cmi_project/cnn_data.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/cnn_data.py",
+      "sha256": "9735718b014a0ddba6d84131bbb21b28cc2a860e95dad28e5d8b8ee86a25e583"
+    },
+    {
+      "original": "src/cmi_project/cnn_training.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/cnn_training.py",
+      "sha256": "7ce96f967e23deb0bd469b9914e6bd825fec517c0813e96b2d71329aec5489ec"
+    },
+    {
+      "original": "src/cmi_project/inference.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/inference.py",
+      "sha256": "d560f6e5884e087b962a791f1807ee6c85c2ad7a7d17d203650b6dfcd7a05a40"
+    },
+    {
+      "original": "src/cmi_project/posttraining.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/posttraining.py",
+      "sha256": "277f755a853a639d6712b82cb2964b099206d273af9926cd2f624dcdaba9feea"
+    },
+    {
+      "original": "src/cmi_project/representation.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/representation.py",
+      "sha256": "97db968bf187cbc700dbe37206dc6a3e6fded64b1663127d5eab1f4db53c22ae"
+    },
+    {
+      "original": "src/cmi_project/preprocessing.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/preprocessing.py",
+      "sha256": "a2ce4a682e241d050fe534eb05063baf5ff4bc5b518b270a3d19feb746d17ef8"
+    },
+    {
+      "original": "src/cmi_project/preprocess_cli.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/preprocess_cli.py",
+      "sha256": "5c14c771b3e98c97b2a3d85e212c054b41088a897ffc954854d8fc98fa7d2922"
+    },
+    {
+      "original": "src/cmi_project/torch_inputs.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/src/cmi_project/torch_inputs.py",
+      "sha256": "77205d71efa2a3a3f1d8ec78827dbc268e2b5daf766ffb795ec191bb3510475c"
+    },
+    {
+      "original": "scripts/check_kaggle_submission.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/check_kaggle_submission.py",
+      "sha256": "f0bd1c29c31ed31a01b6d38a513e279bd1724b09fd65c23f74ccbb1496f5eb36"
+    },
+    {
+      "original": "scripts/evaluate_cnn_scenarios.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/evaluate_cnn_scenarios.py",
+      "sha256": "e003a0fdb52daf62dc83a77fdc7093e08b26c69039ad048902d15202753c8a0b"
+    },
+    {
+      "original": "scripts/evaluate_history_postprocessing.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/evaluate_history_postprocessing.py",
+      "sha256": "e337632e65d756a8a94fd77cfc766c2bf3f39cbc848c19e112e85844fcda41eb"
+    },
+    {
+      "original": "scripts/export_kaggle_submission.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/export_kaggle_submission.py",
+      "sha256": "27979e1b65165fb3864ac912f5195923ebbdc957aaf431818ca9d7f01c1c02da"
+    },
+    {
+      "original": "scripts/export_kaggle_training.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/export_kaggle_training.py",
+      "sha256": "6da69cc8258d307fce3546553747e732cb56db740926bc85d915fe9ca1b3f1af"
+    },
+    {
+      "original": "scripts/import_winner_experiments.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/import_winner_experiments.py",
+      "sha256": "9ed18881c63db031a4870da013cc829099162e6828026544e3f3be180cb1a924"
+    },
+    {
+      "original": "scripts/preprocess_data.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/preprocess_data.py",
+      "sha256": "864a213da8c2852e3da3aed3cc37da2daec0696e6191c51672a349252c9abb34"
+    },
+    {
+      "original": "scripts/run_winner_experiments.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/run_winner_experiments.py",
+      "sha256": "85ee2e73d77181981b7319a3a2011740b4ef1308b827a6bcd5f4dec2138926f1"
+    },
+    {
+      "original": "scripts/summarize_cnn_experiment.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/summarize_cnn_experiment.py",
+      "sha256": "78f88f003f6b525789dfea8bcfa80f4be0c5647ba8fe4942372d30997da97244"
+    },
+    {
+      "original": "scripts/train_cnn.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/train_cnn.py",
+      "sha256": "72961ad1401138a4bc30466a0f924a137cc929eecbb66e1f49b8abf65ece67b2"
+    },
+    {
+      "original": "scripts/train_posttraining.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/train_posttraining.py",
+      "sha256": "9bf4b9738a7d96f5612d88a204686eb75ee01b84d06295dd723920a264960768"
+    },
+    {
+      "original": "scripts/train_representation.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/scripts/train_representation.py",
+      "sha256": "94945d1d5893a9a51fe1542a306ffba66bd208964937b5bb3dacec5d487213f8"
+    },
+    {
+      "original": "configs/cnn_dynamics_mixup.json",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/configs/cnn_dynamics_mixup.json",
+      "sha256": "37356048db0351dfc2efedfbf75898d1a7be0375df14645fbbdd0685e2ecdac5"
+    },
+    {
+      "original": "configs/preprocessing_dynamics.json",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/configs/preprocessing_dynamics.json",
+      "sha256": "51ec66aa4a4f7c73f245435ecce96a33b9c376e9e26783b205f9e608948bcfbf"
+    },
+    {
+      "original": "configs/posttraining.json",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/configs/posttraining.json",
+      "sha256": "d3e892bfbd93df62e015e7eb37115f48251be17d042dc93d3edff937cb1a8af2"
+    },
+    {
+      "original": "configs/representation.json",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/configs/representation.json",
+      "sha256": "01709a3f9b0f800e08822c4b4900ea92485371437a6152fca0a86aa8d3eeb3f3"
+    },
+    {
+      "original": "tests/test_cnn.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_cnn.py",
+      "sha256": "b487420075c595a3b4e3698d60b770168571ad87bb5d05521c5c0583425838b5"
+    },
+    {
+      "original": "tests/test_cnn_improvements.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_cnn_improvements.py",
+      "sha256": "34e86c115875988e7fa6606ce57de46ba2c2e7e48aa26e745df8d0a544330aa7"
+    },
+    {
+      "original": "tests/test_grouped_cnn.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_grouped_cnn.py",
+      "sha256": "f6482d7696d4a7340b9c94bd5e2e93e30b6f67470f9d7dcbfd8f2d3f4e117fe7"
+    },
+    {
+      "original": "tests/test_history_postprocessing.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_history_postprocessing.py",
+      "sha256": "5dfd1713ccbc73b5a4cbec16fa52c916a1105103e0135c86c05cd58bdf819b85"
+    },
+    {
+      "original": "tests/test_imu_dynamics.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_imu_dynamics.py",
+      "sha256": "60980283a8364b86a7321af8ff33864e549e1c775dff2e242250f28dc09c73d9"
+    },
+    {
+      "original": "tests/test_inference_bundle.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_inference_bundle.py",
+      "sha256": "b84e71edb4f5d000aafca30747ecc88aef7800ea786e8d5f645535057b610ea7"
+    },
+    {
+      "original": "tests/test_posttraining.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_posttraining.py",
+      "sha256": "e96a47b6f51f7918b15fa9407fb94970a50c3eba83a8540d14df379c095efff4"
+    },
+    {
+      "original": "tests/test_preprocessing.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_preprocessing.py",
+      "sha256": "05ade5964b39678b0a66947eaa0f60a8fd24eb8d0731fb66cc62977cab2a83f9"
+    },
+    {
+      "original": "tests/test_representation.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_representation.py",
+      "sha256": "dd83320c8497a0e12d3ecce5be0ca50e689fdc297c876e1e127a9723e9f8f17c"
+    },
+    {
+      "original": "tests/test_torch_inputs.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_torch_inputs.py",
+      "sha256": "9d92caa20292564001dd6b1b2340203036089072985dca1a0bc35fed96f20aaa"
+    },
+    {
+      "original": "tests/test_winner_import.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_winner_import.py",
+      "sha256": "59144660b9b9e1d8bade51c289079baf9c118dc35cd2c3d81478487033b96201"
+    },
+    {
+      "original": "tests/test_winner_pipeline.py",
+      "archive": "experiments/legacy/cnn_dynamics_mixup/tests/test_winner_pipeline.py",
+      "sha256": "4178db7cbfab7c1080ccb926f82b58dd8aa370cb1b40999d745f75c55eceecc3"
+    }
+  ],
+  "protected_files_sha256": {
+    "experiments/results/ablation_study.json": "0c864400d8354f710e7b4b604413547a907dbf64dda5a306424998d2ff0509aa",
+    "experiments/results/cnn_attention.json": "24ee5f6db15db420e5e90b6936a4e2a2a6aff4e0a82c4adbb4b5330d467207e5",
+    "experiments/results/cnn_attention_imu_preview.json": "b23c98d2a1c9f6694aea347ff99d6369c6509fe27b5829d6064d8492d3ef99ab",
+    "experiments/results/cnn_blended_imu_route_pilot_scenarios.json": "3574c9e4c3c6eb8bfb9c41c31d57c7cf3b3c28882bb33a34b12156aa36f8bba5",
+    "experiments/results/cnn_dynamics_mixup_cpu_pilot.json": "06090d375842514cd2f2f6010176a5fe25b7fd61feb91204f28a71cc85d1ac15",
+    "experiments/results/cnn_dynamics_mixup_gpu_imu_fivefold.json": "92417b05600e1c57d84c801782b0d279519b44e8ba3a0f0c3b1bcff361e88ba1",
+    "experiments/results/cnn_dynamics_mixup_gpu_multisensor_fivefold.json": "01ad70b7a833d99cd28e9ce12df3bcc0c8dd9d9b950d567ed28f4623dcdf8b18",
+    "experiments/results/cnn_dynamics_mixup_gpu_pilot.json": "446f4e6c91fb0ec4dd3690b533dc5d47bcdfce83ed7c8816a0f7273b0c2cc499",
+    "experiments/results/cnn_equal_blend_imu.json": "76d2eadfc785019dc265aa1617c830b5c9edb106019de9fd401c0103dc0ce927",
+    "experiments/results/cnn_equal_blend_multisensor.json": "9ff688db47d2599f9d03ca01da025abe0599216412a08474f29dd5400eadef03",
+    "experiments/results/cnn_final_selected_scenarios.json": "7abac6548e21c137ccff33b4d202572e98842bf08257f665778d4b367c0006b0",
+    "experiments/results/cnn_gpu_continuation_v1_failure.json": "1f4041f4fb98cfeaabc12fe114490c1b73071f446a8910bbb6fdc1a10e63e700",
+    "experiments/results/cnn_grouped_gru_cpu_pilot.json": "307b1718adf52998cfee6e4fbac39b48d01fc332593b2d51edd6749c5d487d26",
+    "experiments/results/cnn_grouped_mixup_gpu_pilot.json": "d2629050f6fec8f94230289b495d4205dff77906af154782c4fba620ee35fa3b",
+    "experiments/results/cnn_grouped_se_cpu_pilot.json": "61b2ef37ec662cd4abe54ac984679dc52fbf51536cf2293bb2ca9c5321c42efe",
+    "experiments/results/cnn_grouped_se_gpu_pilot.json": "721c59ec10dad5f725e1f46375851903b8a5a1ba3934311b1a7d93ebe863ee46",
+    "experiments/results/cnn_hierarchical.json": "ee6d525a3a48ad44a8e3b137c0375d007510ab9d363efcfa30a3032e09130eb1",
+    "experiments/results/cnn_hierarchical_b5.json": "41d70d3e19d26369e0fa72d3412156a03fe52ace2fb847d0b76f4cc9add2a5fc",
+    "experiments/results/cnn_hierarchical_imu_preview.json": "5ea05b19003857dd36897f68e3c853055a18b4df8cfb18a1be557b0724018b3e",
+    "experiments/results/cnn_hierarchical_scenarios.json": "d74ad38312821abfeec103692ddcdf861a5b11641b10ad7d995aa346120d0040",
+    "experiments/results/cnn_input_diagnostics.json": "38b8fc21ab0b6b5e029e298c9168becdc219fd23bc6b4083de6a6dead2903eb1",
+    "experiments/results/cnn_large_kernel.json": "638cda14831d3fd538a22ea7cd8ae8175da69d7a1fc0ec74ac12e5ed9e6d31ff",
+    "experiments/results/cnn_large_kernel_imu_preview.json": "91f37a0afbb4d735dee073e35bc5b517ccf9182e4ed93a9c9b7d9e1a561243a6",
+    "experiments/results/cnn_multisensor_hier_v1train.json": "d33f7ec55a2a39a3dc52c4daf6f5b31d7d0576d1fc5ec76b30e160515d536387",
+    "experiments/results/cnn_reference_with_blended_imu_scenarios.json": "1fc8ae60dc75a974259e5db87df0725b239dd6c9c1e7bbf02983e5c38d4fa9ed",
+    "experiments/results/cnn_results_export_cpu_attempt.json": "1661f2023cd4ea47a7ad93351c87d1715bc4f2d64f304bfd14705d93c074b856",
+    "experiments/results/cnn_results_export_t4_attempt.json": "73d8bc1828edf419b4b539741751ce73d0cf0eb7ec2c650d2454c166d323b2ce",
+    "experiments/results/cnn_tuned.json": "b42cf566c15cf67c0585c2917cc183f164f0303959b06f6c4976c2ea4d93122d",
+    "experiments/results/cnn_tuned_imu_preview.json": "cb7e913481fab893cb8ad31f01d4a334af5c55fb00215fd9fb9261bbe289ea7e",
+    "experiments/results/cnn_tuned_scenarios.json": "6bfd4463503b178421f6df1cac3f60cc431b8f76caa257a6348474cf58f569e9",
+    "experiments/results/cnn_tuned_with_hierarchical_imu_scenarios.json": "3fe80dc321bc5a78371e21691018e079fdb8be35d0d02a7a098eaf2ac26fcf72",
+    "experiments/results/cnn_v1_reference.json": "7c9ebc009c1ef292eb5635e786e4155dc44e4f1e2b4e70179fbca51e1437cbc0",
+    "experiments/results/cnn_v1_reference_scenarios.json": "395d3facbaaf5487e6b4a7c706688befe0a9d5eb74231169271a8b78d0b63188",
+    "experiments/results/cnn_winner_comparison.json": "96fc87d7c10783a9eaf6e5b0a7852ba77c1bd60402ad5ef15100e49c59f23411",
+    "experiments/results/cnn_winner_import_verified.json": "7bda39ddcebd05f4edaa53cda87a631bbb0521bd9e19d4c1df19240b5335c1b4",
+    "experiments/results/cnn_winner_inference_verified.json": "9c1a25388921eebe8164384d99f99ded720bd9f38ea7893b3f559ba062c50c85",
+    "experiments/results/cnn_winner_selected.json": "4fcea5169ee6fc511addeac0fbc4413ac81b38b58acafa719db51eb870f9a198",
+    "experiments/results/cnn_winner_selected_scenarios.json": "abd907e2438814c307d306ed29efd6dffd73ac75282b0197bd3dc0c3e59eba14",
+    "experiments/results/code_cleanup_verified.json": "168430db7e588fd8c5364664b67c3867e95d087e5d73fa1887f1909f70a0854d",
+    "experiments/results/history_postprocessing_v1.json": "9f2ab95103e7613305a38409b142964778ae257e3d0e488e090cc3dfd6763465",
+    "experiments/results/kaggle_selected_cnn.json": "38b9a5d037f87b9ad255ba6a764efbeba7d0d519b19f30e6e7f831b343d67f19",
+    "experiments/results/kaggle_winner_cnn.json": "8ab6a9edb80b30abc794f03aa92a9930aef8bbc427e22b3482f3aecdb692f6cc",
+    "experiments/results/posttraining_fivefold_v1_comparison.json": "e25573859602374cb59653b5d90f5c877e86bd5bcef857ea96ee615a59debd7f",
+    "experiments/results/posttraining_fivefold_v1_distill.json": "f14a93234eb3dd385bbad30bf6c852e0638f27d7947aa1bab9a94520b80446bc",
+    "experiments/results/posttraining_fivefold_v1_finetune.json": "2168549cc5dbeb538eac3cb78c9c95763d959a5b7a60a577e8255e9146755825",
+    "experiments/results/posttraining_pilot_v1_comparison.json": "fc2d6193ed093a5d3e579e0877e04cd96734378b4e53130552862889c8a459bc",
+    "experiments/results/posttraining_pilot_v1_distill.json": "91c14c3d36b28d8509713a7bd5ff9a9d3f0bbee04d41189531e72f9bf084c3b3",
+    "experiments/results/posttraining_pilot_v1_finetune.json": "f55384957ebfc19a303b2791c5ccb1dee59ce082f07351fce4b5d80d7a518611",
+    "experiments/results/representation_adapter_pilot_v1_phase_adapter.json": "4154175e6943449b9aba124cf742393f887164de818d3ea45fe4c21dbff69991",
+    "experiments/results/representation_adapter_pilot_v1_phase_adapter_control.json": "2d98aa7761a0017e8201f8bd5a49cbcb8ea184ff9e3eddb77cd8957348fdf417",
+    "experiments/results/representation_metric_pilot_v1_multisensor_metric_finetune.json": "27557dd89bbe72383169152cc37ed3262caf2057f2d58eb2f8c717e3161b225d",
+    "experiments/results/representation_metric_pilot_v1_multisensor_metric_finetune_control.json": "cc61515b1183883a69a642425b2e863eafcacec9a53595f73fb13fd93e8afaef",
+    "experiments/results/representation_pilot_v1_cross_subject_supcon.json": "3b4ec0f7bf4bd92dc3d293054e40c6f9a2150d86956fd3c343071a8b4214fbdd",
+    "experiments/results/representation_pilot_v1_phase.json": "ef9d5ab19a3deb439769cdfd7042326f8863b390bbfe00d3b75e3e2e0026e595",
+    "experiments/results/representation_study_v1.json": "200b811970bc6d9c3f5df820e47a59541dae5cb838ba0570937a953ce5ab3c12",
+    "experiments/results/second_place_base_five_fold_merged_v1.json": "128d124a8cd5cccdbad87e4af11313b196fc4d3e5b5d5292a2e8696404d7552f",
+    "experiments/results/second_place_base_fold0_v1.json": "cb75e2981eaf4b0bf12ebea662cb8e3db02df283dd4e1c3b92cade4d65e836a7",
+    "experiments/results/second_place_base_fold1_v2.json": "bd66a0a9c58d669b9d951d5df5c23147befa376d8695ef664c2c5d3e9fab2638",
+    "experiments/results/second_place_base_fold2_v3.json": "c32d853caf5f92e58948966a79343fa06c69140941e67369d29728424dd6336f",
+    "experiments/results/second_place_base_fold3_v4.json": "0c1a0ab41f467d86d72d072d4338274e17f7eebb20612fe15bbb50e6931075c8",
+    "experiments/results/second_place_base_fold4_v5.json": "fc6e42c117f8ffa682ca3ad36b6cea2ca2fb4a9e98f87b4bf46d7088fba49901",
+    "experiments/results/second_place_hybrid_fusion_v1.json": "cfb78a7b128dab46905888e58f12eee32233416af86525d281e0f7bfe8aa565f",
+    "experiments/results/second_place_hybrid_fusion_v2.json": "a4e1ff7cf0c1e237ac07d74342c029cdc074f4e972d41a40d3bd7e97c1736d1a",
+    "experiments/results/second_place_hybrid_imu_group_loss_v1.json": "e180fdb844a839c1527412397d9fc508bfedeb25bb937701078cd182aa1f791a",
+    "experiments/results/second_place_hybrid_imu_group_loss_v1_routing_audit.json": "500e97e0ec55d0cdcfc3a400637f244a8cecb82eb6f4257577cbbf8135df0e00",
+    "experiments/results/second_place_hybrid_notebook_check_v1.json": "4fc1c7dede501e864e14141c31e897aa745ded4b60aaaa510d5edc2509675560",
+    "experiments/results/second_place_hybrid_training_batch_v1.json": "61b6caeaaed5e2bc46a9abfe3fb545d495601c8f42e9d24239bf922ecef415be",
+    "experiments/results/second_place_hybrid_training_v1.json": "55bda3330315de736821ed8d824698679310a9ecfba759202c18a8cf88f906d3",
+    "experiments/results/second_place_online_cache_cpu_v1.json": "5283510c90b67ecba6feff4f9409da1094e430db958f89182fb9ff24b13cf37c",
+    "experiments/results/second_place_online_cpu_full_launch_v1.json": "20024c42a14d84a4852cf913896d18087ab9518cb34d2e3ec33d726c8569da3f",
+    "experiments/results/second_place_online_cpu_pilot_v1.json": "8b5d1979d744b9164cabd1065901bfed6a20d5ef6793f6404d2e71dfd5724cda",
+    "experiments/results/second_place_online_padding_probe_v1.json": "a9f339fb56c42cb63374ff1c6e3f8250e328a5417e2abb8bf41ab20f742d0264",
+    "experiments/results/second_place_reproduction.json": "052e4cfea4f3aa29a9afafaec90d1a1ba8b5691af17238e94b8c4d080c119601",
+    "scripts/evaluate_second_place_online.py": "541ba951acd9b5de35fd98e76802c2e3cc096a5e0fd8d2be3262430b4c3b871c",
+    "src/cmi_project/second_place_online.py": "ee67b3eba35ccd052bbedc6cb5c8fec911354e9a230f77e13ffca9171bfd9d18",
+    "scripts/train_second_place_hybrid.py": "ff35108e8e2dacc1c444145c0d28e1ebecafc358d4991f8d5b720e95ca9e8ce3",
+    "scripts/export_second_place_hybrid.py": "854a77362b4e8d46ab30a51ef5e1c84428a37639eb8859e25c7f4cdc84599d9f",
+    "configs/folds.csv": "b30dc50594963357bfe70677b2f90822e8ff6008fd023e8b114573db921b924a",
+    "configs/folds.meta.json": "2fe11e89f2b89d1e31ec39c5100f1a486524cb4a33f63832844c4ae8986b3ab8"
+  },
+  "policy": "No data/output/cache/checkpoint deletion. No new training/submission. Original CPU run and hybrid trainer/exporter byte-identical. Old implementation archived; old result records remain in place.",
+  "verification": {
+    "at_utc": "2026-10-09T16:11:02.845421+00:00",
+    "archived_files_byte_identical": 37,
+    "protected_files_byte_identical": 79,
+    "selected_model_artifacts_and_15_oof_sha_check": "passed via main_experiment.py status --verify",
+    "raw_training_data_sha_check": "passed using original configs/data_source_hashes.json",
+    "compatibility_helpers": "same neutral function objects",
+    "fresh_notebook_export": "outputs\\second_place\\notebooks\\main-cleanup-export-check-v2-20261009.ipynb",
+    "notebook_sha256": "2d87530daa56efbb548b2b9dddfa1e6e916192a69f23a5a79e0fb92717ef6a0e",
+    "notebook_code_compiles": true,
+    "notebook_embedded_file_sha256": {
+      "src/cmi_project/__init__.py": "a9b4d6955ff52e13cd2d3ca44f6d81ce806614a615064138d46450fcb8086e64",
+      "src/cmi_project/artifact_io.py": "f5c9d3000030024b80425f704217518dceaf015210e2f92c35b5021bc1dafc31",
+      "src/cmi_project/dataset_analysis.py": "a57b73ec36653fc5e8064fd38d763b3a8dc5ab7a26ae5a6ad603167a1e88a337",
+      "src/cmi_project/evaluation.py": "524f2247f6758a0a338cd4d371ae30b6c61aacccd3c777a83796716415f332d3",
+      "src/cmi_project/second_place.py": "3e1208f36989867b1ebf08de10a57e64da44dbaba6bae8d7f1d652be49e146e1",
+      "src/cmi_project/second_place_evaluation.py": "00e9a165b6c2ecc1db1c70b5039619ba5389d0ab015e92c3ee99e64079e640c3",
+      "src/cmi_project/second_place_hybrid.py": "6a9a99ba3cda7a1e4583ac5be3108bf06f38b87f2dedccb34a65607234509073",
+      "src/cmi_project/second_place_online.py": "ee67b3eba35ccd052bbedc6cb5c8fec911354e9a230f77e13ffca9171bfd9d18",
+      "src/cmi_project/validation.py": "63340364deac9ad702a19c5bd234480d7a5197711e04ff8edb8e25b30a48946b",
+      "src/cmi_project/vendor/second_place/masked_batchnorm.py": "952d8c713f139b09ea88f263013d216d8ca6ca4685104fb9ad5bdbb15c16243a",
+      "src/cmi_project/vendor/second_place/model.py": "f9f4d0407b851911015e925f96b5bd3044da66ff977351f38eceeff18ab44341",
+      "src/cmi_project/vendor/second_place/test.py": "efcacf7678223a54ba2dc13f27d0e5aba5c37e6d3bf49c8a12465292e19e0b28",
+      "src/cmi_project/vendor/second_place/train.py": "32956549d253a17d39a9aade1a3c968463365fcbe2728c47c372df41eab6b156",
+      "src/cmi_project/vendor/second_place/utils.py": "8ae707c485a3edcca9e8955059be14627f5532ccf4ca3740ae0a9fbc11cc926e",
+      "scripts/train_second_place_hybrid.py": "ff35108e8e2dacc1c444145c0d28e1ebecafc358d4991f8d5b720e95ca9e8ce3",
+      "scripts/run_winner_experiments.py": "8ac99c0e2fea70f14ff1135c6cdd4041aad1bbed111cc4e5e4bb6f036de207d4",
+      "configs/folds.csv": "b30dc50594963357bfe70677b2f90822e8ff6008fd023e8b114573db921b924a",
+      "configs/folds.meta.json": "2fe11e89f2b89d1e31ec39c5100f1a486524cb4a33f63832844c4ae8986b3ab8",
+      "configs/second_place_source.json": "ef42b5ebb4ac34009801061a8d43c0495abfbd8111398bd9f0b79ffdc1b5b547",
+      "configs/data_source_hashes.json": "972e5fea95cbec845aac81fcc088f05e66d33e01b5ea1ffe041dd6d49027e428",
+      "src/cmi_project/vendor/second_place/README.md": "715ee932baa2588a6657436f23ba81fc0d2be00cb6f14364968b37dff00d259e",
+      "src/cmi_project/vendor/second_place/UPSTREAM.md": "1593718ff67755219d63c805dfb3a89db7b77bd81cac096ce8db4a19d581f896",
+      "src/cmi_project/vendor/second_place/requirements.txt": "7e71291119ac445f3e4df38dc8083e9d7c6ef32f3063ae0a40083ce9b2086cc6"
+    },
+    "existing_notebook_overwrite_guard": "passed",
+    "unit_tests": {
+      "passed": 33,
+      "elapsed_seconds": 14.288,
+      "command": "python -s -m unittest discover -s tests -v",
+      "reference": "tracked immutable src/cmi_project/vendor/second_place; tests no longer depend on ignored original checkout"
+    },
+    "running_cpu_process": {
+      "ProcessId": 2040,
+      "StartedUTC": "2026-10-09T07:35:46.7880230Z",
+      "CommandLine": "\"D:\\anaconda\\envs\\cmi\\python.exe\" -s -u scripts/evaluate_second_place_online.py --cache outputs/second_place/online_cache_cpu_v1 --imported outputs/kaggle_training/imported/second_place_base_five_fold_merged_v1 --output outputs/second_place/online_cpu_five_fold_v1 --name second_place_online_cpu_five_fold_v1 --threads 2",
+      "CPUSeconds": 59466.0625,
+      "WorkingSetBytes": 8909127680
+    },
+    "running_cpu_job": {
+      "fold": 2,
+      "scenario": "observed",
+      "order": 142,
+      "mode": "history_pseudo",
+      "status": "running",
+      "arrival": 1400,
+      "sequences": 1631,
+      "updates": 124,
+      "completed_jobs": 39,
+      "seconds": 925.0124581000127
+    },
+    "archive_git_index_bytes_match_original_sha": true,
+    "archive_line_endings": "scoped .gitattributes -text preserves archived bytes across checkouts",
+    "vendored_reference_tests_final_rerun": {
+      "passed": 7,
+      "elapsed_seconds": 6.206
+    }
+  },
+  "publication": {
+    "remote": "origin",
+    "branch": "main",
+    "status": "pending_commit_and_push"
+  }
+}

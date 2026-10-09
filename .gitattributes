@@ -1,0 +1,2 @@
+# Archived implementations preserve the original bytes recorded in the manifest.
+experiments/legacy/cnn_dynamics_mixup/** -text whitespace=cr-at-eol
