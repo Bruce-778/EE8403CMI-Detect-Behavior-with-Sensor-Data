@@ -1,0 +1,193 @@
+{
+  "status": "verified",
+  "source_url": "https://www.kaggle.com/code/mingweiwei03/cmi-second-place-fixed-fold-reproduction?scriptVersionId=356600289",
+  "archive_sha256": "dcfc43551c7d6db59cfafde5ff407a3bda1dd964ef79c9f8a1c35b5285db8620",
+  "metadata_sha256": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+  "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "training_inputs": {
+    "train.csv": {
+      "bytes": 1121545963,
+      "sha256": "f67c9c0066bc1cdba1884909a5eac1e8edd4b108b508ba68f18acff88ffff7e9"
+    },
+    "train_demographics.csv": {
+      "bytes": 2923,
+      "sha256": "e763685faa85415d12ebd948c1fe810df8835a738cd34bfc23fff5d66c1d73e2"
+    }
+  },
+  "arms": [
+    {
+      "fold": 4,
+      "architecture": "base",
+      "variant": "all",
+      "sequences": 1635,
+      "joint_classes": 102,
+      "score": 0.8867566826492301,
+      "binary_f1": 0.9951171875,
+      "macro_f1_9class": 0.7783961777984603
+    },
+    {
+      "fold": 4,
+      "architecture": "base",
+      "variant": "all_rot",
+      "sequences": 1635,
+      "joint_classes": 102,
+      "score": 0.8429306667706795,
+      "binary_f1": 0.9917113603120429,
+      "macro_f1_9class": 0.694149973229316
+    },
+    {
+      "fold": 4,
+      "architecture": "base",
+      "variant": "imu",
+      "sequences": 1635,
+      "joint_classes": 102,
+      "score": 0.8149320350553418,
+      "binary_f1": 0.9857633775159549,
+      "macro_f1_9class": 0.6441006925947288
+    },
+    {
+      "fold": 4,
+      "architecture": "base",
+      "variant": "imu_rot",
+      "sequences": 1635,
+      "joint_classes": 102,
+      "score": 0.7007143862198528,
+      "binary_f1": 0.978494623655914,
+      "macro_f1_9class": 0.4229341487837916
+    }
+  ],
+  "scenarios": {
+    "observed": {
+      "folds": [
+        {
+          "fold": 4,
+          "sequences": 1635,
+          "old": {
+            "score": 0.8586180363301137,
+            "binary_f1": 0.9902439024390244,
+            "macro_f1_9class": 0.7269921702212029
+          },
+          "new": {
+            "score": 0.8886223456566588,
+            "binary_f1": 0.9965770171149144,
+            "macro_f1_9class": 0.7806676741984031
+          },
+          "delta": 0.030004309326545076,
+          "history": {
+            "42": {
+              "overflow_fallbacks": 0,
+              "score": 0.9178225015054235,
+              "binary_f1": 0.9970703125,
+              "macro_f1_9class": 0.8385746905108472
+            },
+            "142": {
+              "overflow_fallbacks": 0,
+              "score": 0.9161118131735413,
+              "binary_f1": 0.9970674486803519,
+              "macro_f1_9class": 0.8351561776667308
+            },
+            "242": {
+              "overflow_fallbacks": 0,
+              "score": 0.9239627360083229,
+              "binary_f1": 0.9985344406448461,
+              "macro_f1_9class": 0.8493910313717997
+            }
+          }
+        }
+      ]
+    },
+    "aux_dropout50": {
+      "folds": [
+        {
+          "fold": 4,
+          "sequences": 1635,
+          "old": {
+            "score": 0.8192033220143644,
+            "binary_f1": 0.9887640449438202,
+            "macro_f1_9class": 0.6496425990849086
+          },
+          "new": {
+            "score": 0.8514313334561111,
+            "binary_f1": 0.9926506614404703,
+            "macro_f1_9class": 0.7102120054717519
+          },
+          "delta": 0.032228011441746696,
+          "history": {
+            "42": {
+              "overflow_fallbacks": 0,
+              "score": 0.8895217748287504,
+              "binary_f1": 0.9956033219345384,
+              "macro_f1_9class": 0.7834402277229624
+            },
+            "142": {
+              "overflow_fallbacks": 0,
+              "score": 0.8863408844857903,
+              "binary_f1": 0.9941291585127201,
+              "macro_f1_9class": 0.7785526104588604
+            },
+            "242": {
+              "overflow_fallbacks": 0,
+              "score": 0.888206690669759,
+              "binary_f1": 0.9951076320939335,
+              "macro_f1_9class": 0.7813057492455846
+            }
+          }
+        }
+      ]
+    },
+    "imu_only": {
+      "folds": [
+        {
+          "fold": 4,
+          "sequences": 1635,
+          "old": {
+            "score": 0.7778869672472511,
+            "binary_f1": 0.9819070904645477,
+            "macro_f1_9class": 0.5738668440299546
+          },
+          "new": {
+            "score": 0.8187351166792789,
+            "binary_f1": 0.9877270495827197,
+            "macro_f1_9class": 0.6497431837758381
+          },
+          "delta": 0.04084814943202775,
+          "history": {
+            "42": {
+              "overflow_fallbacks": 0,
+              "score": 0.8493057859611357,
+              "binary_f1": 0.9897209985315712,
+              "macro_f1_9class": 0.7088905733907
+            },
+            "142": {
+              "overflow_fallbacks": 0,
+              "score": 0.8546284528146428,
+              "binary_f1": 0.990699951052374,
+              "macro_f1_9class": 0.7185569545769117
+            },
+            "242": {
+              "overflow_fallbacks": 0,
+              "score": 0.8493314308653824,
+              "binary_f1": 0.9916870415647921,
+              "macro_f1_9class": 0.7069758201659727
+            }
+          }
+        }
+      ]
+    }
+  },
+  "orders": [
+    42,
+    142,
+    242
+  ],
+  "online_score": null,
+  "protocol": "Independent sequence baseline; causal joint history reported separately. No pseudo-label weight updates.",
+  "folds": [
+    4
+  ],
+  "architectures": [
+    "base"
+  ],
+  "scope": "partial held-out folds; not five-fold CV"
+}

@@ -459,3 +459,18 @@ base fold约4.498h，当前额度预计覆盖。其他架构完整五折无预�
 `outputs/second_place/evidence/kaggle_v5_fold4_started.jpg`；自动跟进更新为v5。
 完成先独立核验再合并全部五折到新目录，保留每折联合类别轴/train IDs/seed及
 来源，确认8151条OOF完整覆盖后才报告五折均值/样本标准差。
+
+
+## v5 base fold4 回收与核验
+
+版本356600289完成四个50epoch最后权重，运行4h38m55s。正常UI下载事件超时，但Downloads实际新文件75352011bytes；复制到recovery_v5，SHA256 dcfc43551c7d6db59cfafde5ff407a3bda1dd964ef79c9f8a1c35b5285db8620。
+全新导入second_place_base_fold4_v5_audited，原始输入字节SHA、固定fold、实际train6516/validation1635 IDs与subjects、train-only102联合类别、四份50epoch权重/history、显式logitIDs/排序CSV/概率/指标全部通过。metadata与先前四批字节相同。
+
+| 场景 | 旧方案同样本 | 新独立序列 | 增益 |
+|---|---:|---:|---:|
+| observed | 0.858618 | 0.888622 | +0.030004 |
+| aux_dropout50 | 0.819203 | 0.851431 | +0.032228 |
+| imu_only | 0.777887 | 0.818735 | +0.040848 |
+
+三个固定因果顺序已分别核验，详见second_place_base_fold4_v5.json；在线伪标签尚未运行。8151条样本各自批次已验证，但五折OOF合并与统计待完成。
+账户明确GPU3h59m available of30h，证据kaggle_v5_complete_quota.jpg。不新增训练，先合并。未push、比赛提交或替换生产权重。
