@@ -1,5 +1,5 @@
 {
-  "status": "base_five_fold_verified_online_cpu_and_hybrid_imu_training_running",
+  "status": "base_and_hybrid_five_fold_verified_online_cpu_running",
   "actual_reproduction_scores": {
     "scope": "full fixed five-fold development OOF",
     "record": "experiments\\results\\second_place_base_five_fold_merged_v1.json",
@@ -1728,7 +1728,7 @@
     "logged_joint_classes": 102,
     "run_seconds": 17081
   },
-  "next_action": "Monitor the existing CPU online job and the unique hybrid GPU run356690453. Do not duplicate either. After downloading the new hybrid ZIP, audit ten new IMU arms, merge unchanged original ten ToF arms in a fresh directory with provenance, then evaluate all8151 sequences/three scenarios/three fixed causal orders. Preserve matched CPU controls separately.",
+  "next_action": "Continue only the existing CPU online job PID2040, validate command/start and progress; no Kaggle run remains. Hybrid complete, no re-download/retrain. Finish90 online jobs, audit traces and30 complete matched-control OOF evaluations; do not select best order or replace frozen production weights.",
   "completed_fold3_runtime": {
     "source": "Kaggle private notebook",
     "title": "CMI Second Place Fixed Fold Reproduction",
@@ -1791,9 +1791,9 @@
     "training_input_hashes_verified_in_log": true,
     "run_seconds": 16735
   },
-  "latest_quota_evidence": "Account menu: GPU3h59m available of30h after v5 completion; screenshot outputs/second_place/evidence/kaggle_v5_complete_quota.jpg",
+  "latest_quota_evidence": "Account menu after hybrid: GPU0h45m available of30h; outputs/second_place/evidence/kaggle_hybrid_v1_complete_quota.jpg",
   "remaining_components": {
-    "simple_deep_full_five_fold": "not run; remaining3h59m insufficient demonstrated budget; no shortened experiments",
+    "simple_deep_full_five_fold": "not run; actual GPU0h45m remaining, insufficient demonstrated budget; no shortened experiments",
     "online_pseudo_label": "Full base fixed-five-fold CPU comparison running; no full OOF score yet. Subject-isolated pseudo-only/history+pseudo x3 scenarios x3 fixed orders; matched independent/history controls. No new GPU training.",
     "author_original_ten_fold_weights": "not reproduced"
   },
@@ -1851,8 +1851,8 @@
     ]
   },
   "hybrid_experiment": {
-    "status": "running",
-    "scope": "Registered fixed-five-fold IMU loss ablation; no measured CV result yet",
+    "status": "complete_verified",
+    "scope": "Ten IMU arms completed50epochs; exact original ten ToF arms reused and all20 arms/routes/full OOF audited",
     "launch_utc": "2026-10-09T08:17:10Z",
     "recorded_utc": "2026-10-09T08:19:42.709647+00:00",
     "script_version_id": 356690453,
@@ -1903,7 +1903,7 @@
       "folds_bytes_sha256": "b30dc50594963357bfe70677b2f90822e8ff6008fd023e8b114573db921b924a",
       "train_csv_sha256": "f67c9c0066bc1cdba1884909a5eac1e8edd4b108b508ba68f18acff88ffff7e9",
       "train_demographics_sha256": "e763685faa85415d12ebd948c1fe810df8835a738cd34bfc23fff5d66c1d73e2",
-      "feature_cache": "completed; first base/imu fold0 training epoch14/50 observed in normal UI"
+      "feature_cache": "completed; all ten models50epochs verified from actual ZIP"
     },
     "evidence": "outputs/second_place/evidence/kaggle_hybrid_v1_running.jpg",
     "preflight_record": "experiments/results/second_place_hybrid_notebook_check_v1.json",
@@ -1916,15 +1916,23 @@
     },
     "online_competition_score": null,
     "latest_observation": {
-      "fold": 0,
-      "variant": "imu",
-      "epoch": 14,
+      "status": "complete_verified",
+      "models": 10,
       "epochs": 50,
-      "run_seconds": 542.8,
-      "epoch_seconds": 23.1,
-      "status": "running",
-      "interpretation": "Training is advancing; intermediate epoch scores are not final CV."
-    }
+      "run_seconds": 11678.5
+    },
+    "completed_at_utc": "2026-10-09T11:48:37.095543+00:00",
+    "run_seconds": 11678.5,
+    "result_record": "experiments/results/second_place_hybrid_imu_group_loss_v1.json",
+    "result_sha256": "e180fdb844a839c1527412397d9fc508bfedeb25bb937701078cd182aa1f791a",
+    "recovery_archive": "outputs/second_place/recovery_hybrid_v1/second_place_hybrid_experiments.zip",
+    "archive_bytes": 129107788,
+    "archive_sha256": "7ce9736f233ea71b4633bc31439f9dbb9d88c3cee62ec39f51f66b9560cc410e",
+    "gpu_quota_after_completion": {
+      "available": "0h45m of30h",
+      "evidence": "outputs/second_place/evidence/kaggle_hybrid_v1_complete_quota.jpg"
+    },
+    "completion_evidence": "outputs/second_place/evidence/kaggle_hybrid_v1_complete_output.jpg"
   },
   "hybrid_completed_fusion": {
     "record": "experiments/results/second_place_hybrid_fusion_v2.json",

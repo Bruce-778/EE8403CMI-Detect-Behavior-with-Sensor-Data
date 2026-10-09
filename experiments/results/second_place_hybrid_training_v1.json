@@ -1,6 +1,6 @@
 {
-  "status": "running",
-  "scope": "Registered fixed-five-fold IMU loss ablation; no measured CV result yet",
+  "status": "complete_verified",
+  "scope": "Ten IMU arms completed50epochs; exact original ten ToF arms reused and all20 arms/routes/full OOF audited",
   "launch_utc": "2026-10-09T08:17:10Z",
   "recorded_utc": "2026-10-09T08:19:42.709647+00:00",
   "script_version_id": 356690453,
@@ -51,7 +51,7 @@
     "folds_bytes_sha256": "b30dc50594963357bfe70677b2f90822e8ff6008fd023e8b114573db921b924a",
     "train_csv_sha256": "f67c9c0066bc1cdba1884909a5eac1e8edd4b108b508ba68f18acff88ffff7e9",
     "train_demographics_sha256": "e763685faa85415d12ebd948c1fe810df8835a738cd34bfc23fff5d66c1d73e2",
-    "feature_cache": "completed; first base/imu fold0 training epoch14/50 observed in normal UI"
+    "feature_cache": "completed; all ten models50epochs verified from actual ZIP"
   },
   "evidence": "outputs/second_place/evidence/kaggle_hybrid_v1_running.jpg",
   "preflight_record": "experiments/results/second_place_hybrid_notebook_check_v1.json",
@@ -64,13 +64,21 @@
   },
   "online_competition_score": null,
   "latest_observation": {
-    "fold": 0,
-    "variant": "imu",
-    "epoch": 14,
+    "status": "complete_verified",
+    "models": 10,
     "epochs": 50,
-    "run_seconds": 542.8,
-    "epoch_seconds": 23.1,
-    "status": "running",
-    "interpretation": "Training is advancing; intermediate epoch scores are not final CV."
-  }
+    "run_seconds": 11678.5
+  },
+  "completed_at_utc": "2026-10-09T11:48:37.095543+00:00",
+  "run_seconds": 11678.5,
+  "result_record": "experiments/results/second_place_hybrid_imu_group_loss_v1.json",
+  "result_sha256": "e180fdb844a839c1527412397d9fc508bfedeb25bb937701078cd182aa1f791a",
+  "recovery_archive": "outputs/second_place/recovery_hybrid_v1/second_place_hybrid_experiments.zip",
+  "archive_bytes": 129107788,
+  "archive_sha256": "7ce9736f233ea71b4633bc31439f9dbb9d88c3cee62ec39f51f66b9560cc410e",
+  "gpu_quota_after_completion": {
+    "available": "0h45m of30h",
+    "evidence": "outputs/second_place/evidence/kaggle_hybrid_v1_complete_quota.jpg"
+  },
+  "completion_evidence": "outputs/second_place/evidence/kaggle_hybrid_v1_complete_output.jpg"
 }

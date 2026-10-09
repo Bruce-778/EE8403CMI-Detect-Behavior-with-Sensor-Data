@@ -74,7 +74,7 @@ environment; no competition submission, push or frozen production replacement.
 
 ## Actual GPU launch: private version356690453
 
-Normal browser Save & Run All accepted on2026-10-09T08:17:10Z. The unique private notebook is Running: https://www.kaggle.com/code/mingweiwei03/cmi-second-place-hybrid-imu-fixed-folds?scriptVersionId=356690453. Official CMI competition input attached, T4x2, internet off, editor Pin to original environment. Logs label the container Latest Container Image, but actual torch2.11.0+cu128/TeslaT4 matches the completed base controls; this display difference is recorded rather than hidden. Fixed-fold byte SHA and both raw CSV byte SHAs passed in actual startup logs. Cache generation is still in progress; no CV result is claimed.
+Normal browser Save & Run All accepted on2026-10-09T08:17:10Z. The unique private notebook is Running: https://www.kaggle.com/code/mingweiwei03/cmi-second-place-hybrid-imu-fixed-folds?scriptVersionId=356690453. Official CMI competition input attached, T4x2, internet off, editor Pin to original environment. Logs label the container Latest Container Image, but actual torch2.11.0+cu128/TeslaT4 matches the completed base controls; this display difference is recorded rather than hidden. Fixed-fold byte SHA and both raw CSV byte SHAs passed in actual startup logs. Cache generation and training have completed; the strict full result audit is recorded below.
 
 All ten IMU models retain50epochs. After completion download second_place_hybrid_experiments.zip via normalUI into a new recovery/import directory, audit each arm and new-loss provenance, then preserve and merge the original ten all/all_rot arms with identical per-fold joint axes/trainIDs/seed. Report all8151 sequence OOF, eachfold/mean/sampleSD, three missing-sensor scenarios and all three fixed causal history orders. The existing CPU online PID2040 remains running and its source is unchanged.
 
@@ -98,3 +98,35 @@ yet run. Preserve all source files and use a new name if import fails.
 ```powershell
 & 'D:\anaconda\envs\cmi\python.exe' -s scripts/evaluate_second_place_hybrid.py --archive <new-recovered-ZIP> --work-dir outputs/second_place/hybrid_import_v1 --output-dir outputs/kaggle_training/imported/second_place_hybrid_imu_group_loss_v1 --name second_place_hybrid_imu_group_loss_v1 --source-url 'https://www.kaggle.com/code/mingweiwei03/cmi-second-place-hybrid-imu-fixed-folds?scriptVersionId=356690453'
 ```
+
+## Actual complete hybrid comparison: 2026-10-09
+
+Version356690453 completed in11678.5seconds (3h14m38.5s). The newZIP is129107788bytes, SHA2567ce9736f233ea71b4633bc31439f9dbb9d88c3cee62ec39f51f66b9560cc410e. NormalUI download event timed out, but the actual Downloads file was checked and copied to a fresh recovery directory. All ten new IMU50epoch last weights/history/provenance/IDs and original arms passed; the new20arm package preserves original ToF weights, per-fold axes/trainIDs/seed and all source archive/copied-file hashes. Final matched base replay also passed.
+
+Record: `experiments/results/second_place_hybrid_imu_group_loss_v1.json`; separate strict routing audit retained. All15 saved OOF files (including frozen-method controls) each cover8151 unique sequences; every fold mean and sampleSD was recomputed from the saved OOF. No truth was supplied to causal inference; all fixed orders were reset and reported.
+
+| Scenario | Original base mean±sampleSD | Hybrid mean±sampleSD | Delta |
+|---|---:|---:|---:|
+| observed | 0.891362 ± 0.012919 | 0.891716 ± 0.012698 | +0.000354 |
+| aux_dropout50 | 0.861310 ± 0.013242 | 0.861624 ± 0.011197 | +0.000314 |
+| imu_only | 0.831799 ± 0.013723 | 0.832369 ± 0.012404 | +0.000569 |
+
+Independent hybrid scores by fold:
+| Fold | observed | aux_dropout50 | imu_only |
+|---|---:|---:|---:|
+| 0 | 0.889852 | 0.862009 | 0.837305 |
+| 1 | 0.894932 | 0.864715 | 0.839346 |
+| 2 | 0.874979 | 0.848246 | 0.814194 |
+| 3 | 0.910194 | 0.878060 | 0.845310 |
+| 4 | 0.888622 | 0.855091 | 0.825688 |
+
+Causal history: all fixed orders, no selection. Each cell is hybrid mean±sampleSD (delta from original base).
+| Order | observed | aux_dropout50 | imu_only |
+|---|---:|---:|---:|
+| 42 | 0.921325 ± 0.010253 (+0.000437) | 0.892203 ± 0.010703 (-0.000997) | 0.866801 ± 0.013070 (+0.002219) |
+| 142 | 0.920567 ± 0.010315 (+0.000846) | 0.893480 ± 0.011102 (+0.000014) | 0.866270 ± 0.010560 (+0.001758) |
+| 242 | 0.921900 ± 0.009483 (+0.000317) | 0.891393 ± 0.009337 (-0.002972) | 0.864564 ± 0.008767 (+0.000121) |
+
+Independent gains are small (+0.000314–0.000569), and history effects are mixed: aux_dropout50 orders42/242 decrease. This trial does not establish a robust universal improvement or an online gain. Probability fusion remains a separate completed screening result; online pseudo-label contribution is still running on CPU. Dynamic34D/THM and loss retraining on ToF remain untested. Original three architectures/ten-fold weights are not reproduced.
+
+Normal accountUI after completion explicitly shows GPU0h45m available of30h, saved as `outputs/second_place/evidence/kaggle_hybrid_v1_complete_quota.jpg`. This does not support new complete architecture training; no newGPU run is started. No push, competition submission or frozen production replacement. Keep the cmi follow-up while the CPU experiment remains active.
