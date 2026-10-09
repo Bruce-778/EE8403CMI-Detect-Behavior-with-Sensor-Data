@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 from cmi_project.evaluation import ALL_GESTURES, PROBABILITY_COLUMNS, _checked_predictions, evaluate_oof_frames
 from cmi_project.second_place import collapse_probabilities
-from cmi_project.second_place_evaluation import causal_decode
+from cmi_project.second_place_evaluation import causal_decode, read_aligned_logits
 from cmi_project.validation import load_fold_manifest
 
 WEIGHTS = (.1, .2, .5)
@@ -35,6 +35,7 @@ def main():
     manifest = load_fold_manifest(ROOT / 'configs/folds.csv')
     base = ROOT / 'outputs/kaggle_training/imported/second_place_base_five_fold_merged_v1/outputs/second_place/base_five_fold_merged'
     original_record = json.loads((ROOT / 'experiments/results/second_place_base_five_fold_merged_v1.json').read_text())
+    raw_metadata = pd.read_csv(base / 'cache/metadata.csv')
     if original_record['status'] != 'verified':
         raise ValueError('Verified base inputs required.')
     result = {'status': 'running', 'scope': 'fixed-five-fold development complementarity screening; weights fixed in code, no optimal selection',
@@ -53,8 +54,9 @@ def main():
                 directory = base / f'routed/{scenario}/fold_{fold}'
                 base_frame = _checked_predictions(manifest, fold, pd.read_csv(directory / 'predictions.csv'), require_fingerprint=True)
                 own_frame = _checked_predictions(manifest, fold, own[own.fold == fold], require_fingerprint=True).set_index('sequence_id').loc[base_frame.sequence_id]
-                ids = pd.Index(np.load(directory / 'joint_sequence_ids.npy', allow_pickle=False))
-                logits = np.load(directory / 'joint_logits.npy', allow_pickle=False)
+                # Merged routed folders inherit the separately audited original
+                # raw metadata order. Arm folders carry explicit logit IDs.
+                ids, logits = read_aligned_logits(directory, raw_metadata, fold)
                 if not ids.is_unique or set(ids) != set(base_frame.sequence_id):
                     raise ValueError('Joint logit IDs differ from paired samples.')
                 logits = logits[ids.get_indexer(base_frame.sequence_id)]
@@ -65,7 +67,7 @@ def main():
                     raise ValueError('Base probabilities/logit class axis differs.')
                 if not np.array_equal([labels[i][1] for i in q.argmax(1)], base_frame.predicted_gesture):
                     raise ValueError('Base joint decisions differ.')
-                for path in [directory / 'predictions.csv', directory / 'joint_sequence_ids.npy', directory / 'joint_logits.npy', base / f'base/imu/fold_{fold}/provenance.json']:
+                for path in [directory / 'predictions.csv', base / 'cache/metadata.csv', directory / 'joint_logits.npy', base / f'base/imu/fold_{fold}/provenance.json']:
                     result['source_sha256'][str(path.relative_to(ROOT))] = sha(path)
                 frames.setdefault('base_joint', {})[fold] = base_frame
                 frames.setdefault('ours', {})[fold] = own_frame.reset_index()

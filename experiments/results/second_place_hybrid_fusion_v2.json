@@ -1,0 +1,1540 @@
+{
+  "status": "verified",
+  "scope": "fixed-five-fold development complementarity screening; weights fixed in code, no optimal selection",
+  "own_weights": [
+    0.1,
+    0.2,
+    0.5
+  ],
+  "orders": [
+    42,
+    142,
+    242
+  ],
+  "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+  "source_sha256": {
+    "outputs\\winner_comparison\\candidate\\routed\\observed\\oof_predictions.csv": "d39082084aa2b533fa6c585f7ed0b8505a05c9a9f803ade0f6fccff9688334e2",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_0\\predictions.csv": "029b7b772adc06606410895fed167d1cee571363be46ab444608eb898f6e3484",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\cache\\metadata.csv": "75f4be662456a1ff5e020eeb5175e698aa66984d7b336c5d2af6c4edb7e93916",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_0\\joint_logits.npy": "a573538d7310c4f8a8e999a3bdb56e7f3b963818426f31327e3832558b258a70",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\base\\imu\\fold_0\\provenance.json": "0d884b344e0bcf7e07b298c6c8581299a8270d3aeca635a8b0e7bf46f1f887cd",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_1\\predictions.csv": "700f028178c29329bf13e7ac8c42aefe87d9b0ec25b783c447bcf3a3de996c11",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_1\\joint_logits.npy": "aa47fa538059ab2f1de59d3af47b7a7ad214aa0ba9a12f56a1f0738d17b8c439",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\base\\imu\\fold_1\\provenance.json": "efb626cbd249ee52be37def6775a731908fc97a1a3279283d5b911b86820d5c9",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_2\\predictions.csv": "fbbb5bb0074edba9414109dc6802a2ee426cc5d5bf23f96c25e02d0a093adbc9",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_2\\joint_logits.npy": "5e6d662bd73e9ecf0b55353236d7020c2ad5f7ece478c05e7de0974252c9174e",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\base\\imu\\fold_2\\provenance.json": "4e12b2fd402e2fc9f28a7ce164b4166f749ec7a701e2a6f93ab6a8717e6210ff",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_3\\predictions.csv": "d6862836c3e36f44349e0057fda79f46b70b979aff33e87f390ba4e5a1d7502d",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_3\\joint_logits.npy": "64f253fb98f6ecc7db77c27ddfe56debfbbb8b5fc2e8256b35f347ce7df0217f",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\base\\imu\\fold_3\\provenance.json": "6bf70c9d6dc214c7806a5623c76bd2e81d23b17c0dff1c48f0789406bbf70c3a",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_4\\predictions.csv": "1ffc80ec2a0a0247324395f7eb7864f548b9ceae8dac2441b6e6d4a4b4a941c6",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\observed\\fold_4\\joint_logits.npy": "be9567b1ef1d6438f396bc64ae4e05f1c557368613d190c66e3337342a35813b",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\base\\imu\\fold_4\\provenance.json": "bc4aa70d202dc4c0e6540489e55718225f4ed3dc57e362b6a2458249ad6fd1b0",
+    "outputs\\winner_comparison\\candidate\\routed\\aux_dropout50\\oof_predictions.csv": "5d752ad7b1a66f7338d953e7739b4b581e825b6935b4e77a48c05f92dcbdcc99",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_0\\predictions.csv": "122f96f44c27e6ded52fa489581c7cdea597c0450186a0df2272d8f645b88c7a",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_0\\joint_logits.npy": "b34079db522bcedda587e1babedfb58724f9015f5a388b3cff7eec452b206e8d",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_1\\predictions.csv": "afe91aca9a644cb605d952fb850e49572abcb18731170e119db78cd510a0c8aa",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_1\\joint_logits.npy": "df5f30f4db1f39baa80699792a24a9779df84bc70705a2dfc3c9746e1df5101e",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_2\\predictions.csv": "be4f5d264cb471d611a000bf883edd190377168eb47f66c45863e3d91b95d826",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_2\\joint_logits.npy": "85a7c5ac312042190265e11a2f3341a59a478cce13ae6a87a3fe727b4d0ecb6c",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_3\\predictions.csv": "723d41b477499972322742e43e4ba5a617beb2184bf4418941fe715ed607b94d",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_3\\joint_logits.npy": "381f317df10336d6382a2e4aaf8211718853093eb71544f39a56b12cb68b743d",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_4\\predictions.csv": "21d386820f42cfebeb4638c6bbf94100d9596b7717524d8fb2c7212b6d66d214",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\aux_dropout50\\fold_4\\joint_logits.npy": "13679b2f6d104a536aa12eda3f5ce1fff45f7d2c2b009bde04c69d391ce893b9",
+    "outputs\\winner_comparison\\candidate\\routed\\imu_only\\oof_predictions.csv": "562c921f71519f9c718f4b118332d420063a6968559ffbd9e529f3617cf8eafc",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_0\\predictions.csv": "7e1115cf02ca7c68ceecdcbe7da7235abb62789bc4970745c7dc077b0387b8c5",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_0\\joint_logits.npy": "819ed85578d5b54a6c9e5ab9d8d0303cfa6dec26775621cd201bb781baa156ea",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_1\\predictions.csv": "6883d9a69171b0f0b4f0c3d3f8065993158529920c02632abe37845898dc1594",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_1\\joint_logits.npy": "0448ad3e1eae6009a389a68cdfdc9658b2e4be5d440bcb6713191cde3dd4d57f",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_2\\predictions.csv": "512f2e3726768586e50df6464b98c2eb14acf572db25b68aff9f382d87ea4a3f",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_2\\joint_logits.npy": "f64fdae63a1353f3b1819bd625b76b607356a1e7f14111741b9cffc21236e51f",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_3\\predictions.csv": "b9d12448c622d0b405ff2a8e32bb8c81132226d2e3ff96e257dc8045bd952274",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_3\\joint_logits.npy": "365412bc1b43b35956195a4562518e9129adb79e5fa359f24b5213c0a2b6c7ea",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_4\\predictions.csv": "adfa75a790109ee58569384398a76e566988ed7e11409c57a5e8e1c1bfee248d",
+    "outputs\\kaggle_training\\imported\\second_place_base_five_fold_merged_v1\\outputs\\second_place\\base_five_fold_merged\\routed\\imu_only\\fold_4\\joint_logits.npy": "e57727528f7256089bcf73ee2676922e4705b47b3430286e88c9fb1a37be0e86"
+  },
+  "scenarios": {
+    "observed": {
+      "evaluations": {
+        "base_joint": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_base_joint",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8913616340904627,
+            "binary_f1": 0.9957004024693786,
+            "macro_f1_9class": 0.7870228657115469
+          },
+          "fold_std": {
+            "score": 0.012918826254867158,
+            "binary_f1": 0.000928492917880637,
+            "macro_f1_9class": 0.02542556573532798
+          },
+          "oof": {
+            "score": 0.891485425349035,
+            "binary_f1": 0.9956989247311828,
+            "macro_f1_9class": 0.7872719259668872
+          }
+        },
+        "ours": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_ours",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8520287872641525,
+            "binary_f1": 0.9872411250048525,
+            "macro_f1_9class": 0.7168164495234526
+          },
+          "fold_std": {
+            "score": 0.008718663967811539,
+            "binary_f1": 0.004827736615349934,
+            "macro_f1_9class": 0.014342624840866923
+          },
+          "oof": {
+            "score": 0.8522023681112654,
+            "binary_f1": 0.9872448979591837,
+            "macro_f1_9class": 0.7171598382633471
+          }
+        },
+        "base_marginal_control": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_base_marginal_control",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8914352162502972,
+            "binary_f1": 0.9956038370568951,
+            "macro_f1_9class": 0.7872665954436991
+          },
+          "fold_std": {
+            "score": 0.01294478857473198,
+            "binary_f1": 0.0008992245527298609,
+            "macro_f1_9class": 0.025470226496391184
+          },
+          "oof": {
+            "score": 0.8916260955074757,
+            "binary_f1": 0.9956016029713616,
+            "macro_f1_9class": 0.7876505880435899
+          }
+        },
+        "marginal_ours_0.1": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_marginal_ours_0.1",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8926297525439943,
+            "binary_f1": 0.9958952345459247,
+            "macro_f1_9class": 0.7893642705420639
+          },
+          "fold_std": {
+            "score": 0.01359617347494784,
+            "binary_f1": 0.0007270897986465424,
+            "macro_f1_9class": 0.026764512152772084
+          },
+          "oof": {
+            "score": 0.8927652037953211,
+            "binary_f1": 0.9958936253421979,
+            "macro_f1_9class": 0.7896367822484441
+          }
+        },
+        "joint_ours_0.1": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_ours_0.1",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.892127809351708,
+            "binary_f1": 0.9960904568022929,
+            "macro_f1_9class": 0.788165161901123
+          },
+          "fold_std": {
+            "score": 0.013520258750485561,
+            "binary_f1": 0.0013302965391705029,
+            "macro_f1_9class": 0.026495921793113424
+          },
+          "oof": {
+            "score": 0.8922351228811207,
+            "binary_f1": 0.9960891669925694,
+            "macro_f1_9class": 0.788381078769672
+          }
+        },
+        "joint_history_ours_0.1_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.1_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9211393523229461,
+            "binary_f1": 0.996087621756838,
+            "macro_f1_9class": 0.8461910828890542
+          },
+          "fold_std": {
+            "score": 0.01214928718624396,
+            "binary_f1": 0.0015011195460953913,
+            "macro_f1_9class": 0.02327305184646248
+          },
+          "oof": {
+            "score": 0.9212049030341005,
+            "binary_f1": 0.9960861056751468,
+            "macro_f1_9class": 0.8463237003930543
+          }
+        },
+        "joint_history_ours_0.1_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.1_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9209297959004852,
+            "binary_f1": 0.9967739248343216,
+            "macro_f1_9class": 0.8450856669666488
+          },
+          "fold_std": {
+            "score": 0.009959398603025858,
+            "binary_f1": 0.0008869411446843689,
+            "macro_f1_9class": 0.019781353411448484
+          },
+          "oof": {
+            "score": 0.9209663512997426,
+            "binary_f1": 0.9967738781894613,
+            "macro_f1_9class": 0.8451588244100239
+          }
+        },
+        "joint_history_ours_0.1_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.1_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9226052504044077,
+            "binary_f1": 0.9965810100633445,
+            "macro_f1_9class": 0.8486294907454708
+          },
+          "fold_std": {
+            "score": 0.010472339237376633,
+            "binary_f1": 0.0017202827215689696,
+            "macro_f1_9class": 0.020029440574997046
+          },
+          "oof": {
+            "score": 0.9226931227965218,
+            "binary_f1": 0.9965790245332812,
+            "macro_f1_9class": 0.8488072210597624
+          }
+        },
+        "marginal_ours_0.2": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_marginal_ours_0.2",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8939595267626235,
+            "binary_f1": 0.9962879584260491,
+            "macro_f1_9class": 0.7916310950991978
+          },
+          "fold_std": {
+            "score": 0.013471885592526649,
+            "binary_f1": 0.0013064204392030693,
+            "macro_f1_9class": 0.026140081118517084
+          },
+          "oof": {
+            "score": 0.8941128251681278,
+            "binary_f1": 0.9962854349951125,
+            "macro_f1_9class": 0.7919402153411432
+          }
+        },
+        "joint_ours_0.2": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_ours_0.2",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8940910993314602,
+            "binary_f1": 0.9964826109463674,
+            "macro_f1_9class": 0.7916995877165534
+          },
+          "fold_std": {
+            "score": 0.013083298029622553,
+            "binary_f1": 0.0012069405849374167,
+            "macro_f1_9class": 0.025513348708011627
+          },
+          "oof": {
+            "score": 0.8942346338467866,
+            "binary_f1": 0.9964809384164223,
+            "macro_f1_9class": 0.7919883292771508
+          }
+        },
+        "joint_history_ours_0.2_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.2_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9223215546493039,
+            "binary_f1": 0.9963807337168682,
+            "macro_f1_9class": 0.8482623755817398
+          },
+          "fold_std": {
+            "score": 0.01202997966012185,
+            "binary_f1": 0.0012705920845149984,
+            "macro_f1_9class": 0.023079245156997632
+          },
+          "oof": {
+            "score": 0.9223813396248386,
+            "binary_f1": 0.9963792934729425,
+            "macro_f1_9class": 0.8483833857767348
+          }
+        },
+        "joint_history_ours_0.2_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.2_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9222361028649674,
+            "binary_f1": 0.9969703889942594,
+            "macro_f1_9class": 0.8475018167356755
+          },
+          "fold_std": {
+            "score": 0.00984684108403941,
+            "binary_f1": 0.0009324756027005202,
+            "macro_f1_9class": 0.01915820116781797
+          },
+          "oof": {
+            "score": 0.9222866535953635,
+            "binary_f1": 0.9969688080571038,
+            "macro_f1_9class": 0.8476044991336233
+          }
+        },
+        "joint_history_ours_0.2_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.2_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9238097399888909,
+            "binary_f1": 0.9962870386641931,
+            "macro_f1_9class": 0.8513324413135891
+          },
+          "fold_std": {
+            "score": 0.010700485275135308,
+            "binary_f1": 0.0017749220635924579,
+            "macro_f1_9class": 0.02030476858483387
+          },
+          "oof": {
+            "score": 0.923884837031963,
+            "binary_f1": 0.9962847086429409,
+            "macro_f1_9class": 0.8514849654209851
+          }
+        },
+        "marginal_ours_0.5": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_marginal_ours_0.5",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8876157575422348,
+            "binary_f1": 0.9951062460322962,
+            "macro_f1_9class": 0.7801252690521735
+          },
+          "fold_std": {
+            "score": 0.01420197496412398,
+            "binary_f1": 0.0023184192198812134,
+            "macro_f1_9class": 0.02624513193906493
+          },
+          "oof": {
+            "score": 0.8877431225394833,
+            "binary_f1": 0.995105716523101,
+            "macro_f1_9class": 0.7803805285558656
+          }
+        },
+        "joint_ours_0.5": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_ours_0.5",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8897129869939423,
+            "binary_f1": 0.99599085317699,
+            "macro_f1_9class": 0.7834351208108945
+          },
+          "fold_std": {
+            "score": 0.0133626030547721,
+            "binary_f1": 0.001697938240931305,
+            "macro_f1_9class": 0.025281687383446442
+          },
+          "oof": {
+            "score": 0.8898733390658562,
+            "binary_f1": 0.9959886508169455,
+            "macro_f1_9class": 0.7837580273147668
+          }
+        },
+        "joint_history_ours_0.5_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.5_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9165515619027612,
+            "binary_f1": 0.996477662685637,
+            "macro_f1_9class": 0.8366254611198854
+          },
+          "fold_std": {
+            "score": 0.014758019166682951,
+            "binary_f1": 0.0018052196588913608,
+            "macro_f1_9class": 0.028641584773134693
+          },
+          "oof": {
+            "score": 0.9165965663964061,
+            "binary_f1": 0.9964761158966328,
+            "macro_f1_9class": 0.8367170168961794
+          }
+        },
+        "joint_history_ours_0.5_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.5_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9173391081140968,
+            "binary_f1": 0.9965753785120697,
+            "macro_f1_9class": 0.8381028377161239
+          },
+          "fold_std": {
+            "score": 0.014314024533995395,
+            "binary_f1": 0.001089033688206703,
+            "macro_f1_9class": 0.02793834573742546
+          },
+          "oof": {
+            "score": 0.9174444436446765,
+            "binary_f1": 0.9965736661771905,
+            "macro_f1_9class": 0.8383152211121625
+          }
+        },
+        "joint_history_ours_0.5_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_observed_joint_history_ours_0.5_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.9184342630964946,
+            "binary_f1": 0.9956951795535083,
+            "macro_f1_9class": 0.8411733466394808
+          },
+          "fold_std": {
+            "score": 0.013503720190005945,
+            "binary_f1": 0.0018398069386687341,
+            "macro_f1_9class": 0.025728867613461454
+          },
+          "oof": {
+            "score": 0.9185764611381951,
+            "binary_f1": 0.995693873556469,
+            "macro_f1_9class": 0.8414590487199213
+          }
+        }
+      },
+      "complementarity": [
+        {
+          "fold": 0,
+          "sequences": 1627,
+          "ours_correct_base_wrong": 76,
+          "base_correct_ours_wrong": 221,
+          "both_wrong": 203
+        },
+        {
+          "fold": 1,
+          "sequences": 1632,
+          "ours_correct_base_wrong": 89,
+          "base_correct_ours_wrong": 210,
+          "both_wrong": 178
+        },
+        {
+          "fold": 2,
+          "sequences": 1631,
+          "ours_correct_base_wrong": 82,
+          "base_correct_ours_wrong": 165,
+          "both_wrong": 222
+        },
+        {
+          "fold": 3,
+          "sequences": 1626,
+          "ours_correct_base_wrong": 73,
+          "base_correct_ours_wrong": 197,
+          "both_wrong": 150
+        },
+        {
+          "fold": 4,
+          "sequences": 1635,
+          "ours_correct_base_wrong": 78,
+          "base_correct_ours_wrong": 174,
+          "both_wrong": 205
+        }
+      ],
+      "delta_from_base_joint": {
+        "base_joint": 0.0,
+        "ours": -0.03933284682631011,
+        "base_marginal_control": 7.358215983455096e-05,
+        "marginal_ours_0.1": 0.001268118453531697,
+        "joint_ours_0.1": 0.0007661752612453387,
+        "joint_history_ours_0.1_order_42": 0.02977771823248343,
+        "joint_history_ours_0.1_order_142": 0.02956816181002253,
+        "joint_history_ours_0.1_order_242": 0.03124361631394501,
+        "marginal_ours_0.2": 0.0025978926721608175,
+        "joint_ours_0.2": 0.0027294652409975972,
+        "joint_history_ours_0.2_order_42": 0.030959920558841225,
+        "joint_history_ours_0.2_order_142": 0.030874468774504726,
+        "joint_history_ours_0.2_order_242": 0.03244810589842828,
+        "marginal_ours_0.5": -0.003745876548227889,
+        "joint_ours_0.5": -0.0016486470965203504,
+        "joint_history_ours_0.5_order_42": 0.025189927812298563,
+        "joint_history_ours_0.5_order_142": 0.02597747402363415,
+        "joint_history_ours_0.5_order_242": 0.027072629006031912
+      }
+    },
+    "aux_dropout50": {
+      "evaluations": {
+        "base_joint": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_base_joint",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8613101885311109,
+            "binary_f1": 0.9933474323831624,
+            "macro_f1_9class": 0.7292729446790593
+          },
+          "fold_std": {
+            "score": 0.013241922817845898,
+            "binary_f1": 0.0014322151981536635,
+            "macro_f1_9class": 0.025071860210248032
+          },
+          "oof": {
+            "score": 0.8612806446644978,
+            "binary_f1": 0.9933437744714174,
+            "macro_f1_9class": 0.7292175148575782
+          }
+        },
+        "ours": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_ours",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8214550540966442,
+            "binary_f1": 0.984661433331142,
+            "macro_f1_9class": 0.6582486748621464
+          },
+          "fold_std": {
+            "score": 0.011674976819305785,
+            "binary_f1": 0.006390086324718739,
+            "macro_f1_9class": 0.019846477550397725
+          },
+          "oof": {
+            "score": 0.8215828472988969,
+            "binary_f1": 0.9846667977196776,
+            "macro_f1_9class": 0.6584988968781161
+          }
+        },
+        "base_marginal_control": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_base_marginal_control",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8613520653241038,
+            "binary_f1": 0.9933479142155353,
+            "macro_f1_9class": 0.7293562164326725
+          },
+          "fold_std": {
+            "score": 0.012780853142918748,
+            "binary_f1": 0.0013085364932241164,
+            "macro_f1_9class": 0.0243366258600532
+          },
+          "oof": {
+            "score": 0.8613649664859397,
+            "binary_f1": 0.9933450773145429,
+            "macro_f1_9class": 0.7293848556573366
+          }
+        },
+        "marginal_ours_0.1": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_marginal_ours_0.1",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8629618934319575,
+            "binary_f1": 0.9937403564985707,
+            "macro_f1_9class": 0.7321834303653443
+          },
+          "fold_std": {
+            "score": 0.013671106599348845,
+            "binary_f1": 0.0013400144257093385,
+            "macro_f1_9class": 0.026208026504197787
+          },
+          "oof": {
+            "score": 0.8629446284921061,
+            "binary_f1": 0.9937365433548639,
+            "macro_f1_9class": 0.7321527136293481
+          }
+        },
+        "joint_ours_0.1": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_ours_0.1",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8633782156479262,
+            "binary_f1": 0.9936402635309086,
+            "macro_f1_9class": 0.7331161677649438
+          },
+          "fold_std": {
+            "score": 0.014177953021460547,
+            "binary_f1": 0.0014893541545417614,
+            "macro_f1_9class": 0.02692824868299869
+          },
+          "oof": {
+            "score": 0.8633274184039481,
+            "binary_f1": 0.9936368086147822,
+            "macro_f1_9class": 0.7330180281931139
+          }
+        },
+        "joint_history_ours_0.1_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.1_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8954191447444991,
+            "binary_f1": 0.9951106709385125,
+            "macro_f1_9class": 0.795727618550486
+          },
+          "fold_std": {
+            "score": 0.011879032277930173,
+            "binary_f1": 0.002234648999093918,
+            "macro_f1_9class": 0.022055978569035795
+          },
+          "oof": {
+            "score": 0.8954639696993036,
+            "binary_f1": 0.9951076320939335,
+            "macro_f1_9class": 0.7958203073046739
+          }
+        },
+        "joint_history_ours_0.1_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.1_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8950811054918093,
+            "binary_f1": 0.9950094111023905,
+            "macro_f1_9class": 0.7951527998812282
+          },
+          "fold_std": {
+            "score": 0.01198751065405062,
+            "binary_f1": 0.0005226185306873421,
+            "macro_f1_9class": 0.023558857914843516
+          },
+          "oof": {
+            "score": 0.8951514106900946,
+            "binary_f1": 0.9950083194675541,
+            "macro_f1_9class": 0.7952945019126351
+          }
+        },
+        "joint_history_ours_0.1_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.1_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.896456731481179,
+            "binary_f1": 0.9942302491613118,
+            "macro_f1_9class": 0.7986832138010463
+          },
+          "fold_std": {
+            "score": 0.012920024310137754,
+            "binary_f1": 0.002444772759394863,
+            "macro_f1_9class": 0.024062909343011092
+          },
+          "oof": {
+            "score": 0.8965597210038845,
+            "binary_f1": 0.9942253107565822,
+            "macro_f1_9class": 0.7988941312511868
+          }
+        },
+        "marginal_ours_0.2": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_marginal_ours_0.2",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8638680308168467,
+            "binary_f1": 0.9939365316111776,
+            "macro_f1_9class": 0.7337995300225162
+          },
+          "fold_std": {
+            "score": 0.014902766719219742,
+            "binary_f1": 0.001624924943373051,
+            "macro_f1_9class": 0.028528709468134298
+          },
+          "oof": {
+            "score": 0.8638689427854626,
+            "binary_f1": 0.9939322763750245,
+            "macro_f1_9class": 0.7338056091959007
+          }
+        },
+        "joint_ours_0.2": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_ours_0.2",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8642970201064181,
+            "binary_f1": 0.9942300215816241,
+            "macro_f1_9class": 0.7343640186312121
+          },
+          "fold_std": {
+            "score": 0.014507268059873962,
+            "binary_f1": 0.001545393336251968,
+            "macro_f1_9class": 0.02791459326397343
+          },
+          "oof": {
+            "score": 0.8642923910358539,
+            "binary_f1": 0.9942264409433408,
+            "macro_f1_9class": 0.734358341128367
+          }
+        },
+        "joint_history_ours_0.2_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.2_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8950560231764495,
+            "binary_f1": 0.9953076124478191,
+            "macro_f1_9class": 0.7948044339050797
+          },
+          "fold_std": {
+            "score": 0.010869578006573462,
+            "binary_f1": 0.002168050316659718,
+            "macro_f1_9class": 0.019862293301828263
+          },
+          "oof": {
+            "score": 0.8951399139716804,
+            "binary_f1": 0.9953042457444727,
+            "macro_f1_9class": 0.794975582198888
+          }
+        },
+        "joint_history_ours_0.2_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.2_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8958641125368697,
+            "binary_f1": 0.995305009577067,
+            "macro_f1_9class": 0.7964232154966723
+          },
+          "fold_std": {
+            "score": 0.012041286210714968,
+            "binary_f1": 0.0015589986182747758,
+            "macro_f1_9class": 0.023133969837453822
+          },
+          "oof": {
+            "score": 0.8959406793836512,
+            "binary_f1": 0.995302407516148,
+            "macro_f1_9class": 0.7965789512511544
+          }
+        },
+        "joint_history_ours_0.2_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.2_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8964793818626845,
+            "binary_f1": 0.9945248144557259,
+            "macro_f1_9class": 0.7984339492696427
+          },
+          "fold_std": {
+            "score": 0.012605002933289465,
+            "binary_f1": 0.0026346650807441327,
+            "macro_f1_9class": 0.02329163643617653
+          },
+          "oof": {
+            "score": 0.8966145075630774,
+            "binary_f1": 0.994519475435506,
+            "macro_f1_9class": 0.7987095396906486
+          }
+        },
+        "marginal_ours_0.5": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_marginal_ours_0.5",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8557408171626107,
+            "binary_f1": 0.9924552574310171,
+            "macro_f1_9class": 0.7190263768942047
+          },
+          "fold_std": {
+            "score": 0.012676308193975298,
+            "binary_f1": 0.002102166583864915,
+            "macro_f1_9class": 0.02435750787496093
+          },
+          "oof": {
+            "score": 0.8558390725040943,
+            "binary_f1": 0.9924502402196294,
+            "macro_f1_9class": 0.7192279047885592
+          }
+        },
+        "joint_ours_0.5": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_ours_0.5",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8580755191324764,
+            "binary_f1": 0.9937317413740585,
+            "macro_f1_9class": 0.7224192968908942
+          },
+          "fold_std": {
+            "score": 0.013222718526975406,
+            "binary_f1": 0.001826189384807728,
+            "macro_f1_9class": 0.025922041607898447
+          },
+          "oof": {
+            "score": 0.8581799650454502,
+            "binary_f1": 0.9937279498235986,
+            "macro_f1_9class": 0.7226319802673018
+          }
+        },
+        "joint_history_ours_0.5_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.5_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8878874154013602,
+            "binary_f1": 0.9945157434269495,
+            "macro_f1_9class": 0.7812590873757708
+          },
+          "fold_std": {
+            "score": 0.013272438123830898,
+            "binary_f1": 0.00281672466907436,
+            "macro_f1_9class": 0.025321812473510914
+          },
+          "oof": {
+            "score": 0.887906986197267,
+            "binary_f1": 0.9945130315500685,
+            "macro_f1_9class": 0.7813009408444656
+          }
+        },
+        "joint_history_ours_0.5_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.5_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8899403358652934,
+            "binary_f1": 0.9946126622985926,
+            "macro_f1_9class": 0.7852680094319943
+          },
+          "fold_std": {
+            "score": 0.012343530328960028,
+            "binary_f1": 0.0018597068386791051,
+            "macro_f1_9class": 0.024709999005986343
+          },
+          "oof": {
+            "score": 0.8900268345037399,
+            "binary_f1": 0.9946115410992457,
+            "macro_f1_9class": 0.7854421279082342
+          }
+        },
+        "joint_history_ours_0.5_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_aux_dropout50_joint_history_ours_0.5_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.889499048592352,
+            "binary_f1": 0.9940255719578021,
+            "macro_f1_9class": 0.7849725252269021
+          },
+          "fold_std": {
+            "score": 0.01197921348752213,
+            "binary_f1": 0.002521216362658524,
+            "macro_f1_9class": 0.02256065632892477
+          },
+          "oof": {
+            "score": 0.8896266376524239,
+            "binary_f1": 0.9940213662648241,
+            "macro_f1_9class": 0.7852319090400237
+          }
+        }
+      },
+      "complementarity": [
+        {
+          "fold": 0,
+          "sequences": 1627,
+          "ours_correct_base_wrong": 78,
+          "base_correct_ours_wrong": 226,
+          "both_wrong": 273
+        },
+        {
+          "fold": 1,
+          "sequences": 1632,
+          "ours_correct_base_wrong": 95,
+          "base_correct_ours_wrong": 228,
+          "both_wrong": 240
+        },
+        {
+          "fold": 2,
+          "sequences": 1631,
+          "ours_correct_base_wrong": 100,
+          "base_correct_ours_wrong": 184,
+          "both_wrong": 268
+        },
+        {
+          "fold": 3,
+          "sequences": 1626,
+          "ours_correct_base_wrong": 96,
+          "base_correct_ours_wrong": 205,
+          "both_wrong": 195
+        },
+        {
+          "fold": 4,
+          "sequences": 1635,
+          "ours_correct_base_wrong": 98,
+          "base_correct_ours_wrong": 196,
+          "both_wrong": 274
+        }
+      ],
+      "delta_from_base_joint": {
+        "base_joint": 0.0,
+        "ours": -0.039855134434466644,
+        "base_marginal_control": 4.187679299294533e-05,
+        "marginal_ours_0.1": 0.0016517049008466511,
+        "joint_ours_0.1": 0.0020680271168153075,
+        "joint_history_ours_0.1_order_42": 0.034108956213388275,
+        "joint_history_ours_0.1_order_142": 0.03377091696069845,
+        "joint_history_ours_0.1_order_242": 0.03514654295006814,
+        "marginal_ours_0.2": 0.0025578422857358563,
+        "joint_ours_0.2": 0.002986831575307214,
+        "joint_history_ours_0.2_order_42": 0.033745834645338646,
+        "joint_history_ours_0.2_order_142": 0.03455392400575885,
+        "joint_history_ours_0.2_order_242": 0.035169193331573645,
+        "marginal_ours_0.5": -0.005569371368500109,
+        "joint_ours_0.5": -0.003234669398634482,
+        "joint_history_ours_0.5_order_42": 0.026577226870249326,
+        "joint_history_ours_0.5_order_142": 0.028630147334182565,
+        "joint_history_ours_0.5_order_242": 0.028188860061241106
+      }
+    },
+    "imu_only": {
+      "evaluations": {
+        "base_joint": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_base_joint",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.831799176375813,
+            "binary_f1": 0.9908936841637915,
+            "macro_f1_9class": 0.6727046685878344
+          },
+          "fold_std": {
+            "score": 0.013722737420546185,
+            "binary_f1": 0.0037207581833979997,
+            "macro_f1_9class": 0.023784875997065004
+          },
+          "oof": {
+            "score": 0.8317701157480032,
+            "binary_f1": 0.9908850338135843,
+            "macro_f1_9class": 0.6726551976824221
+          }
+        },
+        "ours": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_ours",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.7871941233545804,
+            "binary_f1": 0.9803190079186714,
+            "macro_f1_9class": 0.5940692387904893
+          },
+          "fold_std": {
+            "score": 0.014102269936457891,
+            "binary_f1": 0.005973396108311792,
+            "macro_f1_9class": 0.026969188278173052
+          },
+          "oof": {
+            "score": 0.7877327390265136,
+            "binary_f1": 0.9803227075954348,
+            "macro_f1_9class": 0.5951427704575926
+          }
+        },
+        "base_marginal_control": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_base_marginal_control",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8318376645554068,
+            "binary_f1": 0.990986441352292,
+            "macro_f1_9class": 0.6726888877585215
+          },
+          "fold_std": {
+            "score": 0.013734427901037674,
+            "binary_f1": 0.0035512845903239933,
+            "macro_f1_9class": 0.024038004974763563
+          },
+          "oof": {
+            "score": 0.83179578888114,
+            "binary_f1": 0.9909803921568627,
+            "macro_f1_9class": 0.6726111856054173
+          }
+        },
+        "marginal_ours_0.1": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_marginal_ours_0.1",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8337481149483331,
+            "binary_f1": 0.991377732663603,
+            "macro_f1_9class": 0.6761184972330633
+          },
+          "fold_std": {
+            "score": 0.013054779327875653,
+            "binary_f1": 0.003094789559021854,
+            "macro_f1_9class": 0.023217741526445176
+          },
+          "oof": {
+            "score": 0.8336900574787887,
+            "binary_f1": 0.9913708570307903,
+            "macro_f1_9class": 0.6760092579267869
+          }
+        },
+        "joint_ours_0.1": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_ours_0.1",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8335548281686412,
+            "binary_f1": 0.9909902486289951,
+            "macro_f1_9class": 0.6761194077082873
+          },
+          "fold_std": {
+            "score": 0.013743322488262268,
+            "binary_f1": 0.0036659574080883384,
+            "macro_f1_9class": 0.023965855559635863
+          },
+          "oof": {
+            "score": 0.8334894833065514,
+            "binary_f1": 0.9909803921568627,
+            "macro_f1_9class": 0.6759985744562399
+          }
+        },
+        "joint_history_ours_0.1_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.1_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8667971632435171,
+            "binary_f1": 0.9928544995901596,
+            "macro_f1_9class": 0.7407398268968743
+          },
+          "fold_std": {
+            "score": 0.013980371862918017,
+            "binary_f1": 0.004337523162947267,
+            "macro_f1_9class": 0.02432295550707654
+          },
+          "oof": {
+            "score": 0.866822806306645,
+            "binary_f1": 0.9928494465667548,
+            "macro_f1_9class": 0.7407961660465351
+          }
+        },
+        "joint_history_ours_0.1_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.1_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8677883482940777,
+            "binary_f1": 0.9934409934055681,
+            "macro_f1_9class": 0.7421357031825873
+          },
+          "fold_std": {
+            "score": 0.013332211948960343,
+            "binary_f1": 0.0029807172585510546,
+            "macro_f1_9class": 0.024435349069679084
+          },
+          "oof": {
+            "score": 0.8679207859525379,
+            "binary_f1": 0.9934371632872955,
+            "macro_f1_9class": 0.7424044086177802
+          }
+        },
+        "joint_history_ours_0.1_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.1_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8669273104612346,
+            "binary_f1": 0.9923659711630076,
+            "macro_f1_9class": 0.7414886497594615
+          },
+          "fold_std": {
+            "score": 0.013718197492126615,
+            "binary_f1": 0.0035544400205580703,
+            "macro_f1_9class": 0.0248022557151729
+          },
+          "oof": {
+            "score": 0.8670855588310329,
+            "binary_f1": 0.9923574368018813,
+            "macro_f1_9class": 0.7418136808601844
+          }
+        },
+        "marginal_ours_0.2": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_marginal_ours_0.2",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.832350386534101,
+            "binary_f1": 0.9913818716688627,
+            "macro_f1_9class": 0.673318901399339
+          },
+          "fold_std": {
+            "score": 0.014288257760705872,
+            "binary_f1": 0.003795830064983946,
+            "macro_f1_9class": 0.025332401760108366
+          },
+          "oof": {
+            "score": 0.8323542361020247,
+            "binary_f1": 0.9913725490196078,
+            "macro_f1_9class": 0.6733359231844417
+          }
+        },
+        "joint_ours_0.2": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_ours_0.2",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8332662901563305,
+            "binary_f1": 0.9913821636836448,
+            "macro_f1_9class": 0.6751504166290163
+          },
+          "fold_std": {
+            "score": 0.015045299996251376,
+            "binary_f1": 0.0036327079475696315,
+            "macro_f1_9class": 0.026767502145871272
+          },
+          "oof": {
+            "score": 0.8332435690987012,
+            "binary_f1": 0.9913725490196078,
+            "macro_f1_9class": 0.6751145891777948
+          }
+        },
+        "joint_history_ours_0.2_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.2_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.867287192503451,
+            "binary_f1": 0.9927494144467783,
+            "macro_f1_9class": 0.7418249705601238
+          },
+          "fold_std": {
+            "score": 0.014687039292283483,
+            "binary_f1": 0.0043706007537002755,
+            "macro_f1_9class": 0.026025766129290296
+          },
+          "oof": {
+            "score": 0.8673678607310216,
+            "binary_f1": 0.9927465202901392,
+            "macro_f1_9class": 0.741989201171904
+          }
+        },
+        "joint_history_ours_0.2_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.2_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8678786764121744,
+            "binary_f1": 0.993148076100223,
+            "macro_f1_9class": 0.7426092767241259
+          },
+          "fold_std": {
+            "score": 0.01458675995088191,
+            "binary_f1": 0.003085041329046552,
+            "macro_f1_9class": 0.026651325005754276
+          },
+          "oof": {
+            "score": 0.8680207180718862,
+            "binary_f1": 0.9931439764936337,
+            "macro_f1_9class": 0.7428974596501386
+          }
+        },
+        "joint_history_ours_0.2_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.2_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8669798279877738,
+            "binary_f1": 0.9925576874569968,
+            "macro_f1_9class": 0.7414019685185511
+          },
+          "fold_std": {
+            "score": 0.01151570336840201,
+            "binary_f1": 0.003540329561719671,
+            "macro_f1_9class": 0.020657170799029408
+          },
+          "oof": {
+            "score": 0.86713103158423,
+            "binary_f1": 0.9925504802979808,
+            "macro_f1_9class": 0.7417115828704791
+          }
+        },
+        "marginal_ours_0.5": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_marginal_ours_0.5",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8228346059480046,
+            "binary_f1": 0.98988992456415,
+            "macro_f1_9class": 0.655779287331859
+          },
+          "fold_std": {
+            "score": 0.013824248996713875,
+            "binary_f1": 0.0040579179439700136,
+            "macro_f1_9class": 0.025668384511537776
+          },
+          "oof": {
+            "score": 0.8228767336740406,
+            "binary_f1": 0.9898851026220171,
+            "macro_f1_9class": 0.6558683647260639
+          }
+        },
+        "joint_ours_0.5": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_ours_0.5",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8247506510667344,
+            "binary_f1": 0.9910740970159214,
+            "macro_f1_9class": 0.6584272051175475
+          },
+          "fold_std": {
+            "score": 0.015023647404548332,
+            "binary_f1": 0.004146001061267753,
+            "macro_f1_9class": 0.02799564338934274
+          },
+          "oof": {
+            "score": 0.8248045672846738,
+            "binary_f1": 0.9910670462353981,
+            "macro_f1_9class": 0.6585420883339493
+          }
+        },
+        "joint_history_ours_0.5_order_42": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.5_order_42",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8599064498811451,
+            "binary_f1": 0.991867756325789,
+            "macro_f1_9class": 0.7279451434365012
+          },
+          "fold_std": {
+            "score": 0.015392537722626677,
+            "binary_f1": 0.00542317848053895,
+            "macro_f1_9class": 0.028255585552811595
+          },
+          "oof": {
+            "score": 0.8600265123328177,
+            "binary_f1": 0.991860351083652,
+            "macro_f1_9class": 0.7281926735819835
+          }
+        },
+        "joint_history_ours_0.5_order_142": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.5_order_142",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8599075519899125,
+            "binary_f1": 0.9922549185424494,
+            "macro_f1_9class": 0.7275601854373758
+          },
+          "fold_std": {
+            "score": 0.012430392951346046,
+            "binary_f1": 0.002995205395939944,
+            "macro_f1_9class": 0.022808022715507074
+          },
+          "oof": {
+            "score": 0.860071062920305,
+            "binary_f1": 0.9922511034820991,
+            "macro_f1_9class": 0.7278910223585108
+          }
+        },
+        "joint_history_ours_0.5_order_242": {
+          "experiment_name": "second_place_hybrid_fusion_v2_imu_only_joint_history_ours_0.5_order_242",
+          "metric": "cmi_binary_f1_macro_f1_9class_v1",
+          "folds_sha256": "51ee93e4d6f817c10c143d203bbb4a4195dcf3b080b096585c230e0bf117c1f8",
+          "dataset_sha256": "82130b4194e683edeb88102f37edd2d7576ae188d29eb6b2ae5dd72c6c9ee181",
+          "n_splits": 5,
+          "oof_sequences": 8151,
+          "std_ddof": 1,
+          "fold_mean": {
+            "score": 0.8579634727458825,
+            "binary_f1": 0.9918572930360412,
+            "macro_f1_9class": 0.7240696524557235
+          },
+          "fold_std": {
+            "score": 0.01148876467606584,
+            "binary_f1": 0.004061426260059781,
+            "macro_f1_9class": 0.020398874073528257
+          },
+          "oof": {
+            "score": 0.8581552990235226,
+            "binary_f1": 0.9918539601531063,
+            "macro_f1_9class": 0.724456637893939
+          }
+        }
+      },
+      "complementarity": [
+        {
+          "fold": 0,
+          "sequences": 1627,
+          "ours_correct_base_wrong": 100,
+          "base_correct_ours_wrong": 253,
+          "both_wrong": 318
+        },
+        {
+          "fold": 1,
+          "sequences": 1632,
+          "ours_correct_base_wrong": 96,
+          "base_correct_ours_wrong": 237,
+          "both_wrong": 298
+        },
+        {
+          "fold": 2,
+          "sequences": 1631,
+          "ours_correct_base_wrong": 116,
+          "base_correct_ours_wrong": 201,
+          "both_wrong": 323
+        },
+        {
+          "fold": 3,
+          "sequences": 1626,
+          "ours_correct_base_wrong": 116,
+          "base_correct_ours_wrong": 221,
+          "both_wrong": 248
+        },
+        {
+          "fold": 4,
+          "sequences": 1635,
+          "ours_correct_base_wrong": 107,
+          "base_correct_ours_wrong": 222,
+          "both_wrong": 339
+        }
+      ],
+      "delta_from_base_joint": {
+        "base_joint": 0.0,
+        "ours": -0.04460505302123263,
+        "base_marginal_control": 3.8488179593731964e-05,
+        "marginal_ours_0.1": 0.001948938572520098,
+        "joint_ours_0.1": 0.0017556517928282167,
+        "joint_history_ours_0.1_order_42": 0.034997986867704056,
+        "joint_history_ours_0.1_order_142": 0.03598917191826467,
+        "joint_history_ours_0.1_order_242": 0.03512813408542159,
+        "marginal_ours_0.2": 0.0005512101582879625,
+        "joint_ours_0.2": 0.0014671137805174483,
+        "joint_history_ours_0.2_order_42": 0.03548801612763797,
+        "joint_history_ours_0.2_order_142": 0.0360795000363614,
+        "joint_history_ours_0.2_order_242": 0.03518065161196082,
+        "marginal_ours_0.5": -0.008964570427808405,
+        "joint_ours_0.5": -0.007048525309078624,
+        "joint_history_ours_0.5_order_42": 0.028107273505332042,
+        "joint_history_ours_0.5_order_142": 0.028108375614099512,
+        "joint_history_ours_0.5_order_242": 0.02616429637006945
+      }
+    }
+  },
+  "protocol": "Same sequence IDs and missing scenarios. Joint lift preserves second-place conditional orientation/initial-behavior distribution within each gesture. Marginal decision control reported separately. Truth used only for final metric/diagnostic, never fusion or history. All preset weights/orders reported; no per-fold selection.",
+  "training_change": false,
+  "online_competition_score": null
+}
