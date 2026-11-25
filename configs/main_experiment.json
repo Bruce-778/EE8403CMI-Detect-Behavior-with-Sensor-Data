@@ -1,0 +1,41 @@
+{
+  "name": "second_place_base_imu_metric_loss",
+  "role": "primary_research_experiment",
+  "selected_by": "explicit user instruction; small CV gains, not proof of universal improvement",
+  "source_commit": "cb53f8d0cc82f33b86403ba35c5a580930475528",
+  "architecture": "base",
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "epochs": 50,
+  "batch_size": 32,
+  "seed": "42+fold",
+  "imu_loss": {
+    "joint_soft_ce": 1,
+    "official9_soft_ce": 0.5,
+    "binary_bce": 0.1,
+    "phase_ce": 1
+  },
+  "tof_loss": "original joint CE + phase CE; existing audited original ToF arms reused",
+  "variants": [
+    "imu",
+    "imu_rot",
+    "all",
+    "all_rot"
+  ],
+  "result_record": "experiments/results/second_place_hybrid_imu_group_loss_v1.json",
+  "result_sha256": "e180fdb844a839c1527412397d9fc508bfedeb25bb937701078cd182aa1f791a",
+  "imported_directory": "outputs/kaggle_training/imported/second_place_hybrid_imu_group_loss_v1",
+  "training_entrypoint": "scripts/main_experiment.py train",
+  "export_entrypoint": "scripts/main_experiment.py export",
+  "audit_entrypoint": "scripts/evaluate_second_place_hybrid.py",
+  "default_status_entrypoint": "scripts/main_experiment.py status --verify",
+  "history": "separate causal research controls; all fixed orders42/142/242 reported",
+  "online_pseudo_labels": "separate original-base CPU comparison still running; no default update",
+  "online_competition_score": null,
+  "production": "prior scored production weights preserved; research selection only"
+}
