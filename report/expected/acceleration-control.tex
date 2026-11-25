@@ -1,0 +1,13 @@
+\begin{table}[htbp]
+\centering\small
+\caption{Post hoc controls on the same five participant-disjoint folds. Inputs are total frame count and/or per-axis acceleration means and standard deviations. Score is the official composite and SD its sample standard deviation across folds. The remaining columns are fold means. Target ID is eight-way accuracy of the identity stage on true target sequences, with the detector bypassed.}
+\label{tab:length-control}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lrrrrrr@{}}\toprule
+Input & Score & SD & Binary F1 & Macro F1$_9$ & AUROC & Target ID\\\midrule
+Training priors & .393545 & .000527 & .770959 & .016131 & .500000 & .124779\\
+Length & .411226 & .005303 & .766862 & .055589 & .599841 & .146105\\
+Acceleration & .448951 & .012054 & .758279 & .139622 & .734559 & .185607\\
+Length + acceleration & .445922 & .021115 & .774854 & .116991 & .703747 & .178967\\
+\bottomrule\end{tabular}
+\end{table}
