@@ -1,84 +1,82 @@
-# CMI：第二名 base + IMU 辅助损失
+# CMI wrist gesture recognition with IMU auxiliary losses
 
-当前主实验是第二名公开 base 方法，加上我们的官方指标分组辅助损失。
-主配置：[configs/main_experiment.json](configs/main_experiment.json)。
-用户已选择这一方案作为后续研究基础；旧 `cnn_dynamics_mixup` 代码移入实验档案。
+This EE8403 course project studies how well a wrist-worn device can distinguish eight target gestures from everyday movements when proximity measurements are missing. We use the [Child Mind Institute sensor benchmark](https://www.kaggle.com/competitions/cmi-detect-behavior-with-sensor-data) and reproduce the base architecture from [Yamato Arai's second-place solution](https://github.com/Yamato-Arai/kaggle-cmi-detect-behavior-2nd-place-solution).
 
-本方案已经完成固定五折、20 个分支模型与 8,151 条完整 OOF 的严格核验：
-十个 IMU/旋转缺失 IMU 分支各训练 50 epoch、取最后权重；十个 ToF 分支严格复用
-同 fold、同 trainIDs、同联合类别轴的原始 base 权重。辅助损失只在 IMU 分支测试。
+Our [main experiment](configs/main_experiment.json) asks whether training the inertial measurement unit (IMU) branches to recognize both the gesture group and its target status improves the competition score. The earlier `cnn_dynamics_mixup` implementation is in the [experiment archive](experiments/legacy/cnn_dynamics_mixup/).
 
-| 固定五折开发验证 | 第二名原 base | 当前混合主实验 |
-|---|---:|---:|
-| 原始输入 | 0.891362 ± 0.012919 | **0.891716 ± 0.012698** |
-| 固定约半数辅助模态缺失 | 0.861310 ± 0.013242 | **0.861624 ± 0.011197** |
-| IMU-only | 0.831799 ± 0.013723 | **0.832369 ± 0.012404** |
+## Five-fold validation results
 
-数值是五折均值 ± 样本标准差（ddof=1）。提升很小，历史后处理结果有升有降，
-不将主实验选择解释为稳健普遍改善。没有该混合方案的线上 Private 成绩。
-原方案线上 Private **0.833362** 属于保留的旧冻结权重，不是本方案线上成绩。
+Both systems use the same five participant-disjoint folds and the same prediction rule. Every one of the 8,151 sequences has an out-of-fold (OOF) prediction in each input condition. The competition score gives equal weight to binary target-detection F1 and macro F1 over nine groups (eight target gestures and one group for all everyday movements).
 
-## 主代码与入口
+| Input condition | Reproduced second-place base | Base with grouped IMU losses |
+| --- | ---: | ---: |
+| Sensors as recorded | 0.891362 ± 0.012919 | 0.891716 ± 0.012698 |
+| Auxiliary sensors masked for about half the sequences (fixed subset) | 0.861310 ± 0.013242 | 0.861624 ± 0.011197 |
+| IMU only | 0.831799 ± 0.013723 | 0.832369 ± 0.012404 |
+
+Values are means across the five folds ± sample standard deviation (`ddof=1`). The mean gain with IMU alone was 0.000569. In that condition, three of the five folds improved. Separate experiments with participant-history post-processing produced changes in both directions. The hybrid has development-fold results only. The Kaggle private leaderboard score of **0.833362** belongs to the earlier frozen dynamics CNN.
+
+## What changed in training
+
+The model predicts a joint label for posture, gesture and initial movement. We retain the upstream architecture, physical features and movement-phase supervision. The two IMU branches minimize the following objective.
 
 ```text
-configs/main_experiment.json       当前主实验、审计记录与权重来源
-scripts/main_experiment.py         默认状态/核验、显式训练、离线 Notebook 导出
-scripts/train_second_place_hybrid.py  五折 IMU 两分支、50 epoch 辅助损失训练
-scripts/evaluate_second_place_hybrid.py  新 IMU + 原 ToF 严格导入、合并与固定验证
-src/cmi_project/second_place.py    物理特征、训练缓存、train-only 联合类别及安全加载
-src/cmi_project/second_place_hybrid.py  joint CE + official9 CE + binary BCE
-src/cmi_project/vendor/second_place/  固定上游源码，原作者署名和 SHA 保留
-experiments/legacy/cnn_dynamics_mixup/  旧方案原始代码、配置、测试和项目说明
-experiments/results/              每一步成功/失败与逐折比较的历史记录
+joint cross-entropy + phase cross-entropy
+    + 0.5 × nine-group soft cross-entropy
+    + 0.1 × binary cross-entropy (BCE) for target status
 ```
 
-上游固定 commit `cb53f8d0cc82f33b86403ba35c5a580930475528`，
-[原作者仓库](https://github.com/Yamato-Arai/kaggle-cmi-detect-behavior-2nd-place-solution)。
-保留作者模型结构、原特征与 phase CE；加入 `0.5 × official9 soft CE + 0.1 × binary BCE`，
-分组 target 来自训练 joint Mixup soft targets。IMU 的 joint CE 和 phase CE 权重均为 1。
-保留 Mixup0.5、Adam lr0.001/wd0.0001、batch32、clip1、10% warmup/cosine、
-200 帧尾部截断/右 padding、seed42+fold、固定 50 epoch 最后权重。
+Both auxiliary targets come from the joint Mixup soft labels. We sum their probability mass first by scoring group and then by target status. At inference, both systems return the gesture of the highest-scoring joint class.
 
-## 环境与使用
+Each fold has four branches. Across five folds, we trained ten IMU models (with and without rotation features) for 50 epochs each and retained the final checkpoints. For the ten time-of-flight (ToF) branches, we reused the original base checkpoints after verifying the fold, training sequence IDs and joint-class ordering. This design measures the combined effect of the two auxiliary losses in the IMU branches.
 
-使用现有 Conda `cmi` 环境。本机 Python 为 `D:\anaconda\envs\cmi\python.exe`，
-直接调用加 `-s`。所有实验复用 `configs/folds.csv`，训练/验证 subjects 不重叠；
-预处理与联合类别拟合只使用训练 fold。原始数据放在 `data/`。
+Training uses phase-wise Mixup (alpha 0.5), Adam with learning rate 0.001 and weight decay 0.0001, batch size 32, gradient-norm clipping at 1, and a 10% warmup followed by cosine decay. Inputs retain the last 200 frames at most and use right padding. The seed is `42 + fold`. The upstream source is pinned to [commit cb53f8d0cc82f33b86403ba35c5a580930475528](https://github.com/Yamato-Arai/kaggle-cmi-detect-behavior-2nd-place-solution/tree/cb53f8d0cc82f33b86403ba35c5a580930475528).
+
+## Code and entry points
+
+| Path | Purpose |
+| --- | --- |
+| [configs/main_experiment.json](configs/main_experiment.json) | Main experiment settings, audit record and checkpoint provenance |
+| [scripts/main_experiment.py](scripts/main_experiment.py) | Show status, verify local files, export an offline notebook or start training |
+| [scripts/train_second_place_hybrid.py](scripts/train_second_place_hybrid.py) | Train the two IMU branches with grouped losses on all five folds |
+| [scripts/evaluate_second_place_hybrid.py](scripts/evaluate_second_place_hybrid.py) | Import and validate the new IMU models, combine them with the original ToF branches and evaluate the routed model |
+| [src/cmi_project/second_place.py](src/cmi_project/second_place.py) | Physical features, training cache, fold-specific joint labels and checkpoint loading |
+| [src/cmi_project/second_place_hybrid.py](src/cmi_project/second_place_hybrid.py) | Grouped nine-class and binary losses for the joint classifier |
+| [src/cmi_project/vendor/second_place/](src/cmi_project/vendor/second_place/) | Pinned upstream code with author attribution and source hashes |
+| [experiments/legacy/cnn_dynamics_mixup/](experiments/legacy/cnn_dynamics_mixup/) | Earlier model code, configurations, tests and documentation |
+| [experiments/results/](experiments/results/) | Experiment records, including unsuccessful runs and fold-by-fold comparisons |
+
+## Environment and usage
+
+Use the [`cmi` Conda environment](environment.yml) and run the commands below from the repository root. The original Windows setup used `D:\anaconda\envs\cmi\python.exe` with the `-s` flag. Place the raw competition files under `data/`. All experiments use [configs/folds.csv](configs/folds.csv). Training and validation participants are disjoint. Each fold uses its training partition for fitted preprocessing and construction of the joint-label vocabulary.
 
 ```powershell
-# 默认只显示已核验主实验，不启动训练。
+# Display the recorded main experiment.
 python -s scripts/main_experiment.py
-# 检查所有主模型复制文件及 15 份完整 OOF 的原始字节 SHA。
+
+# Verify the byte-level hashes of the local model files and all 15 complete OOF files.
 python -s scripts/main_experiment.py status --verify
+
+# Run the test suite.
 python -s -m unittest discover -s tests -v
 
-# 导出一个新离线训练 Notebook；只导出，不启动 Kaggle。
+# Export an offline training notebook. This command only writes the notebook.
 python -s scripts/main_experiment.py export --run-name hybrid_imu_next --notebook-name hybrid-imu-next.ipynb
 
-# 仅在完整计算预算允许时显式训练，必须使用新目录；保留全部十个 IMU 模型的 50 epoch。
+# Train all ten IMU models for 50 epochs each. Use a fresh output directory.
 python -s -u scripts/main_experiment.py train --device cuda --output outputs/second_place/hybrid_imu_next
 ```
 
-完整路由评估仍需 `evaluate_second_place_hybrid.py` 将实际新 ZIP 与原 ToF 控制严格合并；
-该脚本的导入命令见 [SECOND_PLACE_HYBRID.md](experiments/SECOND_PLACE_HYBRID.md)。
-不能仅凭重新训练的 IMU 输出宣称全模态或完整五折路由结果。
-现有主实验权重保留在 `outputs/kaggle_training/imported/second_place_hybrid_imu_group_loss_v1/`。
+Full evaluation routes sequences to either an IMU or a ToF branch. After a training run, import its ZIP archive with `evaluate_second_place_hybrid.py` and supply the matching base ToF checkpoints. The [hybrid experiment log](experiments/SECOND_PLACE_HYBRID.md) gives the import command. The original audited model files are stored locally under `outputs/kaggle_training/imported/second_place_hybrid_imu_group_loss_v1/`. Raw data, checkpoints, caches and complete prediction files stay in the local `data/` and `outputs/` directories. Full checksum verification requires those files.
 
-## 实验记录与独立控制
+## Experiment records and follow-up work
 
-- [第二名逐步复现](experiments/SECOND_PLACE_REPRODUCTION.md)：原 base、固定五折、来源适配及差异。
-- [混合方案每一步](experiments/SECOND_PLACE_HYBRID.md)：融合筛查、训练批次、GPU 运行、ZIP 导入、完整审计与结果。
-- [主实验完整结果](experiments/results/second_place_hybrid_imu_group_loss_v1.json)：各折、三场景、全部固定历史顺序及 provenance。
-- [此次迁移记录](experiments/MAIN_EXPERIMENT_MIGRATION.md)：清理前 Git 快照、迁移 SHA 和保留范围。
-- [原方案实验索引](experiments/README.md)、[旧实现档案](experiments/legacy/cnn_dynamics_mixup/README.md)：每步历史结果保留，旧方案不再是当前入口。
+- [Second-place reproduction](experiments/SECOND_PLACE_REPRODUCTION.md) documents the original base, fixed folds and adaptations to the upstream code.
+- [Hybrid experiment log](experiments/SECOND_PLACE_HYBRID.md) covers fusion experiments, training batches, the GPU run, ZIP import and audit results.
+- [Main result record](experiments/results/second_place_hybrid_imu_group_loss_v1.json) contains per-fold scores for all three sensor conditions, all predefined participant-history orderings and model provenance.
+- [Migration record](experiments/MAIN_EXPERIMENT_MIGRATION.md) identifies the Git snapshot before cleanup, the migration commits and the files retained.
+- The [experiment index](experiments/README.md) and [legacy implementation notes](experiments/legacy/cnn_dynamics_mixup/README.md) document the earlier models and their results.
 
-概率融合、因果历史和在线伪标签是独立研究控制，不自动加入主模型。
-在线伪标签比较继续使用原 base 的冻结权重与匹配 CPU 逐条实际长度推理对照，
-未切换成 hybrid；状态、模型、buffer、history 与 RNG 按同 subject/fold/场景/顺序隔离，
-不读取验证真 gesture/orientation/phase、不使用未来、不回改返回、不挑最佳顺序。
-正在运行的比较完成后单独记录，不提前报告伪标签收益。
+The project treats probability fusion, causal participant-history decoding and online pseudo-labelling as separate experiments. For the online pseudo-labelling comparison, the reference is the frozen base model using matched CPU inference at each sequence's actual length. Each participant, fold, sensor condition and arrival order has separate model state, buffers, prediction history and random-number-generator state. Predictions use only the current and earlier arrivals. Validation gesture, posture and phase labels are excluded from inference. Previously returned decisions stay fixed, and all predefined arrival orders are retained. The archived experiment record lists this comparison as ongoing.
 
-simple/deep、作者原十折 ensemble、dynamic34D/THM 和 ToF 辅助损失重训尚未完成。
-现有 GPU 剩余额度不足以支持新的完整训练，不缩短 50 epoch。
-`data/`、`outputs/` 的大数据、权重、缓存与完整 OOF 留在本机，不随 Git 上传；
-此次仅切换研究主代码，旧生产权重保持冻结，不新增比赛提交。
+Open experiments include the upstream simple and deep architectures, the original ten-fold ensemble, the 34-feature dynamics and thermopile configuration, and retraining the ToF branches with auxiliary losses. At the time of the recorded run, the remaining GPU quota was insufficient for another full training run at the fixed 50-epoch budget. The main-experiment migration preserved the earlier frozen production weights and made no new competition submission.
