@@ -8,9 +8,7 @@ data/
 build/
 dist/
 outputs/
-runtime_configs/
-selection.json
-data_source_check.json
+data/*
 docs/*
 run.sh/*
 AGENTS.md
